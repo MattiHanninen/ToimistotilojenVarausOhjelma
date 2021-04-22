@@ -11,51 +11,51 @@ package janne;
  * @version 1.0 21.4.2021
  */
 public class Toimipiste {
-    private int ToimipisteID;
-    private String ToimipisteNimi;
-    private int VuorokausiHinta;
-    private int ToimipisteKoko;
+    private int toimipisteID;
+    private String toimipisteNimi;
+    private int vuorokausiHinta;
+    private int toimipisteKoko;
     
     public Toimipiste(){
         
     }
 
     //Setterit ja getterit
-    public void setToimipisteID(int ToimipisteID) {
-        this.ToimipisteID = ToimipisteID;
+    public void setToimipisteID(int toimipisteID) {
+        this.toimipisteID = toimipisteID;
     }
 
-    public void setToimipisteNimi(String ToimipisteNimi) {
-        this.ToimipisteNimi = ToimipisteNimi;
+    public void setToimipisteNimi(String toimipisteNimi) {
+        this.toimipisteNimi = toimipisteNimi;
     }
 
-    public void setVuorokausiHinta(int VuorokausiHinta) {
-        this.VuorokausiHinta = VuorokausiHinta;
+    public void setVuorokausiHinta(int vuorokausiHinta) {
+        this.vuorokausiHinta = vuorokausiHinta;
     }
 
-    public void setToimipisteKoko(int ToimipisteKoko) {
-        this.ToimipisteKoko = ToimipisteKoko;
+    public void setToimipisteKoko(int toimipisteKoko) {
+        this.toimipisteKoko = toimipisteKoko;
     }
 
     public int getToimipisteID() {
-        return ToimipisteID;
+        return toimipisteID;
     }
 
     public String getToimipisteNimi() {
-        return ToimipisteNimi;
+        return toimipisteNimi;
     }
 
     public int getVuorokausiHinta() {
-        return VuorokausiHinta;
+        return vuorokausiHinta;
     }
 
     public int getToimipisteKoko() {
-        return ToimipisteKoko;
+        return toimipisteKoko;
     }
 
     @Override
     public String toString() {
-        return (ToimipisteID + " " + ToimipisteNimi + " " + VuorokausiHinta + " " + ToimipisteKoko);
+        return (toimipisteID + " " + toimipisteNimi + " " + vuorokausiHinta + " " + toimipisteKoko);
     }
    
     

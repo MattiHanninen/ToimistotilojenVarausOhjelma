@@ -11,52 +11,52 @@ package janne;
  * @version 1.0 21.4.2021
  */
 public class Asiakas {
-    private int AsiakasID;
-    private String Etunimi;
-    private String Sukunimi;
-    private String Yritys;
+    private int asiakasID;
+    private String etunimi;
+    private String sukunimi;
+    private String yritys;
     
     public Asiakas(){
         
     }
 
     //Getterit ja setterit
-    public void setAsiakasID(int AsiakasID) {
-        this.AsiakasID = AsiakasID;
+    public void setAsiakasID(int asiakasID) {
+        this.asiakasID = asiakasID;
     }
 
-    public void setEtunimi(String Etunimi) {
-        this.Etunimi = Etunimi;
+    public void setEtunimi(String etunimi) {
+        this.etunimi = etunimi;
     }
 
-    public void setSukunimi(String Sukunimi) {
-        this.Sukunimi = Sukunimi;
+    public void setSukunimi(String sukunimi) {
+        this.sukunimi = sukunimi;
     }
 
-    public void setYritys(String Yritys) {
-        this.Yritys = Yritys;
+    public void setYritys(String yritys) {
+        this.yritys = yritys;
     }
 
     
     public int getAsiakasID() {
-        return AsiakasID;
+        return asiakasID;
     }
 
     public String getEtunimi() {
-        return Etunimi;
+        return etunimi;
     }
 
     public String getSukunimi() {
-        return Sukunimi;
+        return sukunimi;
     }
 
     public String getYritys() {
-        return Yritys;
+        return yritys;
     }
     
     @Override
     public String toString() {
-        return (AsiakasID+" "+Etunimi+" "+Sukunimi+" "+Yritys);
+        return (asiakasID+" "+etunimi+" "+sukunimi+" "+yritys);
     }
             
     

@@ -11,52 +11,52 @@ package janne;
  * @version 1.0 21.4.2021
  */
 public class Palvelu {
-    private int PalvelunID;
-    private String PalvelunNimi;
-    private int PalvelunHinta;
-    private String PalvelunKuvaus;
+    private int palvelunID;
+    private String palvelunNimi;
+    private int palvelunHinta;
+    private String palvelunKuvaus;
     
     public Palvelu(){
         
     }
 
     //Setterit ja getterit
-    public void setPalvelunID(int PalvelunID) {
-        this.PalvelunID = PalvelunID;
+    public void setPalvelunID(int palvelunID) {
+        this.palvelunID = palvelunID;
     }
 
-    public void setPalvelunNimi(String PalvelunNimi) {
-        this.PalvelunNimi = PalvelunNimi;
+    public void setPalvelunNimi(String palvelunNimi) {
+        this.palvelunNimi = palvelunNimi;
     }
 
-    public void setPalvelunHinta(int PalvelunHinta) {
-        this.PalvelunHinta = PalvelunHinta;
+    public void setPalvelunHinta(int palvelunHinta) {
+        this.palvelunHinta = palvelunHinta;
     }
 
-    public void setPalvelunKuvaus(String PalvelunKuvaus) {
-        this.PalvelunKuvaus = PalvelunKuvaus;
+    public void setPalvelunKuvaus(String palvelunKuvaus) {
+        this.palvelunKuvaus = palvelunKuvaus;
     }
    
 
 
     public int getPalvelunID() {
-        return PalvelunID;
+        return palvelunID;
     }
 
     public String getPalvelunNimi() {
-        return PalvelunNimi;
+        return palvelunNimi;
     }
 
     public int getPalvelunHinta() {
-        return PalvelunHinta;
+        return palvelunHinta;
     }
 
     public String getPalvelunKuvaus() {
-        return PalvelunKuvaus;
+        return palvelunKuvaus;
     }
     
      @Override
     public String toString() {
-        return (PalvelunID + " " + PalvelunNimi + " " + PalvelunHinta + " " + PalvelunKuvaus);
+        return (palvelunID + " " + palvelunNimi + " " + palvelunHinta + " " + palvelunKuvaus);
     }
 }

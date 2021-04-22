@@ -12,12 +12,12 @@ import java.util.Date;
  * @author R01
  */
 public class Lasku {
-    private int LaskuID;
-    private Date Erapaiva;
-    private Date Maksupaiva;
-    private int Summa;
-    private int Viitenumero;
-    private String LaskutusTyyppi;
+    private int laskuID;
+    private Date erapaiva;
+    private Date maksupaiva;
+    private int summa;
+    private int viitenumero;
+    private String laskutusTyyppi;
     
     public Lasku(){
         
@@ -25,57 +25,57 @@ public class Lasku {
     
     //Getterit ja setterit
     public int getLaskuID() {
-        return LaskuID;
+        return laskuID;
     }
 
     public Date getErapaiva() {
-        return Erapaiva;
+        return erapaiva;
     }
 
     public Date getMaksupaiva() {
-        return Maksupaiva;
+        return maksupaiva;
     }
 
     public int getSumma() {
-        return Summa;
+        return summa;
     }
 
     public int getViitenumero() {
-        return Viitenumero;
+        return viitenumero;
     }
 
     public String getLaskutusTyyppi() {
-        return LaskutusTyyppi;
+        return laskutusTyyppi;
     }
     
 
-    public void setLaskuID(int LaskuID) {
-        this.LaskuID = LaskuID;
+    public void setLaskuID(int laskuID) {
+        this.laskuID = laskuID;
     }
 
-    public void setErapaiva(Date Erapaiva) {
-        this.Erapaiva = Erapaiva;
+    public void setErapaiva(Date erapaiva) {
+        this.erapaiva = erapaiva;
     }
 
-    public void setMaksupaiva(Date Maksupaiva) {
-        this.Maksupaiva = Maksupaiva;
+    public void setMaksupaiva(Date maksupaiva) {
+        this.maksupaiva = maksupaiva;
     }
 
-    public void setSumma(int Summa) {
-        this.Summa = Summa;
+    public void setSumma(int summa) {
+        this.summa = summa;
     }
 
-    public void setViitenumero(int Viitenumero) {
-        this.Viitenumero = Viitenumero;
+    public void setViitenumero(int viitenumero) {
+        this.viitenumero = viitenumero;
     }
 
-    public void setLaskutusTyyppi(String LaskutusTyyppi) {
-        this.LaskutusTyyppi = LaskutusTyyppi;
+    public void setLaskutusTyyppi(String laskutusTyyppi) {
+        this.laskutusTyyppi = laskutusTyyppi;
     }
     
     @Override
     public String toString() {
-        return (LaskuID + " " + Erapaiva + " " + Maksupaiva + " " + Summa + " " + Viitenumero + " " + LaskutusTyyppi);
+        return (laskuID + " " + erapaiva + " " + maksupaiva + " " + summa + " " + viitenumero + " " + laskutusTyyppi);
     }
     
 }

@@ -10,42 +10,42 @@ package janne;
  * @author Omistaja
  */
 public class Tyontekija {
-    private int TyontekijaID;
-    private String Etunimi;
-    private String Sukunimi;
+    private int tyontekijaID;
+    private String etunimi;
+    private String sukunimi;
     
     public Tyontekija(){
         
     }
 
     //Setterit ja getterit
-    public void setTyontekijaID(int TyontekijaID) {
-        this.TyontekijaID = TyontekijaID;
+    public void setTyontekijaID(int tyontekijaID) {
+        this.tyontekijaID = tyontekijaID;
     }
 
-    public void setEtunimi(String Etunimi) {
-        this.Etunimi = Etunimi;
+    public void setEtunimi(String etunimi) {
+        this.etunimi = etunimi;
     }
 
-    public void setSukunimi(String Sukunimi) {
-        this.Sukunimi = Sukunimi;
+    public void setSukunimi(String sukunimi) {
+        this.sukunimi = sukunimi;
     }
     
     public int getTyontekijaID() {
-        return TyontekijaID;
+        return tyontekijaID;
     }
 
     public String getEtunimi() {
-        return Etunimi;
+        return etunimi;
     }
 
     public String getSukunimi() {
-        return Sukunimi;
+        return sukunimi;
     }
 
     
     @Override
     public String toString() {
-        return (TyontekijaID + " " + Etunimi + " " + Sukunimi);
+        return (tyontekijaID + " " + etunimi + " " + sukunimi);
     }
 }

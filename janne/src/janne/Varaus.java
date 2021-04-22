@@ -13,11 +13,11 @@ import java.util.Date;
  * @version 1.0 21.4.2021
  */
 public class Varaus {
-    private int VarausID;
-    private Date AloitusPaiva;
-    private Date LopetusPaiva;
-    private int AsiakasID;
-    private int ToimipisteID;
+    private int varausID;
+    private Date aloitusPaiva;
+    private Date lopetusPaiva;
+    private int asiakasID;
+    private int toimipisteID;
     
     public Varaus(){
         
@@ -25,49 +25,49 @@ public class Varaus {
     
 
     //Setterit ja getterit
-    public void setVarausID(int VarausID) {
-        this.VarausID = VarausID;
+    public void setVarausID(int varausID) {
+        this.varausID = varausID;
     }
 
-    public void setAloitusPaiva(Date AloitusPaiva) {
-        this.AloitusPaiva = AloitusPaiva;
+    public void setAloitusPaiva(Date aloitusPaiva) {
+        this.aloitusPaiva = aloitusPaiva;
     }
 
-    public void setLopetusPaiva(Date LopetusPaiva) {
-        this.LopetusPaiva = LopetusPaiva;
+    public void setLopetusPaiva(Date lopetusPaiva) {
+        this.lopetusPaiva = lopetusPaiva;
     }
 
-    public void setAsiakasID(int AsiakasID) {
-        this.AsiakasID = AsiakasID;
+    public void setAsiakasID(int asiakasID) {
+        this.asiakasID = asiakasID;
     }
 
-    public void setToimipisteID(int ToimipisteID) {
-        this.ToimipisteID = ToimipisteID;
+    public void setToimipisteID(int toimipisteID) {
+        this.toimipisteID = toimipisteID;
     }
    
 
     public int getVarausID() {
-        return VarausID;
+        return varausID;
     }
 
     public Date getAloitusPaiva() {
-        return AloitusPaiva;
+        return aloitusPaiva;
     }
 
     public Date getLopetusPaiva() {
-        return LopetusPaiva;
+        return lopetusPaiva;
     }
 
     public int getAsiakasID() {
-        return AsiakasID;
+        return asiakasID;
     }
 
     public int getToimipisteID() {
-        return ToimipisteID;
+        return toimipisteID;
     }
     
     @Override
     public String toString() {
-        return "Varaus{" + "VarausID=" + VarausID + ", AloitusPaiva=" + AloitusPaiva + ", LopetusPaiva=" + LopetusPaiva + ", AsiakasID=" + AsiakasID + ", ToimipisteID=" + ToimipisteID + '}';
+        return (varausID + " " + aloitusPaiva + " " + lopetusPaiva + " " + asiakasID + " " + toimipisteID);
     }
 }
