@@ -7,8 +7,57 @@ package vuokratoimistotapplication.Luokat;
 
 /**
  *
- * @author hoang
+ * @author hoang & janne
  */
+
 public class Asiakas {
+    private int asiakasID;
+    private String etunimi;
+    private String sukunimi;
+    private String yritys;
+    
+    public Asiakas(){
+        
+    }
+
+    //Getterit ja setterit
+    public void setAsiakasID(int asiakasID) {
+        this.asiakasID = asiakasID;
+    }
+
+    public void setEtunimi(String etunimi) {
+        this.etunimi = etunimi;
+    }
+
+    public void setSukunimi(String sukunimi) {
+        this.sukunimi = sukunimi;
+    }
+
+    public void setYritys(String yritys) {
+        this.yritys = yritys;
+    }
+
+    
+    public int getAsiakasID() {
+        return asiakasID;
+    }
+
+    public String getEtunimi() {
+        return etunimi;
+    }
+
+    public String getSukunimi() {
+        return sukunimi;
+    }
+
+    public String getYritys() {
+        return yritys;
+    }
+    
+    @Override
+    public String toString() {
+        return (asiakasID+" "+etunimi+" "+sukunimi+" "+yritys);
+    }
+            
     
 }
