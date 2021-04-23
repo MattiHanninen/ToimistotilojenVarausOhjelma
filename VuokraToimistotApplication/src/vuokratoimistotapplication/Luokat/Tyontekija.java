@@ -7,8 +7,47 @@ package vuokratoimistotapplication.Luokat;
 
 /**
  *
- * @author hoang
+ * @author hoang & janne
  */
 public class Tyontekija {
+    
+    private int tyontekijaID;
+    private String etunimi;
+    private String sukunimi;
+    
+    public Tyontekija(){
+        
+    }
+
+    //Setterit ja getterit
+    public void setTyontekijaID(int tyontekijaID) {
+        this.tyontekijaID = tyontekijaID;
+    }
+
+    public void setEtunimi(String etunimi) {
+        this.etunimi = etunimi;
+    }
+
+    public void setSukunimi(String sukunimi) {
+        this.sukunimi = sukunimi;
+    }
+    
+    public int getTyontekijaID() {
+        return tyontekijaID;
+    }
+
+    public String getEtunimi() {
+        return etunimi;
+    }
+
+    public String getSukunimi() {
+        return sukunimi;
+    }
+
+    
+    @Override
+    public String toString() {
+        return (tyontekijaID + " " + etunimi + " " + sukunimi);
+    }
     
 }
