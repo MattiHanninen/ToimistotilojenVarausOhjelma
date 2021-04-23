@@ -180,9 +180,7 @@ public class vuokratoimistoDatabase {
         addToimipiste(conn, 60100, "Rantakylä", 800, 70);
         
         
-//        CREATE TABLE Toimipiste(  ToimipisteID INT NOT NULL,  
-//        ToimipisteNimi VARCHAR(30) NOT NULL,  VuorokausiHinta INT NOT NULL,  
-//        ToimipisteKoko INT NOT NULL,  PRIMARY KEY (ToimipisteID)); 
+
         
         
     }
