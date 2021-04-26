@@ -25,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
 
 /**
@@ -45,14 +46,13 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     @FXML
     private TextField txtYritys;
     @FXML
-    private Button btnMuokkaa;
+    private HBox btnMuokkaa;
     @FXML
     private Button btnLisaa;
     @FXML
     private Button btnPoista;
     @FXML
     private TableView <Asiakas> tableAsiakas;
-    @FXML
     private TableColumn<Asiakas, Integer> colID;
     @FXML
     private TableColumn<Asiakas, String> colEtunimi;
@@ -60,6 +60,8 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     private TableColumn<Asiakas, String> colSukunimi;
     @FXML
     private TableColumn<Asiakas, String> colYritys;
+    @FXML
+    private TableColumn<?, ?> colId;
 
     /**
      * Initializes the controller class.
