@@ -5,6 +5,8 @@
  */
 package vuokratoimistotapplication;
 
+
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -15,12 +17,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 
 /**
  * FXML Controller class
  *
- * @author matty
+ * @author matty & janne
  */
 public class AsiakkaidenHallintaViewController implements Initializable {
 
@@ -35,13 +36,13 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     @FXML
     private TextField txtYritys;
     @FXML
-    private HBox btnMuokkaa;
+    private Button btnMuokkaa;
     @FXML
     private Button btnLisaa;
     @FXML
     private Button btnPoista;
     @FXML
-    private TableView<?> tableAsiakas;
+    private TableView <?> tableAsiakas;
     @FXML
     private TableColumn<?, ?> colId;
     @FXML
@@ -56,6 +57,7 @@ public class AsiakkaidenHallintaViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+       
         // TODO
     }    
 
