@@ -53,7 +53,7 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     private Button btnPoista;
     @FXML
     private TableView <Asiakas> tableAsiakas;
-    private TableColumn<Asiakas, Integer> colID;
+    
     @FXML
     private TableColumn<Asiakas, String> colEtunimi;
     @FXML
@@ -61,20 +61,27 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     @FXML
     private TableColumn<Asiakas, String> colYritys;
     @FXML
-    private TableColumn<?, ?> colId;
+    private TableColumn<Asiakas, Integer> colId;
+    
+    //vuokratoimistoDatabase olio
+    vuokratoimistoDatabase dataOlio = new vuokratoimistoDatabase();
+    //resultset
+    //private ResultSet rs = null;
+    
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+       // updateTableviewAsiakas();
        
         // TODO
     }   
     
     public void updateTableviewAsiakas(){
         //Opiskelijat
-        colID.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
         colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
         colSukunimi.setCellValueFactory(new PropertyValueFactory<>("sukunimi"));
         colYritys.setCellValueFactory(new PropertyValueFactory<>("yritys"));
@@ -85,11 +92,20 @@ public class AsiakkaidenHallintaViewController implements Initializable {
                     + "3306?user=opiskelija&password=opiskelija1");
             
             // Otetaan tietokanta kayttoon
-            VuokraToimistotApplication.useDatabase(conn, "karelia_vuokratoimistot_R01");
+            vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
             
             // Haetaan tiedot tietokannasta
-        //    ResultSet namesResult = selectAsiakas(conn); 
+            ResultSet namesResult = vuokratoimistoDatabase.selectAsiakas(conn);
             
+        // Lisätään uudet person luokan ilmentymät TableView komponenttiin
+            while (namesResult.next()) {
+                Asiakas person = new Asiakas(namesResult.getInt("asiakasID"), namesResult.getString("etunimi"), namesResult.getString("sukunimi"), namesResult.getString("yritys"));
+                tableAsiakas.getItems().add(person);
+
+            }
+            
+        //Suljetaan yhteys
+            vuokratoimistoDatabase.closeConnection(conn);
         } catch (SQLException ex) {
             Logger.getLogger(AsiakkaidenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,6 +125,18 @@ public class AsiakkaidenHallintaViewController implements Initializable {
          }
     }
     */
+    /**
+     *  public static ResultSet selectAsiakas(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT asiakasID, etunimi, sukunimi, yritys FROM asiakas ORDER BY etunimi"
+        );
+        
+        return rs;
+        
+    }
+     
+     */
 
     @FXML
     private void LisaaAsiakas(ActionEvent event) {
