@@ -4,6 +4,7 @@ package vuokratoimistotDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import vuokratoimistotapplication.VuokraToimistotApplication;
@@ -58,6 +59,21 @@ public class vuokratoimistoDatabase {
         Statement stmt = c.createStatement();
         stmt.executeQuery("USE " + db);
         System.out.println("\t>> Käytetään tietokantaa " + db);
+    }
+    
+    //valitsee asiakkaiden tiedot tableview:n täyttämistä varten
+     public static void selectAsiakas(Connection c) throws SQLException {
+         Statement stmt = c.createStatement();
+         ResultSet rs = stmt.executeQuery("SELECT asiakasID, etunimi, sukunimi, yritys FROM asiakas ORDER BY etunimi");
+    
+         System.out.println("\nNimilista:\n============ ");
+         while(rs.next()){
+            System.out.println(
+            "[" + rs.getInt("asiakasID") +"]"
+                    + rs.getString("etunimi")+": "
+                    + rs.getString("sukunimi")+": "
+                    + rs.getString("yritys"));
+         }
     }
     
     //Metodi joka lisätä tietokannan asiakaita
@@ -273,6 +289,7 @@ public class vuokratoimistoDatabase {
         addAsiakas(conn, 1100, "Aava", "Pesonen", "Aava Oy");
         addAsiakas(conn, 1101, "Milla", "Saarinen", "Salo Oy");
         
+        
         //Tyontekija taulu luonti
         createTable(conn, 
                 "CREATE TABLE tyontekija ("
@@ -403,5 +420,6 @@ public class vuokratoimistoDatabase {
         addVarauksenKasittelija(conn, 2200, 3000);
         addVarauksenKasittelija(conn, 2201, 3001);
         
+       
     }
 }
