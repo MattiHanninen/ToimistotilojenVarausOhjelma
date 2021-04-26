@@ -52,7 +52,7 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     @FXML
     private Button btnPoista;
     @FXML
-    private TableView <Asiakas> tableAsiakas;
+    private TableView<Asiakas> tableAsiakas;
     
     @FXML
     private TableColumn<Asiakas, String> colEtunimi;
@@ -74,7 +74,7 @@ public class AsiakkaidenHallintaViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       // updateTableviewAsiakas();
+     //  updateTableviewAsiakas();
        
         // TODO
     }   
@@ -88,8 +88,9 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         
         try {
             // Luodaan Connection String olemassa olevaan tietokantaan
-            Connection conn = openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+            Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
+            
             
             // Otetaan tietokanta kayttoon
             vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
