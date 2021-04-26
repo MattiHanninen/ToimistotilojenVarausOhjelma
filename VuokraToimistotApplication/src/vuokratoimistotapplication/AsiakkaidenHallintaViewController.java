@@ -7,7 +7,15 @@ package vuokratoimistotapplication;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 
 /**
  * FXML Controller class
@@ -16,6 +24,33 @@ import javafx.fxml.Initializable;
  */
 public class AsiakkaidenHallintaViewController implements Initializable {
 
+    @FXML
+    private Label lblAsiakkaat;
+    @FXML
+    private TextField txtId;
+    @FXML
+    private TextField txtEtunimi;
+    @FXML
+    private TextField txtSukunimi;
+    @FXML
+    private TextField txtYritys;
+    @FXML
+    private HBox btnMuokkaa;
+    @FXML
+    private Button btnLisaa;
+    @FXML
+    private Button btnPoista;
+    @FXML
+    private TableView<?> tableAsiakas;
+    @FXML
+    private TableColumn<?, ?> colId;
+    @FXML
+    private TableColumn<?, ?> colEtunimi;
+    @FXML
+    private TableColumn<?, ?> colSukunimi;
+    @FXML
+    private TableColumn<?, ?> colYritys;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +58,17 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void LisaaAsiakas(ActionEvent event) {
+    }
+
+    @FXML
+    private void MuokkaaAsiakas(ActionEvent event) {
+    }
+
+    @FXML
+    private void PoistaAsiakas(ActionEvent event) {
+    }
     
 }
