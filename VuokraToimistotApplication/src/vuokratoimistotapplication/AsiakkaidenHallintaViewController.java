@@ -78,7 +78,7 @@ public class AsiakkaidenHallintaViewController implements Initializable {
        
         // TODO
     }   
-    
+    //tableview syöttää tauluun tiedot
     public void updateTableviewAsiakas(){
         //Opiskelijat
         colId.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
@@ -109,6 +109,13 @@ public class AsiakkaidenHallintaViewController implements Initializable {
             vuokratoimistoDatabase.closeConnection(conn);
         } catch (SQLException ex) {
             Logger.getLogger(AsiakkaidenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /** Tyhjennetään asiakas tableview*/
+    public void clearTableviewAsiakas(){
+        for (int i=0;i<tableAsiakas.getItems().size();i++){
+            tableAsiakas.getItems().clear();
         }
     }
     /**
