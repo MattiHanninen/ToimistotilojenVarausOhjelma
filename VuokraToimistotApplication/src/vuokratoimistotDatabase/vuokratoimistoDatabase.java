@@ -273,7 +273,7 @@ public class vuokratoimistoDatabase {
         createDatabase(conn, "karelia_vuokratoimistot_R01");
 
         // Otetaan tietokanta kayttoon
-        VuokraToimistotApplication.useDatabase(conn, "karelia_vuokratoimistot_R01");
+       vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
         
         
         //Asiakas taulu luonti
