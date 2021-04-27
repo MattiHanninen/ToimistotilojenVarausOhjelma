@@ -147,7 +147,27 @@ public class AsiakkaidenHallintaViewController implements Initializable {
      */
 
     @FXML
-    private void LisaaAsiakas(ActionEvent event) {
+    private void LisaaAsiakas(ActionEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+            
+            
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+        
+        //Syötetään tiedot ruudulta 
+       vuokratoimistoDatabase.addAsiakas(conn, Integer.parseInt(txtId.getText()), txtEtunimi.getText(), txtSukunimi.getText(), txtYritys.getText());
+     
+        
+        //Tyhjennetään aiempi Opiskelija tableview
+        clearTableviewAsiakas();
+        
+        //Paivitetaan Opiskelija tableview taulu
+        updateTableviewAsiakas();
+        
+        //Suljetaan yhteys
+            vuokratoimistoDatabase.closeConnection(conn);
     }
 
     @FXML
