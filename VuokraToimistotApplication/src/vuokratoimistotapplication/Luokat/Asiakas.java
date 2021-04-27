@@ -19,6 +19,15 @@ public class Asiakas {
     public Asiakas(){
         
     }
+    
+    public Asiakas(int asiakasID, String etunimi, String sukunimi, String yritys){
+        this.asiakasID=asiakasID;
+        this.etunimi=etunimi;
+        this.sukunimi=sukunimi;
+        this.yritys=yritys;
+    }
+    
+
 
     //Getterit ja setterit
     public void setAsiakasID(int asiakasID) {
