@@ -29,7 +29,18 @@ import javafx.stage.Stage;
  * @author matty
  */
 public class PaavalikkoViewController implements Initializable {
-
+   
+    /**
+     * Metodi joka sulkee tietokantayhteyden
+     * @param c Yhteys
+     * @throws java.sql.SQLException SQL poikkeus
+     */
+    public static void closeConnection(Connection c) throws SQLException {
+        if (c != null) {
+            c.close();
+        }
+        System.out.println("\t>> Tietokantayhteys suljettu");
+    }  
     /**
      * Initializes the controller class.
      */
@@ -41,17 +52,7 @@ public class PaavalikkoViewController implements Initializable {
     @FXML
     private void menuCloseClicked(ActionEvent event) {
         
-        /**
-     * Metodi joka sulkee tietokantayhteyden
-     * @param c Yhteys
-     * @throws java.sql.SQLException SQL poikkeus
-     */
-    public static void closeConnection(Connection c) throws SQLException {
-        if (c != null) {
-            c.close();
-        }
-        System.out.println("\t>> Tietokantayhteys suljettu");
-    }  
+        
         // Yritetaan sulkea tietokantayhteys
         try {
         Connection conn = DriverManager.getConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
