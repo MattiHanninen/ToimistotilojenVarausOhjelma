@@ -159,6 +159,25 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     System.out.println("\t>> poistettu opiskelija_id " + asiakasID);
    
     }
+    //muokataan opiskelijaa
+    public static void editAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, String yritys) throws SQLException {
+    PreparedStatement ps = c.prepareStatement(
+        ("UPDATE asiakas SET etunimi=?, sukunimi=?, yritys=? WHERE asiakasID=?")
+    );
+
+    //Laitetaan oikeat parametrit
+    ps.setString(1,etunimi);
+    ps.setString(2,sukunimi);
+    ps.setString(3,yritys);
+    ps.setInt(4,asiakasID); 
+   
+   
+    //TToteutetaan muutokset
+    ps.execute();
+    
+    System.out.println("\t>> Päivitetty asiakasID tiedot: " + asiakasID);
+        
+    }
 
     @FXML
     private void LisaaAsiakas(ActionEvent event) throws SQLException {
@@ -185,7 +204,27 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     }
 
     @FXML
-    private void MuokkaaAsiakas(ActionEvent event) {
+    private void MuokkaaAsiakas(ActionEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+               
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+        
+        //muokkaa asiakkaan tiedot
+        
+        editAsiakas(conn, Integer.parseInt(txtId.getText()), txtEtunimi.getText(),
+                txtSukunimi.getText(), txtYritys.getText());
+        
+        //Tyhjennetään aiempi Asiakas tableview
+        clearTableviewAsiakas();
+        
+        //Paivitetaan Asiakas tableview taulu
+        updateTableviewAsiakas();
+        
+        //Suljetaan yhteys
+            vuokratoimistoDatabase.closeConnection(conn);
     }
 
     @FXML
