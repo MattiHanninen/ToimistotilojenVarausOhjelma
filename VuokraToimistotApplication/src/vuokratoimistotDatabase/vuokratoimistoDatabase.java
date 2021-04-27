@@ -71,9 +71,22 @@ public class vuokratoimistoDatabase {
         return rs;
         
     }
+     
+     
+     
+    // Metodi joka palauttaa opiskelijan tiedot tietokannasta
+     public static ResultSet selectToimipiste(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT toimipisteID, toimipisteNimi, vuorokausiHinta, toimipisteKoko FROM toimipiste ORDER BY toimipisteID"
+        );
+        
+        return rs;
+        
+    }
     
     //Metodi joka lisätä tietokannan asiakaita
-    private static void addAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, 
+    public static void addAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, 
                                     String yritys)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
@@ -93,7 +106,7 @@ public class vuokratoimistoDatabase {
     }
     
     //Metodi joka lisätä tietokannan tyontekijat
-    private static void addTyontekija(Connection c, int tyontekijaID, String etunimi, String sukunimi)throws SQLException {   
+    public static void addTyontekija(Connection c, int tyontekijaID, String etunimi, String sukunimi)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (
@@ -110,7 +123,7 @@ public class vuokratoimistoDatabase {
     }
     
     //Metodi joka lisätä tietokannan tyontekijat
-    private static void addToimipiste(Connection c, int toimipisteID, String toimipisteNimi, 
+    public static void addToimipiste(Connection c, int toimipisteID, String toimipisteNimi, 
                                     int vuorokausiHinta, int toimipisteKoko )throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
@@ -130,7 +143,7 @@ public class vuokratoimistoDatabase {
     }
     
     //Metodi joka lisätä tietokannan varaukset 
-    private static void addVaraus(Connection c, int varausID, String aloitusPaiva,String lopetusPaiva,
+    public static void addVaraus(Connection c, int varausID, String aloitusPaiva,String lopetusPaiva,
                                     int asiakasID, int toimipisteID )throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
@@ -151,7 +164,7 @@ public class vuokratoimistoDatabase {
     }
     
         //Metodi joka lisätä tietokannan laskut
-    private static void addLasku(Connection c, int laskuID, String erapaiva, String maksupaiva,
+    public static void addLasku(Connection c, int laskuID, String erapaiva, String maksupaiva,
                                     int summa, int viitenumero, String laskutusTyyppi)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
@@ -172,7 +185,7 @@ public class vuokratoimistoDatabase {
         
     }
     //Metodi joka lisätä tietokannan varaukset 
-    private static void addPalvelu(Connection c, int palvelunID, String palvelunNimi,int palvelunHinta)throws SQLException {   
+    public static void addPalvelu(Connection c, int palvelunID, String palvelunNimi,int palvelunHinta)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (
@@ -191,7 +204,7 @@ public class vuokratoimistoDatabase {
     
     
     //Metodi joka lisätä tietokannan varaukset 
-    private static void addToimipisteidenPalvelut(Connection c, int toimipisteID, int palvelunID)throws SQLException {   
+    public static void addToimipisteidenPalvelut(Connection c, int toimipisteID, int palvelunID)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (
@@ -207,7 +220,7 @@ public class vuokratoimistoDatabase {
     }
     
     //Metodi joka lisätä tietokannan laskun maksajat 
-    private static void addlaskunMaksaja(Connection c, int asiakasID, int laskuID)throws SQLException {   
+    public static void addlaskunMaksaja(Connection c, int asiakasID, int laskuID)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (
@@ -223,7 +236,7 @@ public class vuokratoimistoDatabase {
     }
     
     // Metodi joka lisätä tietokannan laskun maksajat 
-    private static void addLaskunKasittelija(Connection c, int tyontekijaID, int laskuID)throws SQLException {   
+    public static void addLaskunKasittelija(Connection c, int tyontekijaID, int laskuID)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (
@@ -241,7 +254,7 @@ public class vuokratoimistoDatabase {
     
     
     // Metodi joka lisätä tietokannan laskun maksajat 
-    private static void addVarauksenKasittelija(Connection c, int tyontekijaID, int varausID)throws SQLException {   
+    public static void addVarauksenKasittelija(Connection c, int tyontekijaID, int varausID)throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (

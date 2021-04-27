@@ -20,6 +20,13 @@ public class Toimipiste {
         
     }
 
+    public Toimipiste(int toimipisteID, String toimipisteNimi, int vuorokausiHinta, int toimipisteKoko) {
+        this.toimipisteID = toimipisteID;
+        this.toimipisteNimi = toimipisteNimi;
+        this.vuorokausiHinta = vuorokausiHinta;
+        this.toimipisteKoko = toimipisteKoko;
+    }
+
     //Setterit ja getterit
     public void setToimipisteID(int toimipisteID) {
         this.toimipisteID = toimipisteID;
