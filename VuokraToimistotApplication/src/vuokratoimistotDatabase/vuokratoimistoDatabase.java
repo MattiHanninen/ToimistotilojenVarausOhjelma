@@ -62,18 +62,14 @@ public class vuokratoimistoDatabase {
     }
     
     //valitsee asiakkaiden tiedot tableview:n täyttämistä varten
-     public static void selectAsiakas(Connection c) throws SQLException {
-         Statement stmt = c.createStatement();
-         ResultSet rs = stmt.executeQuery("SELECT asiakasID, etunimi, sukunimi, yritys FROM asiakas ORDER BY etunimi");
-    
-         System.out.println("\nNimilista:\n============ ");
-         while(rs.next()){
-            System.out.println(
-            "[" + rs.getInt("asiakasID") +"]"
-                    + rs.getString("etunimi")+": "
-                    + rs.getString("sukunimi")+": "
-                    + rs.getString("yritys"));
-         }
+     public static ResultSet selectAsiakas(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT asiakasID, etunimi, sukunimi, yritys FROM asiakas ORDER BY etunimi"
+        );
+        
+        return rs;
+        
     }
     
     //Metodi joka lisätä tietokannan asiakaita
