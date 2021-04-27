@@ -10,6 +10,7 @@ import vuokratoimistotDatabase.vuokratoimistoDatabase;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -145,6 +146,19 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     }
      
      */
+    public static void deleteAsiakas(Connection c, int asiakasID) throws SQLException {
+    PreparedStatement ps = c.prepareStatement( 
+        ("DELETE FROM asiakas WHERE asiakasID=?")
+                
+    );
+    //parametri jonka mukaan poistetaan
+    ps.setInt(1, asiakasID);
+    
+    //toteutetaan delete toiminto
+    ps.execute();
+    System.out.println("\t>> poistettu opiskelija_id " + asiakasID);
+   
+    }
 
     @FXML
     private void LisaaAsiakas(ActionEvent event) throws SQLException {
@@ -160,10 +174,10 @@ public class AsiakkaidenHallintaViewController implements Initializable {
        vuokratoimistoDatabase.addAsiakas(conn, Integer.parseInt(txtId.getText()), txtEtunimi.getText(), txtSukunimi.getText(), txtYritys.getText());
      
         
-        //Tyhjennetään aiempi Opiskelija tableview
+        //Tyhjennetään aiempi Asiakas tableview
         clearTableviewAsiakas();
         
-        //Paivitetaan Opiskelija tableview taulu
+        //Paivitetaan Asiakas tableview taulu
         updateTableviewAsiakas();
         
         //Suljetaan yhteys
@@ -175,7 +189,25 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     }
 
     @FXML
-    private void PoistaAsiakas(ActionEvent event) {
+    private void PoistaAsiakas(ActionEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+               
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+        
+        //Poistetaan asiakkaan tiedot
+        deleteAsiakas(conn, Integer.parseInt(txtId.getText()));
+        
+        //Tyhjennetään aiempi Asiakas tableview
+        clearTableviewAsiakas();
+        
+        //Paivitetaan Asiakas tableview taulu
+        updateTableviewAsiakas();
+        
+        //Suljetaan yhteys
+            vuokratoimistoDatabase.closeConnection(conn);
     }
     
 }
