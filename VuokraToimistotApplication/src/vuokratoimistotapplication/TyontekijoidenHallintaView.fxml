@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.TyontekijoidenHallintaViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="962.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.TyontekijoidenHallintaViewController">
    <top>
       <MenuBar prefWidth="729.0" BorderPane.alignment="CENTER">
         <menus>
@@ -37,9 +37,9 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="472.0" prefWidth="307.0" spacing="15.0" style="-fx-border-color: GREEN;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="471.0" prefWidth="364.0" spacing="15.0" style="-fx-border-color: GREEN;" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-alignment: GREEN;" text="Työntekijat Hallinta">
+            <Label style="-fx-alignment: GREEN;" text="Työntekijoiden Hallinta">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
@@ -63,9 +63,9 @@
    <center>
       <TableView fx:id="tbvTyontekijat" prefHeight="472.0" prefWidth="299.0" style="-fx-border-color: GREEN;" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="colID" prefWidth="96.0" text="ID" />
-          <TableColumn fx:id="colEtunimi" prefWidth="147.0" text="Etunimi" />
-            <TableColumn fx:id="colSukunimi" prefWidth="158.0" text="Sukunimi" />
+          <TableColumn fx:id="colID" prefWidth="126.0" text="ID" />
+          <TableColumn fx:id="colEtunimi" prefWidth="165.0" text="Etunimi" />
+            <TableColumn fx:id="colSukunimi" prefWidth="145.0" text="Sukunimi" />
         </columns>
       </TableView>
    </center>
