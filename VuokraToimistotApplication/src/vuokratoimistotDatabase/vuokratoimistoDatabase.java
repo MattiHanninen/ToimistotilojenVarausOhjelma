@@ -269,6 +269,50 @@ public class vuokratoimistoDatabase {
         System.out.println("\t>> Lisätty laskunMaksaja taulu: " + tyontekijaID + " " + varausID );       
     }
     
+    
+    // Metodi joka muokkaa toimipisteen tietoja
+    public static void updateToimipiste(Connection c, int toimipisteID, String toimipisteNimi, int vuorokausiHinta, int toimipisteKoko) throws SQLException {
+    
+        PreparedStatement ps = c.prepareStatement(
+        ("UPDATE toimipiste SET toimipisteNimi = ?, vuorokausiHinta = ?, toimipisteKoko = ? WHERE toimipisteID = ?")
+        );
+
+        // Syotetaan tiedot parametreilla
+        ps.setString(1, toimipisteNimi);
+        ps.setInt(2, vuorokausiHinta);
+        ps.setInt(3, toimipisteKoko);
+        ps.setInt(4, toimipisteID);
+   
+   
+        // Toteutetaan muutokset
+        ps.execute();
+    
+    System.out.println("\t>> Päivitetty asiakasID tiedot: " + toimipisteID);
+    
+    }
+    
+    
+    
+    // Metodi joka poistaa toimipisteen tiedot
+    public static void deleteToimipiste(Connection c, int toimipisteID) throws SQLException {
+    
+        PreparedStatement ps = c.prepareStatement( 
+        ("DELETE FROM toimipiste WHERE toimipisteID = ?")           
+        );
+        
+        // Syotetaan tiedot paremetreilla
+        ps.setInt(1, toimipisteID);
+    
+        // Suoritetaan poisto
+        ps.execute();
+        System.out.println("\t>> poistettu Toimipiste, jonka ID on " + toimipisteID);
+   
+    }
+    
+    
+    
+    
+    
     /**
      * @param args
      * @throws java.sql.SQLException
