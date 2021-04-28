@@ -77,6 +77,11 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
      updateTableviewAsiakas();
        
+     //prompt text ei näy ekassa textfielissä, koska se valitaan ekaksi controlliksi, siksi setFocusTraversable(false) metodi.
+     txtId.setFocusTraversable(false);
+     txtEtunimi.setFocusTraversable(false);
+     txtSukunimi.setFocusTraversable(false);
+     txtYritys.setFocusTraversable(false);
         // TODO
     }   
     //tableview syöttää tauluun tiedot
