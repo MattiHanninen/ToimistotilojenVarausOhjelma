@@ -7,9 +7,12 @@ package vuokratoimistotapplication;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 /**
@@ -47,6 +50,14 @@ public class LaskutusHallintaViewController implements Initializable {
     private TableColumn<?, ?> colMaksettu;
     @FXML
     private TableColumn<?, ?> colLaskutustyyppi;
+    @FXML
+    private Button btnLisaa;
+    @FXML
+    private Button btnMuokkaa;
+    @FXML
+    private Button btnPoista;
+    @FXML
+    private TableView<?> tableLasku;
 
     /**
      * Initializes the controller class.
@@ -55,5 +66,17 @@ public class LaskutusHallintaViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void btnLisaaClicked(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnMuokkaaClicked(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnPoistaClicked(ActionEvent event) {
+    }
     
 }

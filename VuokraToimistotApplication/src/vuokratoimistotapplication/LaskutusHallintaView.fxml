@@ -52,9 +52,9 @@
             <TextField fx:id="txfLaskutusTyyppi" promptText="Laskutustyyppi" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="12.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Lisää" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Muokkaa" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Poista" />
+                  <Button fx:id="btnLisaa" mnemonicParsing="false" onAction="#btnLisaaClicked" prefHeight="40.0" prefWidth="85.0" text="Lisää" />
+                  <Button fx:id="btnMuokkaa" mnemonicParsing="false" onAction="#btnMuokkaaClicked" prefHeight="40.0" prefWidth="85.0" text="Muokkaa" />
+                  <Button fx:id="btnPoista" mnemonicParsing="false" onAction="#btnPoistaClicked" prefHeight="40.0" prefWidth="85.0" text="Poista" />
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
@@ -67,7 +67,7 @@
       </VBox>
    </left>
    <center>
-      <TableView prefHeight="480.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableLasku" prefHeight="480.0" prefWidth="700.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colLaskuID" prefWidth="100.0" text="Laskun ID" />
           <TableColumn fx:id="colAsiakasID" prefWidth="100.0" text="Asiakas ID" />
