@@ -1,11 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.PalveluidenHallintaViewController">
-    
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="1069.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.PalveluidenHallintaViewController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuAddNewClicked" text="Lisää uusi Palvelu" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuCloseClicked" text="Sulje ikkuna" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuEditClicked" text="Muokkaa palvelun tiedot" />
+              <MenuItem mnemonicParsing="false" onAction="#menuDeleteClicked" text="Poista palvelun tiedot" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label alignment="CENTER" prefHeight="52.0" prefWidth="1069.0" style="-fx-border-color: LIGHTBLUE;" text="VuokraToimistot Oy palvelut">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblViewPalvelu" prefHeight="385.0" prefWidth="1069.0">
+        <columns>
+          <TableColumn fx:id="palvelunIDColumn" prefWidth="132.0" text="Palvelun ID" />
+          <TableColumn fx:id="palvelunNimiColumn" prefWidth="326.0" text="Palvelu" />
+            <TableColumn fx:id="palvelunHintaColumn" minWidth="0.0" prefWidth="140.0" text="Hinta" />
+            <TableColumn fx:id="palvelunKuvausColumn" prefWidth="469.0" text="Kuvaus" />
+        </columns>
+      </TableView>
+      <Label alignment="CENTER" layoutX="10.0" layoutY="42.0" prefHeight="31.0" prefWidth="1069.0" style="-fx-border-color: LIGHTBLUE;" text="Tietojen hallinta">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtPalvelunID" promptText="Palvelun ID" style="-fx-border-color: LIGHTBLUE;" />
+      <TextField fx:id="txtPalvelunNimi" layoutX="10.0" layoutY="523.0" promptText="Palvelu" style="-fx-border-color: LIGHTBLUE;">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+      </TextField>
+      <TextField fx:id="txtPalvelunHinta" layoutX="10.0" layoutY="554.0" promptText="Hinta" style="-fx-border-color: LIGHTBLUE;">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </TextField>
+      <TextField fx:id="txtPalvelunKuvaus" layoutX="10.0" layoutY="585.0" promptText="Kuvaus" style="-fx-border-color: LIGHTBLUE;">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </TextField>
+   </children>
+</VBox>

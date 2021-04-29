@@ -19,6 +19,14 @@ public class Palvelu {
     public Palvelu(){
         
     }
+    
+    // Konstruktori parametreilla
+    public Palvelu(int palvelunID, String palvelunNimi, int palvelunHinta, String palvelunKuvaus) {
+        this.palvelunID = palvelunID;
+        this.palvelunNimi = palvelunNimi;
+        this.palvelunHinta = palvelunHinta;
+        this.palvelunKuvaus = palvelunKuvaus;
+    }
 
     //Setterit ja getterit
     public void setPalvelunID(int palvelunID) {
