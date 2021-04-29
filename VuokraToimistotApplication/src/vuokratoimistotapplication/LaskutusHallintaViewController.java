@@ -5,7 +5,14 @@
  */
 package vuokratoimistotapplication;
 
+import vuokratoimistotapplication.Luokat.Lasku;
+import vuokratoimistotDatabase.vuokratoimistoDatabase;
+
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,6 +80,17 @@ public class LaskutusHallintaViewController implements Initializable {
         txfMaksettu.setFocusTraversable(false);
         txfLaskutusTyyppi.setFocusTraversable(false);
     }    
+    
+    //valitsee asiakkaiden tiedot tableview:n täyttämistä varten
+     public static ResultSet selectLasku(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT laskuID, asiakasID, erapaiva, maksupaiva, summa, maksettu, laskutusTyyppi FROM lasku ORDER BY laskuID"
+        );
+        
+        return rs;
+        
+    }
 
     @FXML
     private void btnLisaaClicked(ActionEvent event) {
