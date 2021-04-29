@@ -14,19 +14,34 @@ import java.util.Date;
 public class Lasku {
     
     private int laskuID;
+    private int asiakasID;
     private Date erapaiva;
     private Date maksupaiva;
     private int summa;
-    private int viitenumero;
+    private int maksettu;
     private String laskutusTyyppi;
     
     public Lasku(){
         
     }
     
+    public Lasku (int laskuID, int asiakasID, Date erapaiva, Date maksupaiva, int summa, int maksettu, String laskutusTyyppi){
+        this.laskuID = laskuID;
+        this.asiakasID = asiakasID;
+        this.erapaiva = erapaiva;
+        this.maksupaiva = maksupaiva;
+        this.summa = summa;
+        this.maksettu = maksettu;
+        this.laskutusTyyppi = laskutusTyyppi;
+    }
+    
     //Getterit ja setterit
     public int getLaskuID() {
         return laskuID;
+    }
+    
+    public int getAsiakasID() {
+        return asiakasID;
     }
 
     public Date getErapaiva() {
@@ -41,8 +56,8 @@ public class Lasku {
         return summa;
     }
 
-    public int getViitenumero() {
-        return viitenumero;
+    public int getMaksettu() {
+        return maksettu;
     }
 
     public String getLaskutusTyyppi() {
@@ -52,6 +67,10 @@ public class Lasku {
 
     public void setLaskuID(int laskuID) {
         this.laskuID = laskuID;
+    }
+    
+    public void setAsiakasID(int asiakasID) {
+        this.asiakasID = asiakasID;
     }
 
     public void setErapaiva(Date erapaiva) {
@@ -66,8 +85,8 @@ public class Lasku {
         this.summa = summa;
     }
 
-    public void setViitenumero(int viitenumero) {
-        this.viitenumero = viitenumero;
+    public void setMaksettu(int maksettu) {
+        this.maksettu = maksettu;
     }
 
     public void setLaskutusTyyppi(String laskutusTyyppi) {
@@ -76,7 +95,7 @@ public class Lasku {
     
     @Override
     public String toString() {
-        return (laskuID + " " + erapaiva + " " + maksupaiva + " " + summa + " " + viitenumero + " " + laskutusTyyppi);
+        return (laskuID + " " + asiakasID + " " + erapaiva + " " + maksupaiva + " " + summa + " " + maksettu + " " + laskutusTyyppi);
     }
     
 }
