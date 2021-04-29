@@ -173,8 +173,31 @@ public class vuokratoimistoDatabase {
         System.out.println("\t>> Lisätty varaus: " + varausID );
         
     }
-    
+   
         //Metodi joka lisätä tietokannan laskut
+    //metodi laskun lisäämiseen, -- janne 29.4.2021
+     public static void addLasku(Connection c, int laskuID, int asiakasID, String erapaiva, String maksupaiva,
+                                    int summa, int maksettu, String laskutusTyyppi)throws SQLException {   
+        
+        PreparedStatement ps = c.prepareStatement
+        (
+        "INSERT INTO lasku (laskuID, asiakasID, erapaiva, maksupaiva, summa, maksettu,laskutusTyyppi)"
+         + "VALUES(?, ?, STR_TO_DATE(?, '%d.%m.%Y'), STR_TO_DATE(?, '%d.%m.%Y'), ?, ?, ?)"
+        );
+        
+        ps.setInt(1, laskuID);
+        ps.setInt(2, asiakasID);
+        ps.setString(3, erapaiva);
+        ps.setString(4, maksupaiva);
+        ps.setInt(5, summa);
+        ps.setInt(6, maksettu);
+        ps.setString(7, laskutusTyyppi);
+            
+        ps.execute();       
+        System.out.println("\t>> Lisätty lasku: " + laskuID + " " + laskutusTyyppi);
+        
+    }
+    /**
     public static void addLasku(Connection c, int laskuID, String erapaiva, String maksupaiva,
                                     int summa, int viitenumero, String laskutusTyyppi)throws SQLException {   
         
@@ -195,6 +218,7 @@ public class vuokratoimistoDatabase {
         System.out.println("\t>> Lisätty lasku: " + laskuID + " " + laskutusTyyppi);
         
     }
+    */
     //Metodi joka lisätä tietokannan varaukset 
     public static void addPalvelu(Connection c, int palvelunID, String palvelunNimi, int palvelunHinta, String palvelunKuvaus) throws SQLException {   
         
