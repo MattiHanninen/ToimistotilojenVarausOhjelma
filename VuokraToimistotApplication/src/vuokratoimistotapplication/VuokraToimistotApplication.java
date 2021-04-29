@@ -100,6 +100,7 @@ public class VuokraToimistotApplication extends Application {
         addToimipiste(conn, 60160, "Linnunlahti", 1200, 65);
         addToimipiste(conn, 60100, "Rantakylä", 800, 70);
         
+        /**
         //Lasku taulu luonti
         createTable(conn, 
                 "CREATE TABLE lasku ("
@@ -114,7 +115,23 @@ public class VuokraToimistotApplication extends Application {
                 );
         addLasku(conn, 55025, "12.3.2021", "10.3.2021", 599, 123789, "paperilasku");
         addLasku(conn, 56030, "28.1.2021", "2.1.2020", 1010, 345234, "sähköpostilasku");
-        
+        */
+        createTable(conn, 
+                "CREATE TABLE lasku ("
+                        + "laskuID INT NOT NULL PRIMARY KEY," 
+                        + "asiakasID INT NOT NULL,"
+                        + "erapaiva DATE NOT NULL,"
+                        + "maksupaiva DATE NOT NULL,"
+                        + "summa INT NOT NULL," 
+                        + "maksettu INT(7),"
+                        + "laskutusTyyppi VARCHAR(30) NOT NULL,"
+                        + "FOREIGN KEY (asiakasID) REFERENCES asiakas(asiakasID) ON DELETE CASCADE)"
+                        ,
+                "lasku"
+                );
+         
+       addLasku(conn, 55025, 1100, "12.3.2021", "10.3.2021", 599, 0, "paperilasku");
+       addLasku(conn, 56030, 1101, "12.3.2021", "12.3.2021", 599, 300, "sähköpostilasku");
         
         
         //Palvelu taulu luonti
