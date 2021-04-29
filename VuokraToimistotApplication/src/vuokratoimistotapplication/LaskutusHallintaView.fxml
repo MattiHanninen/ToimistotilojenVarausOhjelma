@@ -1,11 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.LaskutusHallintaViewController">
-    
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.LaskutusHallintaViewController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="300.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Laskujen seuraaminen">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font></Label>
+            <TextField fx:id="txfLaskuID" promptText="Laskun ID" />
+            <TextField fx:id="txfAsiakasID" promptText="Asiakas ID" />
+            <TextField fx:id="txfErapaiva" promptText="Eräpäivä" />
+            <TextField fx:id="txfMaksupaiva" promptText="Maksupäivä" />
+            <TextField fx:id="txfSumma" promptText="Summa" />
+            <TextField fx:id="txfMaksettu" promptText="Maksettu" />
+            <TextField fx:id="txfLaskutusTyyppi" promptText="Laskutustyyppi" />
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Lisää" />
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Muokkaa" />
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Poista" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <TableView prefHeight="480.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colLaskuID" prefWidth="100.0" text="Laskun ID" />
+          <TableColumn fx:id="colAsiakasID" prefWidth="100.0" text="Asiakas ID" />
+            <TableColumn fx:id="colErapaiva" prefWidth="100.0" text="Eräpäivä" />
+            <TableColumn fx:id="colMaksupaiva" prefWidth="100.0" text="Maksupäivä" />
+            <TableColumn fx:id="colSumma" prefWidth="120.0" text="Summa" />
+            <TableColumn fx:id="colMaksettu" prefWidth="120.0" text="Maksettu" />
+            <TableColumn fx:id="colLaskutustyyppi" prefWidth="140.0" text="Laskutustyyppi" />
+        </columns>
+         <padding>
+            <Insets bottom="60.0" left="10.0" right="10.0" top="20.0" />
+         </padding>
+      </TableView>
+   </center>
+   <bottom>
+      <Label text="© Vuokratoimistot Oy 2020" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
