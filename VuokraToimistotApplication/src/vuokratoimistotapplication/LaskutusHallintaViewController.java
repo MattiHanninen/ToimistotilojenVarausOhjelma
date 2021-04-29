@@ -64,7 +64,14 @@ public class LaskutusHallintaViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //prompt text ei näy ekassa textfielissä, koska se valitaan ekaksi controlliksi, siksi setFocusTraversable(false) metodi.
+        txfLaskuID.setFocusTraversable(false);
+        txfAsiakasID.setFocusTraversable(false);
+        txfErapaiva.setFocusTraversable(false);
+        txfMaksupaiva.setFocusTraversable(false);
+        txfSumma.setFocusTraversable(false);
+        txfMaksettu.setFocusTraversable(false);
+        txfLaskutusTyyppi.setFocusTraversable(false);
     }    
 
     @FXML
