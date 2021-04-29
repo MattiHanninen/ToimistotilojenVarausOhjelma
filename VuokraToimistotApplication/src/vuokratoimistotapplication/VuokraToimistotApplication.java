@@ -132,6 +132,7 @@ public class VuokraToimistotApplication extends Application {
          
        addLasku(conn, 55025, 1100, "12.3.2021", "10.3.2021", 599, 0, "paperilasku");
        addLasku(conn, 56030, 1101, "12.3.2021", "12.3.2021", 599, 300, "sähköpostilasku");
+       addLasku(conn, 560, 1101, "15.2.2021", "14.2.2021", 400, 400, "sähköpostilasku");
         
         
         //Palvelu taulu luonti
