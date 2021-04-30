@@ -26,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
 
@@ -223,6 +224,35 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         //Paivitetaan Asiakas tableview taulu
         updateTableviewAsiakas();
         
+        //Suljetaan yhteys
+        vuokratoimistoDatabase.closeConnection(conn);
+    }
+
+    @FXML
+    private void tblViewAsiakasClickedFilllTextfield(MouseEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+             
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+   
+        Asiakas user = tableAsiakas.getSelectionModel().getSelectedItem();
+          
+        PreparedStatement pst = conn.prepareStatement(
+        ("SELECT * from asiakas where asiakasID =?")
+        );
+        
+        pst.setInt(1, user.getAsiakasID());
+        ResultSet rs = pst.executeQuery();
+           
+           while(rs.next()){
+               txtId.setText(rs.getString("asiakasID"));
+               txtEtunimi.setText(rs.getString("etunimi"));
+               txtSukunimi.setText(rs.getString("sukunimi"));
+               txtYritys.setText(rs.getString("yritys"));
+           }
+    
         //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
     }
