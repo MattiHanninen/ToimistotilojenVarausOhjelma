@@ -45,8 +45,8 @@
                </font></Label>
             <TextField fx:id="txfLaskuID" promptText="Laskun ID" />
             <TextField fx:id="txfAsiakasID" promptText="Asiakas ID" />
-            <TextField fx:id="txfErapaiva" promptText="Eräpäivä" />
-            <TextField fx:id="txfMaksupaiva" promptText="Maksupäivä" />
+            <TextField fx:id="txfErapaiva" promptText="Eräpäivä pp.kk.vvvv" />
+            <TextField fx:id="txfMaksupaiva" promptText="Maksupäivä pp.kk.vvvv" />
             <TextField fx:id="txfSumma" promptText="Summa" />
             <TextField fx:id="txfMaksettu" promptText="Maksettu" />
             <TextField fx:id="txfLaskutusTyyppi" promptText="Laskutustyyppi" />
@@ -67,7 +67,7 @@
       </VBox>
    </left>
    <center>
-      <TableView fx:id="tableLasku" prefHeight="480.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableLasku" onMouseClicked="#tblLaskuClickedFillTextfield" prefHeight="480.0" prefWidth="700.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colLaskuID" prefWidth="100.0" text="Laskun ID" />
           <TableColumn fx:id="colAsiakasID" prefWidth="100.0" text="Asiakas ID" />

@@ -25,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 
 /**
@@ -126,6 +127,13 @@ public class LaskutusHallintaViewController implements Initializable {
         }
     }
     
+     /** Tyhjennetään asiakas tableview*/
+    public void clearTableviewLasku(){
+        for (int i=0;i<tableLasku.getItems().size();i++){
+            tableLasku.getItems().clear();
+        }
+    }
+    
     //valitsee asiakkaiden tiedot tableview:n täyttämistä varten
      public static ResultSet selectLasku(Connection c) throws SQLException {
         Statement stmt = c.createStatement();
@@ -138,7 +146,26 @@ public class LaskutusHallintaViewController implements Initializable {
     }
 
     @FXML
-    private void btnLisaaClicked(ActionEvent event) {
+    private void btnLisaaClicked(ActionEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+             
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+        
+        //Syötetään tiedot ruudulta 
+        vuokratoimistoDatabase.addLasku(conn, Integer.parseInt(txfLaskuID.getText()), Integer.parseInt(txfAsiakasID.getText()), txfErapaiva.getText(),
+                txfMaksupaiva.getText(), Integer.parseInt(txfSumma.getText()), Integer.parseInt(txfMaksettu.getText()), txfLaskutusTyyppi.getText());
+                                 
+        //Tyhjennetään aiempi Laskujen tableview
+        clearTableviewLasku();
+        
+        //Paivitetaan Laskujen tableview taulu
+        updateTableviewLasku();
+        
+        //Suljetaan yhteys
+        vuokratoimistoDatabase.closeConnection(conn);
     }
 
     @FXML
@@ -147,6 +174,10 @@ public class LaskutusHallintaViewController implements Initializable {
 
     @FXML
     private void btnPoistaClicked(ActionEvent event) {
+    }
+
+    @FXML
+    private void tblLaskuClickedFillTextfield(MouseEvent event) {
     }
     
 }
