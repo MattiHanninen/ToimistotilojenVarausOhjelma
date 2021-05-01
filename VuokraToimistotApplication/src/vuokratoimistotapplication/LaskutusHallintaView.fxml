@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -50,7 +51,7 @@
             <TextField fx:id="txfSumma" promptText="Summa" />
             <TextField fx:id="txfMaksettu" promptText="Maksettu" />
             <TextField fx:id="txfLaskutusTyyppi" promptText="Laskutustyyppi" />
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+            <HBox prefHeight="61.0" prefWidth="280.0" spacing="12.0">
                <children>
                   <Button fx:id="btnLisaa" mnemonicParsing="false" onAction="#btnLisaaClicked" prefHeight="40.0" prefWidth="85.0" text="Lisää" />
                   <Button fx:id="btnMuokkaa" mnemonicParsing="false" onAction="#btnMuokkaaClicked" prefHeight="40.0" prefWidth="85.0" text="Muokkaa" />
@@ -60,6 +61,12 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
+            <Separator prefWidth="200.0" />
+            <TextField fx:id="txfEtsiLaskunID" onKeyReleased="#etsiLaskunidKeyReleased" promptText="Etsi laskun ID">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </TextField>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />

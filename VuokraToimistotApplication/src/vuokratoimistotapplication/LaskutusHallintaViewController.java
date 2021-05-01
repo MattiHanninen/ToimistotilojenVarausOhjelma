@@ -26,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 
@@ -72,6 +73,8 @@ public class LaskutusHallintaViewController implements Initializable {
     private Button btnPoista;
     @FXML
     private TableView<Lasku> tableLasku;
+    @FXML
+    private TextField txfEtsiLaskunID;
 
     /**
      * Initializes the controller class.
@@ -297,6 +300,45 @@ public class LaskutusHallintaViewController implements Initializable {
     
         //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
+    }
+
+    @FXML
+    private void etsiLaskunidKeyReleased(KeyEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+             
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+        
+            if(txfEtsiLaskunID.getText().equals("")){
+                clearTableviewLasku();
+                updateTableviewLasku();
+            }
+            else{
+                clearTableviewLasku();
+                Statement stmt = conn.createStatement();
+                ResultSet rset = stmt.executeQuery(
+               "SELECT * FROM lasku where laskuID LIKE '%"+txfEtsiLaskunID.getText()+"%'");
+                    
+                  while(rset.next()){
+                      Lasku person = new Lasku(rset.getInt("laskuID"), rset.getInt("asiakasID"), rset.getDate("erapaiva"), rset.getDate("maksupaiva"),
+                              rset.getInt("summa"), rset.getInt("maksettu"),rset.getString("laskutusTyyppi"));
+                        tableLasku.getItems().add(person);
+                        
+                        //Laskujen tableview täyttö
+                        colLaskuID.setCellValueFactory(new PropertyValueFactory<>("laskuID"));
+                        colAsiakasID.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
+                        colErapaiva.setCellValueFactory(new PropertyValueFactory<>("erapaiva"));
+                        colMaksupaiva.setCellValueFactory(new PropertyValueFactory<>("maksupaiva"));
+                        colSumma.setCellValueFactory(new PropertyValueFactory<>("summa"));
+                        colMaksettu.setCellValueFactory(new PropertyValueFactory<>("maksettu"));
+                        colLaskutustyyppi.setCellValueFactory(new PropertyValueFactory<>("laskutusTyyppi"));
+            }
+           
+            vuokratoimistoDatabase.closeConnection(conn);
+                     
+            }
     }
     
 }
