@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -13,7 +12,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1076.0" style="-fx-border-color: GREEN;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.VaraustenHallintaViewController">
    <top>
@@ -49,7 +47,7 @@
       </TableView>
    </bottom>
    <center>
-      <VBox prefHeight="350.0" prefWidth="872.0" spacing="15.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="391.0" prefWidth="780.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Label prefHeight="21.0" text="Toimistotilavarausten Hallinta">
                <font>
@@ -67,9 +65,9 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField fx:id="txtVarausID" prefHeight="31.0" prefWidth="572.0" promptText="Varaus ID" />
+            <TextField fx:id="txfVarausID" prefHeight="31.0" prefWidth="251.0" promptText="Varaus ID" />
             <TextField fx:id="txfAloitusPaiva" promptText="Aloitus päivä" />
-            <TextField fx:id="txfLopetusPaiva" promptText="Lopetus päivä" />
+            <TextField fx:id="txfLopetusPaiva" promptText="Lopetus Päivä" />
             <TextField fx:id="txfAsiakasID" promptText="Asiakas ID" />
             <TextField fx:id="txfToimipisteID" promptText="Toimipiste ID" />
          </children>
@@ -81,7 +79,6 @@
    <right>
       <VBox prefHeight="203.0" prefWidth="123.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btHaku" mnemonicParsing="false" onAction="#btHakuClicked" prefHeight="31.0" prefWidth="166.0" text="Haku" />
             <Button fx:id="btLisaa" mnemonicParsing="false" onAction="#btLisaaClicked" prefHeight="31.0" prefWidth="118.0" text="Lisää">
                <VBox.margin>
                   <Insets />
@@ -95,7 +92,7 @@
             <Button fx:id="btPoista" mnemonicParsing="false" onAction="#btPoistaClicked" prefHeight="31.0" prefWidth="102.0" text="Poista" />
          </children>
          <BorderPane.margin>
-            <Insets bottom="30.0" right="15.0" top="120.0" />
+            <Insets bottom="30.0" right="15.0" top="100.0" />
          </BorderPane.margin>
          <padding>
             <Insets right="30.0" />
@@ -103,6 +100,6 @@
       </VBox>
    </right>
    <left>
-      <DialogPane headerText="Tässä näytetään hakutulos" prefHeight="349.0" prefWidth="289.0" style="-fx-border-color: GREEN;" BorderPane.alignment="CENTER" />
+      <Label prefHeight="21.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
 </BorderPane>
