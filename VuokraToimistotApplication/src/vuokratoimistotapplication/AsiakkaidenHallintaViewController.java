@@ -5,6 +5,7 @@
  */
 package vuokratoimistotapplication;
 
+import java.io.IOException;
 import vuokratoimistotapplication.Luokat.Asiakas;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 
@@ -20,7 +21,10 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -272,6 +276,97 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     private void closeWindow(ActionEvent event) {    
         Stage stage = (Stage) tableAsiakas.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void openPalvelutWindow(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("PalveluidenHallintaView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Palveluiden hallinta");
+        stage.setScene(scene);
+        stage.show();
+        
+    }
+
+    @FXML
+    private void openToimipisteWindow(ActionEvent event) throws IOException {
+       // Aukaistaan Toimipisteiden hallinta ikkuna
+        Parent root = FXMLLoader.load(getClass().getResource("ToimipisteidenHallintaView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Toimipisteiden hallinta");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void openVarausWindow(ActionEvent event) throws IOException {
+        // Aukaistaan Varausten hallinta ikkuna
+        Parent root = FXMLLoader.load(getClass().getResource("VaraustenHallintaView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Varausten hallinta");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void openLaskuWindow(ActionEvent event) throws IOException {
+        // Aukaistaan Laskutus hallinta ikkuna
+        Parent root = FXMLLoader.load(getClass().getResource("LaskutusHallintaView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Toimipisteiden hallinta");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void openTyontekijatWindow(ActionEvent event) throws IOException {
+        // Aukaistaan Työntekijöiden hallinta ikkuna
+        Parent root = FXMLLoader.load(getClass().getResource("TyontekijoidenHallintaView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Työntekijöiden hallinta");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void openVuokratutWindow(ActionEvent event) throws IOException {
+         // Aukaistaan Vuokrattujen tilojen raportointi ikkuna
+        Parent root = FXMLLoader.load(getClass().getResource("VuokratutTilatRaportointiView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Vuokrattujen tilojen raportointi");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void openLisapalvelutWindow(ActionEvent event) throws IOException {
+         // Aukaistaan Lisäpalveluiden ja laitteiden raportointi ikkuna
+        Parent root = FXMLLoader.load(getClass().getResource("LisapalvelutLaitteetRaportointiView.fxml"));
+
+        Scene scene = new Scene(root);
+
+        Stage stage = new Stage();
+        stage.setTitle("Lisäpalveluiden ja laitteiden raportointi");
+        stage.setScene(scene);
+        stage.show();
     }
     
 }

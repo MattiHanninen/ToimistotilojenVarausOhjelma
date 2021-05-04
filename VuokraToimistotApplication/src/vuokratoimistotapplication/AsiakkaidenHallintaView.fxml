@@ -20,7 +20,14 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#closeWindow" text="Sulje" />
+              <MenuItem mnemonicParsing="false" onAction="#openToimipisteWindow" text="Aukaise Toimipiste..." />
+                  <MenuItem mnemonicParsing="false" onAction="#openPalvelutWindow" text="Aukaise Palvelut..." />
+                  <MenuItem mnemonicParsing="false" onAction="#openVarausWindow" text="Aukaise Varaus..." />
+                  <MenuItem mnemonicParsing="false" onAction="#openLaskuWindow" text="Aukaise Lasku..." />
+                  <MenuItem mnemonicParsing="false" onAction="#openTyontekijatWindow" text="Aukaise Työntekijät.." />
+                  <MenuItem mnemonicParsing="false" onAction="#openVuokratutWindow" text="Aukaise Vuokratut..." />
+                  <MenuItem mnemonicParsing="false" onAction="#openLisapalvelutWindow" text="Aukaise Lisäpalvelut..." />
+                  <MenuItem mnemonicParsing="false" onAction="#closeWindow" text="Sulje" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
