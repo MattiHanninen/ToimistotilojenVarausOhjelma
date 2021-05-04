@@ -1,11 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.LisapalvelutLaitteetRaportointiViewController">
-    
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="956.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.LisapalvelutLaitteetRaportointiViewController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="menuCloseClicked" mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label alignment="CENTER" prefHeight="47.0" prefWidth="956.0" style="-fx-border-color: LIGHTBLUE;" text="VuokraToimistot Oy">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView prefHeight="346.0" prefWidth="956.0">
+        <columns>
+          <TableColumn prefWidth="109.0" text="Palvelun ID" />
+            <TableColumn prefWidth="166.0" text="Nimi" />
+            <TableColumn prefWidth="116.0" text="Hinta" />
+            <TableColumn prefWidth="325.0" text="Kuvaus" />
+            <TableColumn prefWidth="123.0" text="Aloituspvm" />
+            <TableColumn prefWidth="115.0" text="Lopetuspvm" />
+        </columns>
+      </TableView>
+      <Label alignment="CENTER" layoutX="10.0" layoutY="42.0" prefHeight="36.0" prefWidth="956.0" style="-fx-border-color: LIGHTBLUE;" text="Etsi varatuista kohteista:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="39.0" prefWidth="956.0" style="-fx-border-color: LIGHTBLUE;">
+         <children>
+            <Label alignment="CENTER" prefHeight="37.0" prefWidth="205.0" style="-fx-border-color: LIGHTBLUE;" text="Aikaväli:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="39.0" prefWidth="182.0" text="Aloituspäivä: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <DatePicker prefHeight="40.0" prefWidth="218.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="220.0" layoutY="10.0" prefHeight="37.0" prefWidth="131.0" text="Lopetuspäivä: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <DatePicker layoutX="353.0" layoutY="10.0" prefHeight="40.0" prefWidth="218.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="34.0" prefWidth="956.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="37.0" prefWidth="205.0" style="-fx-border-color: LIGHTBLUE;" text="Kohteen haku ID: ">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField prefHeight="37.0" prefWidth="752.0" promptText="ID" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

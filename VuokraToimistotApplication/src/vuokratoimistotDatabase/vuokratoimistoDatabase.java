@@ -105,6 +105,16 @@ public class vuokratoimistoDatabase {
         
         return rs;  
     }
+     
+        // Metodi joka palauttaa varattujen palveluiden tiedot tietokannasta
+     public static ResultSet selectVaratutPalvelut(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT toimipisteID, palvelunID, varausID, asiakasID FROM toimipisteidenPalvelut ORDER BY toimipisteID"
+        );
+        
+        return rs;  
+    }
     
     //Metodi joka lisätä tietokannan asiakaita
     public static void addAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, 
@@ -250,16 +260,18 @@ public class vuokratoimistoDatabase {
     
     
     //Metodi joka lisätä tietokannan varaukset 
-    public static void addToimipisteidenPalvelut(Connection c, int toimipisteID, int palvelunID)throws SQLException {   
+    public static void addToimipisteidenPalvelut(Connection c, int toimipisteID, int palvelunID, int varausID, int asiakasID) throws SQLException {   
         
         PreparedStatement ps = c.prepareStatement
         (
-        "INSERT INTO toimipisteidenPalvelut(toimipisteID, palvelunID)"
-         + "VALUES(?, ?)"
+        "INSERT INTO toimipisteidenPalvelut(toimipisteID, palvelunID, varausID, asiakasID)"
+         + "VALUES(?, ?, ?, ?)"
         );
         
         ps.setInt(1, toimipisteID);
         ps.setInt(2, palvelunID);
+        ps.setInt(3, varausID);
+        ps.setInt(4, asiakasID);
                   
         ps.execute();       
         System.out.println("\t>> Lisätty toimipisteidenPalvelut: " + palvelunID );       
@@ -380,6 +392,28 @@ public class vuokratoimistoDatabase {
     }
     
     
+       // Metodi joka muokkaa palveluiden varausten tietoja
+    public static void updatePalveluVaraus(Connection c, int toimipisteID, int palvelunID, int varausID, int asiakasID) throws SQLException {
+    
+        PreparedStatement ps = c.prepareStatement(
+        ("UPDATE toimipisteidenPalvelut SET toimipisteID = ?, palvelunID = ?, varausID = ?, asiakasID = ? WHERE toimipisteID = ?")
+        );
+
+        // Syotetaan tiedot parametreilla
+        ps.setInt(1, toimipisteID);
+        ps.setInt(2, palvelunID);
+        ps.setInt(3, varausID);
+        ps.setInt(4, asiakasID);
+        ps.setInt(5, toimipisteID);
+    
+        // Toteutetaan muutokset
+        ps.execute();
+    
+    System.out.println("\t>> Päivitetty palvelunID tiedot: " + palvelunID);
+    
+    }
+    
+    
     
     
     
@@ -430,6 +464,23 @@ public class vuokratoimistoDatabase {
         // Suoritetaan poisto
         ps.execute();
         System.out.println("\t>> poistettu varaus, jonka ID on " + varausID);
+   
+    }
+    
+    
+    // Metodi joka poistaa palvelun varauksen tiedot
+    public static void deletePalveluVaraus(Connection c, int palvelunID) throws SQLException {
+    
+        PreparedStatement ps = c.prepareStatement( 
+        ("DELETE FROM toimipisteidenPalvelut WHERE palvelunID = ?")           
+        );
+        
+        // Syotetaan tiedot paremetreilla
+        ps.setInt(1, palvelunID);
+    
+        // Suoritetaan poisto
+        ps.execute();
+        System.out.println("\t>> poistettu palvelu, jonka ID on " + palvelunID);
    
     }
     

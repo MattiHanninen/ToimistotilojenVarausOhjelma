@@ -7,7 +7,9 @@ package vuokratoimistotapplication;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuItem;
 
 /**
  * FXML Controller class
@@ -15,6 +17,9 @@ import javafx.fxml.Initializable;
  * @author matty
  */
 public class LisapalvelutLaitteetRaportointiViewController implements Initializable {
+
+    @FXML
+    private MenuItem menuCloseClicked;
 
     /**
      * Initializes the controller class.
