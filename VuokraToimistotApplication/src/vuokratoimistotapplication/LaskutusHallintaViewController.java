@@ -30,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 
 /**
@@ -351,6 +352,12 @@ public class LaskutusHallintaViewController implements Initializable {
             vuokratoimistoDatabase.closeConnection(conn);
                      
             }
+    }
+
+    @FXML
+    private void closeLaskuWindow(ActionEvent event) {
+        Stage stage = (Stage) tableLasku.getScene().getWindow();
+        stage.close();
     }
     
 }

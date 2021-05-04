@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
 
 /**
@@ -264,6 +266,12 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     
         //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
+    }
+
+    @FXML
+    private void closeWindow(ActionEvent event) {    
+        Stage stage = (Stage) tableAsiakas.getScene().getWindow();
+        stage.close();
     }
     
 }
