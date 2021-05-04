@@ -15,12 +15,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -149,6 +151,7 @@ public class LaskutusHallintaViewController implements Initializable {
     
         //toteutetaan delete toiminto
         ps.execute();
+        
         System.out.println("\t>> poistettu opiskelija_id " + laskuID);
    
     }
@@ -178,7 +181,15 @@ public class LaskutusHallintaViewController implements Initializable {
         ps.setInt(7,laskuID); 
    
         //Toteutetaan muutokset
+       try {
         ps.execute();
+        } catch (SQLException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Laskun tietojen muokkaaminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Laskun muokkaaminen epäonnistui");
+            alert.showAndWait();
+        }
     
         System.out.println("\t>> Päivitetty laskuID tiedot: " + laskuID);
         
@@ -292,12 +303,13 @@ public class LaskutusHallintaViewController implements Initializable {
                txfLaskuID.setText(rs.getString("laskuID"));
                txfAsiakasID.setText(rs.getString("asiakasID"));
                txfErapaiva.setText(rs.getString("erapaiva"));
+              // txfErapaiva.setText(rs.getString("erapaiva")).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
                txfMaksupaiva.setText(rs.getString("maksupaiva"));
                txfSumma.setText(rs.getString("summa"));
                txfMaksettu.setText(rs.getString("maksettu"));
                txfLaskutusTyyppi.setText(rs.getString("laskutusTyyppi"));
            }
-    
+    //txtSuoritusDate.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) -- Matin vinkki
         //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
     }

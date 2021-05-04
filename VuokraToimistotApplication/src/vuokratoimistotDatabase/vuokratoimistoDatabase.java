@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.scene.control.Alert;
 
 
 /**
@@ -121,7 +122,17 @@ public class vuokratoimistoDatabase {
         ps.setString(3, sukunimi);
         ps.setString(4, yritys);
     
-        ps.execute();       
+         try {
+        ps.execute();
+    
+        } catch (SQLException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan lisääminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Asiakkaan lisääminen epäonnistui");
+            alert.showAndWait();
+      
+    }             
         System.out.println("\t>> Lisätty asiakas: " + etunimi +" "+ sukunimi);
         
     }
@@ -203,32 +214,21 @@ public class vuokratoimistoDatabase {
         ps.setInt(6, maksettu);
         ps.setString(7, laskutusTyyppi);
             
-        ps.execute();       
+        try {
+        ps.execute();
+    
+        } catch (SQLException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Laskun lisääminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Laskun lisääminen epäonnistui");
+            alert.showAndWait();
+      
+    }      
         System.out.println("\t>> Lisätty lasku: " + laskuID + " " + laskutusTyyppi);
         
     }
-    /**
-    public static void addLasku(Connection c, int laskuID, String erapaiva, String maksupaiva,
-                                    int summa, int viitenumero, String laskutusTyyppi)throws SQLException {   
-        
-        PreparedStatement ps = c.prepareStatement
-        (
-        "INSERT INTO lasku (laskuID, erapaiva, maksupaiva, summa, viitenumero,laskutusTyyppi)"
-         + "VALUES(?, STR_TO_DATE(?, '%d.%m.%Y'), STR_TO_DATE(?, '%d.%m.%Y'), ?, ?, ?)"
-        );
-        
-        ps.setInt(1, laskuID);
-        ps.setString(2, erapaiva);
-        ps.setString(3, maksupaiva);
-        ps.setInt(4, summa);
-        ps.setInt(5, viitenumero);
-        ps.setString(6, laskutusTyyppi);
-            
-        ps.execute();       
-        System.out.println("\t>> Lisätty lasku: " + laskuID + " " + laskutusTyyppi);
-        
-    }
-    */
+    
     //Metodi joka lisätä tietokannan varaukset 
     public static void addPalvelu(Connection c, int palvelunID, String palvelunNimi, int palvelunHinta, String palvelunKuvaus) throws SQLException {   
         
