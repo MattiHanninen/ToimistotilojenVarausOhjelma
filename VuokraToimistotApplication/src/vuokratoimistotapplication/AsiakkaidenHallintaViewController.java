@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -154,7 +155,15 @@ public class AsiakkaidenHallintaViewController implements Initializable {
    
    
         //Toteutetaan muutokset
+        try {
         ps.execute();
+        } catch (SQLException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen muokkaaminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Asiakkaan muokkaaminen epäonnistui");
+            alert.showAndWait();
+        }
     
         System.out.println("\t>> Päivitetty asiakasID tiedot: " + asiakasID);
         
