@@ -5,6 +5,7 @@
  */
 package vuokratoimistotapplication;
 
+import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Tyontekija;
 
 /**
@@ -232,7 +232,7 @@ public class TyontekijoidenHallintaViewController implements Initializable {
             vuokratoimistoDatabase.closeConnection(conn);  
  
             if (rs == null) { 
-                throw new Exception ("Kurssi poistaminen ei onnistu");
+                throw new Exception ("Työtekija poistaminen ei onnistu");
             }
          } catch (SQLException e) {throw e;}
        

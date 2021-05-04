@@ -18,10 +18,19 @@ public class Varaus {
     private Date lopetusPaiva;
     private int asiakasID;
     private int toimipisteID;
+
+    public Varaus(int varausID, Date aloitusPaiva, Date lopetusPaiva, int asiakasID, int toimipisteID) {
+        this.varausID = varausID;
+        this.aloitusPaiva = aloitusPaiva;
+        this.lopetusPaiva = lopetusPaiva;
+        this.asiakasID = asiakasID;
+        this.toimipisteID = toimipisteID;
+    }
     
     public Varaus(){
         
     }
+    
     
 
     //Setterit ja getterit

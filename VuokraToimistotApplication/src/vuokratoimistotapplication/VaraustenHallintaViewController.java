@@ -23,11 +23,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Varaus;
 
@@ -53,10 +55,6 @@ public class VaraustenHallintaViewController implements Initializable {
     @FXML
     private TableColumn<Varaus, Integer> colToimipisteID;
     @FXML
-    private TextField txfAloitusPaiva;
-    @FXML
-    private TextField txfLopetusPaiva;
-    @FXML
     private TextField txfAsiakasID;
     @FXML
     private TextField txfToimipisteID;
@@ -66,15 +64,21 @@ public class VaraustenHallintaViewController implements Initializable {
     private Button btMuokka;
     @FXML
     private Button btPoista;
-
-     Connection conn;
+    @FXML
+    private TextField txfVarausID;
+    @FXML
+    private DatePicker DatePickerAloitusPaiva;
+    @FXML
+    private DatePicker DatePickerLopetusPaiva;
+    @FXML
+    private TextField txfHakuVarausID;
+    
+    Connection conn;
     PreparedStatement pst;
     ResultSet rs;
     Statement st;
-    private Varaus varausOlio = new Varaus();
-    @FXML
-    private TextField txfVarausID;
-    
+     
+   
     public void Connect() throws ClassNotFoundException, SQLException{
         try {
         conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
@@ -85,7 +89,7 @@ public class VaraustenHallintaViewController implements Initializable {
             System.out.println("\t>> Yhteys epäonistu");
          }
     }
-    
+  
     public ObservableList<Varaus> getVarausList() throws ClassNotFoundException, SQLException{
         ObservableList<Varaus> varausList = FXCollections.observableArrayList();
         Connect();
@@ -122,6 +126,7 @@ public class VaraustenHallintaViewController implements Initializable {
             vuokratoimistoDatabase.closeConnection(conn);
     }
 
+
     @FXML
     private void menuClosedClicked(ActionEvent event) {
         Platform.exit();
@@ -131,12 +136,12 @@ public class VaraustenHallintaViewController implements Initializable {
     @FXML
     private void btLisaaClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
         Connect();
+        
         int varausID = Integer.parseInt(txfVarausID.getText());
-        String aloitusPaiva = txfAloitusPaiva.getText();
-        String lopetusPaiva = txfAloitusPaiva.getText();
+        String aloitusPaiva = DatePickerAloitusPaiva.getEditor().getText();
+        String lopetusPaiva = DatePickerLopetusPaiva.getEditor().getText();
         int asiakasID = Integer.parseInt(txfAsiakasID.getText());
         int toimipisteID = Integer.parseInt(txfToimipisteID.getText());
-        
         
          try {
             pst = conn.prepareStatement(
@@ -163,11 +168,12 @@ public class VaraustenHallintaViewController implements Initializable {
                 tbvVaraus.refresh();
                 showVaraus();
                 
-                txfVarausID.setText("");
-                txfAloitusPaiva.setText("");
-                txfLopetusPaiva.setText("");
+                txfVarausID.setText("");     
                 txfAsiakasID.setText("");
                 txfToimipisteID.setText("");
+                DatePickerAloitusPaiva.setValue(null);
+                DatePickerLopetusPaiva.setValue(null);
+                
                 System.out.println("\t>> Lisätty varaus " + varausID);
                 vuokratoimistoDatabase.closeConnection(conn);
             
@@ -188,8 +194,8 @@ public class VaraustenHallintaViewController implements Initializable {
     private void btMuokkaClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
         Connect();
         int varausID = Integer.parseInt(txfVarausID.getText());
-        String aloitusPaiva = txfAloitusPaiva.getText();
-        String lopetusPaiva = txfAloitusPaiva.getText();
+        String aloitusPaiva = DatePickerAloitusPaiva.getEditor().getText();
+        String lopetusPaiva = DatePickerLopetusPaiva.getEditor().getText();
         int asiakasID = Integer.parseInt(txfAsiakasID.getText());
         int toimipisteID = Integer.parseInt(txfToimipisteID.getText());
         
@@ -216,8 +222,8 @@ public class VaraustenHallintaViewController implements Initializable {
                 showVaraus();
                 
                 txfVarausID.setText("");
-                txfAloitusPaiva.setText("");
-                txfLopetusPaiva.setText("");
+                DatePickerAloitusPaiva.setValue(null);
+                DatePickerLopetusPaiva.setValue(null);
                 txfAsiakasID.setText("");
                 txfToimipisteID.setText("");
                 
@@ -254,8 +260,8 @@ public class VaraustenHallintaViewController implements Initializable {
                 showVaraus();
                 
                 txfVarausID.setText("");
-                txfAloitusPaiva.setText("");
-                txfLopetusPaiva.setText("");
+                DatePickerAloitusPaiva.setValue(null);
+                DatePickerLopetusPaiva.setValue(null);
                 txfAsiakasID.setText("");
                 txfToimipisteID.setText("");
                 
@@ -277,7 +283,54 @@ public class VaraustenHallintaViewController implements Initializable {
          } catch (SQLException e) {throw e;}
        
     }
+  
     
+    
+    /** Haku varausID:lla, asiakasID:lla, toimipisteID:lla
+     * @param event
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */ 
+    @FXML
+    private void hakuVarausLista(KeyEvent event) throws ClassNotFoundException, SQLException{
+        
+         Connect();
+         
+         //Luoda varaus lista
+         ObservableList<Varaus> List = FXCollections.observableArrayList();
+         if(txfHakuVarausID.getText().equals("")){
+                showVaraus();
+                
+         } else {
+            pst = conn.prepareStatement(
+                    " SELECT * FROM varaus WHERE varausID LIKE '%" + txfHakuVarausID.getText()+ "%'"    
+                    + "UNION SELECT * FROM varaus WHERE asiakasID LIKE '%" + txfHakuVarausID.getText()+ "%' "
+                    + "UNION SELECT * FROM varaus WHERE toimipisteID LIKE '%" + txfHakuVarausID.getText()+ "%' "
+            );
+            rs = pst.executeQuery();
+            while(rs.next()){
+                Varaus varaukset = new Varaus();
+                varaukset.setVarausID(rs.getInt("varausID"));
+                varaukset.setAloitusPaiva(rs.getDate("aloitusPaiva"));
+                varaukset.setLopetusPaiva(rs.getDate("lopetusPaiva"));
+                varaukset.setAsiakasID(rs.getInt("asiakasID"));
+                varaukset.setToimipisteID(rs.getInt("toimipisteID"));
+           
+                //add varaus to List
+                List.add(varaukset);
+              
+                colVarausID.setCellValueFactory(new PropertyValueFactory<>("varausID"));
+                colAloitusPaiva.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
+                colLopetusPaiva.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
+                colAsiakasID.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
+                colToimipisteID.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
+            
+                tbvVaraus.setItems(List);
+                vuokratoimistoDatabase.closeConnection(conn);   
+
+            }  
+         }           
+    }
     /**
      * Initializes the controller class.
      */
@@ -289,6 +342,11 @@ public class VaraustenHallintaViewController implements Initializable {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(VaraustenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
     } 
+
+   
+   
     
 }

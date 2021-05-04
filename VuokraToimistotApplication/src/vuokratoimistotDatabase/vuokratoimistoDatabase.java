@@ -95,6 +95,16 @@ public class vuokratoimistoDatabase {
         return rs;
         
     }
+     
+    // Metodi joka palauttaa opiskelijan tiedot tietokannasta
+     public static ResultSet selectVaraus(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT varausID, aloitusPaiva, lopetusPaiva, asiakasID, toimipisteID FROM varaus ORDER BY varausID"
+        );
+        
+        return rs;  
+    }
     
     //Metodi joka lisätä tietokannan asiakaita
     public static void addAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, 
@@ -348,6 +358,31 @@ public class vuokratoimistoDatabase {
     
     }
     
+    // Metodi joka muokkaa palvelun tietoja
+    public static void updateVaraus(Connection c, int varausID, String aloitusPaiva, String lopetusPaiva,
+                                    int asiakasID, int toimipisteID) throws SQLException {
+    
+        PreparedStatement ps = c.prepareStatement(
+        ("UPDATE varaus SET aloitusPaiva = STR_TO_DATE(?, '%d.%m.%Y'), lopetusPaiva = STR_TO_DATE(?, '%d.%m.%Y'), asiakasID = ?, toimipisteID= ? WHERE varausID = ?")
+        );
+
+        // Syotetaan tiedot parametreilla
+        ps.setString(1, aloitusPaiva);
+        ps.setString(2, lopetusPaiva);
+        ps.setInt(3, asiakasID);
+        ps.setInt(4, toimipisteID);
+
+        // Toteutetaan muutokset
+        ps.executeUpdate();
+    
+    System.out.println("\t>> Päivitetty varaus tiedot: " + varausID);
+    
+    }
+    
+    
+    
+    
+    
     
     
     // Metodi joka poistaa toimipisteen tiedot
@@ -379,6 +414,22 @@ public class vuokratoimistoDatabase {
         // Suoritetaan poisto
         ps.execute();
         System.out.println("\t>> poistettu palvelu, jonka ID on " + palvelunID);
+   
+    }
+    
+    // Metodi joka poistaa varaus
+    public static void deleteVaraus(Connection c, int varausID) throws SQLException {
+    
+        PreparedStatement ps = c.prepareStatement( 
+        ("DELETE FROM varaus WHERE varausID = ?")           
+        );
+        
+        // Syotetaan tiedot paremetreilla
+        ps.setInt(1, varausID);
+    
+        // Suoritetaan poisto
+        ps.execute();
+        System.out.println("\t>> poistettu varaus, jonka ID on " + varausID);
    
     }
     

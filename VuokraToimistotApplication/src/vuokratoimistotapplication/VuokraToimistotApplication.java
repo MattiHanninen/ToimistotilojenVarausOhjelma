@@ -72,6 +72,7 @@ public class VuokraToimistotApplication extends Application {
         //Lisätä asiakas tauluun
         addAsiakas(conn, 1100, "Aava", "Pesonen", "Aava Oy");
         addAsiakas(conn, 1101, "Milla", "Saarinen", "Salo Oy");
+        addAsiakas(conn, 1102, "Helena", "Korhonen", "Kaiva Oy");
         
         //Tyontekija taulu luonti
         createTable(conn, 
@@ -99,6 +100,7 @@ public class VuokraToimistotApplication extends Application {
         
         addToimipiste(conn, 60160, "Linnunlahti", 1200, 65);
         addToimipiste(conn, 60100, "Rantakylä", 800, 70);
+        addToimipiste(conn, 60111, "Keskusta", 1500, 80);
         
         /**
         //Lasku taulu luonti
@@ -166,6 +168,8 @@ public class VuokraToimistotApplication extends Application {
 
         addVaraus(conn, 3000, "10.3.2021", "12.3.2021", 1100, 60160);
         addVaraus(conn, 3001, "12.4.2021", "15.4.2021", 1101, 60100);
+        
+        
         
         //ToimipistePalvelu taulu luonti
         createTable(conn, 
