@@ -176,14 +176,19 @@ public class VuokraToimistotApplication extends Application {
                 "CREATE TABLE toimipisteidenPalvelut ("
                         + "toimipisteID INT NOT NULL," 
                         + "palvelunID INT NOT NULL,"
-                        + "PRIMARY KEY (toimipisteID, palvelunID),"                      
+                        + "varausID INT NOT NULL,"
+                        + "asiakasID INT NOT NULL,"
+                        + "PRIMARY KEY (toimipisteID, palvelunID, varausID, asiakasID),"                  
                         + "FOREIGN KEY (toimipisteID) REFERENCES toimipiste(toimipisteID) ON DELETE CASCADE,"
-                        + "FOREIGN KEY (palvelunID) REFERENCES palvelu(palvelunID) ON DELETE CASCADE)"
+                        + "FOREIGN KEY (palvelunID) REFERENCES palvelu(palvelunID) ON DELETE CASCADE,"
+                        + "FOREIGN KEY (varausID) REFERENCES varaus(varausID) ON DELETE CASCADE,"
+                        + "FOREIGN KEY (asiakasID) REFERENCES asiakas(asiakasID) ON DELETE CASCADE)"
                         ,
                 "toimipisteidenPalvelut"
                 );
-        addToimipisteidenPalvelut(conn, 60160, 1);
-        addToimipisteidenPalvelut(conn, 60100, 2);
+        addToimipisteidenPalvelut(conn, 60160, 1, 3000, 1100);
+        addToimipisteidenPalvelut(conn, 60100, 2, 3001, 1101);
+      
         
         //LaskunMaksaja taulu luonti
         createTable(conn, 
