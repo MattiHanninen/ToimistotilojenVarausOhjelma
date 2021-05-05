@@ -5,6 +5,7 @@
  */
 package vuokratoimistotapplication;
 
+import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +21,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Toimipiste;
 import static vuokratoimistotapplication.PaavalikkoViewController.closeConnection;
 
