@@ -32,6 +32,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -76,6 +77,8 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     vuokratoimistoDatabase dataOlio = new vuokratoimistoDatabase();
     //resultset
     //private ResultSet rs = null;
+    @FXML
+    private TextField txfEtsiAsikasID;
     
 
     /**
@@ -376,6 +379,42 @@ public class AsiakkaidenHallintaViewController implements Initializable {
      txtSukunimi.setText("");
      txtYritys.setText("");
         
+    }
+
+    @FXML
+    private void etsiAsiakasIDKeyReleased(KeyEvent event) throws SQLException {
+        // Luodaan Connection String olemassa olevaan tietokantaan
+        Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
+                    + "3306?user=opiskelija&password=opiskelija1");
+             
+        // Otetaan tietokanta kayttoon
+        vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
+        
+            if(txfEtsiAsikasID.getText().equals("")){
+                clearTableviewAsiakas();
+                updateTableviewAsiakas();
+            }
+            else{
+                clearTableviewAsiakas();
+                Statement stmt = conn.createStatement();
+                ResultSet rset = stmt.executeQuery(
+               "SELECT * FROM asiakas where asiakasID LIKE '%"+txfEtsiAsikasID.getText()+"%'");
+                    
+                  while(rset.next()){
+                      Asiakas person = new Asiakas(rset.getInt("asiakasID"), rset.getString("etunimi"), rset.getString("sukunimi"), rset.getString("yritys"));
+                             
+                        tableAsiakas.getItems().add(person);
+                        
+                        //Laskujen tableview täyttö
+                        colId.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
+                        colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
+                        colSukunimi.setCellValueFactory(new PropertyValueFactory<>("sukunimi"));
+                        colYritys.setCellValueFactory(new PropertyValueFactory<>("yritys"));
+            }
+           
+            vuokratoimistoDatabase.closeConnection(conn);
+                     
+            }
     }
     
 }
