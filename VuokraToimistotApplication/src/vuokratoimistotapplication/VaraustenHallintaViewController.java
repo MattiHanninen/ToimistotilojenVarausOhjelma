@@ -30,8 +30,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Varaus;
+import static vuokratoimistotapplication.PaavalikkoViewController.closeConnection;
 
 /**
  * FXML Controller class
@@ -89,7 +91,7 @@ public class VaraustenHallintaViewController implements Initializable {
             System.out.println("\t>> Yhteys epäonistu");
          }
     }
-  
+    
     public ObservableList<Varaus> getVarausList() throws ClassNotFoundException, SQLException{
         ObservableList<Varaus> varausList = FXCollections.observableArrayList();
         Connect();
@@ -113,6 +115,8 @@ public class VaraustenHallintaViewController implements Initializable {
         }
         return varausList;
     }
+  
+    
     
     public void showVaraus() throws ClassNotFoundException, SQLException{
         ObservableList<Varaus> list = getVarausList();
@@ -128,9 +132,17 @@ public class VaraustenHallintaViewController implements Initializable {
 
 
     @FXML
-    private void menuClosedClicked(ActionEvent event) {
-        Platform.exit();
-        System.exit(0);
+    private void menuClosedClicked(ActionEvent event) throws ClassNotFoundException {
+        try {
+            Connect();
+            closeConnection(conn);
+        }
+        catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(PaavalikkoViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }     
+        // Suljetaan ikkkuna    
+        Stage stage = (Stage) tbvVaraus.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

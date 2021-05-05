@@ -15,16 +15,26 @@ public class Toimipiste {
     private String toimipisteNimi;
     private int vuorokausiHinta;
     private int toimipisteKoko;
-    
+
+    public Toimipiste(String toimipisteNimi) {
+        this.toimipisteNimi = toimipisteNimi;
+    }
+
+
     public Toimipiste(){
         
     }
-
+   
     public Toimipiste(int toimipisteID, String toimipisteNimi, int vuorokausiHinta, int toimipisteKoko) {
         this.toimipisteID = toimipisteID;
         this.toimipisteNimi = toimipisteNimi;
         this.vuorokausiHinta = vuorokausiHinta;
         this.toimipisteKoko = toimipisteKoko;
+    }
+
+    public Toimipiste(int toimipisteID, String toimipisteNimi) {
+        this.toimipisteID = toimipisteID;
+        this.toimipisteNimi = toimipisteNimi;
     }
 
     //Setterit ja getterit
@@ -64,5 +74,6 @@ public class Toimipiste {
     public String toString() {
         return (toimipisteID + " " + toimipisteNimi + " " + vuorokausiHinta + " " + toimipisteKoko);
     }
+
     
 }

@@ -12,12 +12,18 @@ import java.util.Date;
  * @author hoang & janne
  */
 public class Varaus {
-    
+ 
     private int varausID;
     private Date aloitusPaiva;
     private Date lopetusPaiva;
     private int asiakasID;
     private int toimipisteID;
+    
+    
+    public Varaus(Date aloitusPaiva, Date lopetusPaiva) {
+        this.aloitusPaiva = aloitusPaiva;
+        this.lopetusPaiva = lopetusPaiva;
+    }
 
     public Varaus(int varausID, Date aloitusPaiva, Date lopetusPaiva, int asiakasID, int toimipisteID) {
         this.varausID = varausID;
@@ -30,8 +36,6 @@ public class Varaus {
     public Varaus(){
         
     }
-    
-    
 
     //Setterit ja getterit
     public void setVarausID(int varausID) {
