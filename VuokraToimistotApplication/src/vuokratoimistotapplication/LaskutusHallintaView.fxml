@@ -24,6 +24,11 @@
               <MenuItem mnemonicParsing="false" onAction="#closeLaskuWindow" text="Sulje" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#editClearTextfield" text="Tyhjennä" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>

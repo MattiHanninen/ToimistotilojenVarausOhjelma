@@ -368,5 +368,14 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    private void editClearTextfield(ActionEvent event) {
+     txtId.setText("");
+     txtEtunimi.setText("");
+     txtSukunimi.setText("");
+     txtYritys.setText("");
+        
+    }
     
 }

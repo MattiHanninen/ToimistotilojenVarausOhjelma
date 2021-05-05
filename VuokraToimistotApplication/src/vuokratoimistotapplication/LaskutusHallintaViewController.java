@@ -359,5 +359,16 @@ public class LaskutusHallintaViewController implements Initializable {
         Stage stage = (Stage) tableLasku.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    private void editClearTextfield(ActionEvent event) {
+        txfLaskuID.setText("");
+        txfAsiakasID.setText("");
+        txfErapaiva.setText("");
+        txfMaksupaiva.setText("");
+        txfSumma.setText("");
+        txfMaksettu.setText("");
+        txfLaskutusTyyppi.setText("");
+    }
     
 }
