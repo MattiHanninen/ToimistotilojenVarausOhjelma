@@ -5,10 +5,15 @@
  */
 package vuokratoimistotapplication;
 
+import java.io.File;
+import java.io.IOException;
 import vuokratoimistotapplication.Luokat.Lasku;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 
 import java.net.URL;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import java.nio.file.Files;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -30,6 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -93,6 +99,17 @@ public class LaskutusHallintaViewController implements Initializable {
     private Button btnMallilasku;
     @FXML
     private WebView webView;
+    
+    //Laskun muuttujat
+    private static final String CUSTOMER_NAME = "__CUST_NAME__";
+    private static final String CUSTOMER_ADDRESS = "__CUST_ADDR__";
+    private static final String CUSTOMER_EMAIL = "__CUST_EMAIL__";
+    private static final String INVOICE_DATE = "__DATE__";
+    private static final String INVOICE_DUE_DATE = "__DUE_DATE__";
+    private static final String TABLE_CONTENT = "__TABLE__";
+    
+    //omat
+    private static final String CUSTOMER_VIITENUMERO = "__CUST_VIITENUMERO__";
 
     /**
      * Initializes the controller class.
@@ -387,11 +404,59 @@ public class LaskutusHallintaViewController implements Initializable {
     }
 
     @FXML
-    private void btnTeeLaskuClicked(ActionEvent event) {
+    private void btnTeeLaskuClicked(ActionEvent event) throws IOException {
+        // 1. kopioi pohja
+        File source = new File("./src/vuokratoimistotapplication/laskujenHTML/mallilasku.html");
+        File dest = new File("./src/vuokratoimistotapplication/laskujenHTML/teeLasku.html");
+        Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
+
+        // 2. Korvaa pohjassa olevat paikat tiedoilla
+        String content = new String(Files.readAllBytes(dest.toPath()), UTF_8);
+       // content = content.replaceAll(CUSTOMER_NAME, "TEPPO TAPUTTAJA");
+      // content = content.replaceAll(CUSTOMER_NAME, txtEtunimi_o.getText());
+      //Asiakas
+        content = content.replaceAll(CUSTOMER_NAME, txfAsiakasID.getText());
+      //erapaiva
+        content = content.replaceAll(INVOICE_DUE_DATE, txfErapaiva.getText());
+        //Email
+        content = content.replaceAll(CUSTOMER_EMAIL, txfEmail.getText());
+        //CUSTOMER_ADDRESS
+        content = content.replaceAll(CUSTOMER_ADDRESS, txfOsoite.getText());
+        //INVOICE_DATE
+        content = content.replaceAll(INVOICE_DATE, txfMaksupaiva.getText());
+        //CUSTOMER_VIITENUMERO
+        content = content.replaceAll(CUSTOMER_VIITENUMERO, txfLaskuID.getText());
+        
+        //txtEtunimi_o.getText();
+       // content = content.replaceAll(TABLE_CONTENT, createRow("Siivous", "Siivouspalvelu","40.00","10.00","400.00" ));
+       //txfToimispiste
+        content = content.replaceAll(TABLE_CONTENT, createRow(txfToimipiste.getText(), txfPalvelu.getText(), txfSumma.getText() ));
+        
+        // 3. Lataa muodostettu lasku
+        Files.write(dest.toPath(), content.getBytes(UTF_8));
+        
+        // 4. Näytä muodostettu lasku
+        loadWebPage(dest.toPath().toString());
     }
+    
+    private String createRow(String service, String desc, String total) {
+         return "<tr>" +
+                "<td class=\"service\">" + service + "</td>" + 
+                "<td class=\"desc\">" + desc + "</td>" +
+                "<td class=\"total\">" + total + "€</td>"
+                ;
+    }
+    
 
     @FXML
     private void btnMallilaskuClicked(ActionEvent event) {
+        loadWebPage("./src/vuokratoimistotapplication/laskujenHTML/mallilasku.html");
+    }
+    
+    private void loadWebPage(String path){
+        WebEngine engine = webView.getEngine();
+        File f = new File(path);
+        engine.load(f.toURI().toString());
     }
     
 }
