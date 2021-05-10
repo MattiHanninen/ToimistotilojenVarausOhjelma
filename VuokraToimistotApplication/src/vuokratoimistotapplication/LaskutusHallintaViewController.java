@@ -30,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 
@@ -78,6 +79,20 @@ public class LaskutusHallintaViewController implements Initializable {
     private TableView<Lasku> tableLasku;
     @FXML
     private TextField txfEtsiLaskunID;
+    @FXML
+    private TextField txfEmail;
+    @FXML
+    private TextField txfOsoite;
+    @FXML
+    private TextField txfToimipiste;
+    @FXML
+    private TextField txfPalvelu;
+    @FXML
+    private Button btnTeeLasku;
+    @FXML
+    private Button btnMallilasku;
+    @FXML
+    private WebView webView;
 
     /**
      * Initializes the controller class.
@@ -369,6 +384,14 @@ public class LaskutusHallintaViewController implements Initializable {
         txfSumma.setText("");
         txfMaksettu.setText("");
         txfLaskutusTyyppi.setText("");
+    }
+
+    @FXML
+    private void btnTeeLaskuClicked(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnMallilaskuClicked(ActionEvent event) {
     }
     
 }
