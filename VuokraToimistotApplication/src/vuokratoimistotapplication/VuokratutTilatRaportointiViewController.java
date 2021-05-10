@@ -5,17 +5,20 @@
  */
 package vuokratoimistotapplication;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import java.nio.file.Files;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,9 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
@@ -40,7 +41,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Varaus;
@@ -94,17 +94,24 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     @FXML
     private TableColumn<VuokrattutTilatTaulu, Integer> colSumma;
   
-    
-    Connection conn;
-    PreparedStatement pst;
-    ResultSet rs;
-    Statement st;
+   
     @FXML
     private WebView webView;
     @FXML
     private MenuItem menuItemTemplete;
     @FXML
     private MenuItem menuItemReport;
+    
+     
+    Connection conn;
+    PreparedStatement pst;
+    ResultSet rs;
+    Statement st;
+    
+    private static final String TOIMIPISTE = "__TOIMIPISTE__";
+    private static final String PVM = "__DATE__";
+    private static final String TABLE_CONTENT = "__TABLE__";
+
     
    //Avata tietokanta 
     public void Connect() throws ClassNotFoundException, SQLException{
@@ -190,10 +197,41 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     }
 
     @FXML
-    private void menuItemReportClicked(ActionEvent event) {
+    private void menuItemReportClicked(ActionEvent event) throws IOException {
+        // 1. kopioi pohja
+        File source = new File("./Report/vuokratuttilat.html");
+        File dest = new File("./Report/vuokratuttilatRaporti.html");
+
+        Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
+
+        // 2. Korvaa pohjassa olevat paikat tiedoilla
+        
+        String content = new String(Files.readAllBytes(dest.toPath()), UTF_8);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();
+   
+        content = content.replaceAll(TOIMIPISTE,colToimipste.getCellData(0) );
+        content = content.replaceAll(PVM, LocalDateTime.now().toString());
+        //content = content.replaceAll(TABLE_CONTENT, createRow();
+         content = content.replaceAll(TABLE_CONTENT, createRow(colToimipste.getCellData(0), colYritys.getCellData(0),colAloitusPvm.getCellData(0), colLopetusPvm.getCellData(0), colSumma.getCellData(0)));
+        
+        // 3. Lataa muodostettu lasku
+        Files.write(dest.toPath(), content.getBytes(UTF_8));
+        
+        // 4. Näytä muodostettu lasku
+        loadWebPage(dest.toPath().toString());
     }
-    
-    
+     // Muodostetaan laskun yksi rivi html muodossa
+     private String createRow(String service, String desc, Date aloitusPvm, Date lopetusPvm, int summa) {
+         return "<tr>" +
+                "<td class=\"service\">" +  service + "</td>" + 
+                "<td class=\"desc\">" +  desc + "</td>" +
+                "<td class=\"desc\">" + aloitusPvm+ "</td>" +
+                "<td class=\"desc\">" + lopetusPvm+ "</td>" +
+                "<td class=\"total\">" + summa + "€</td>"
+                ;
+    }
+
      private void loadWebPage(String path){
         WebEngine engine = webView.getEngine();
         File f = new File(path);
@@ -317,16 +355,7 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
         
     }
 
-   
 
-   
-
-
-   
-
-   
-
-    
 }
 
        

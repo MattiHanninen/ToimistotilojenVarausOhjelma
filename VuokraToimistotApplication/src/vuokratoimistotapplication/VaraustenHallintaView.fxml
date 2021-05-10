@@ -29,7 +29,7 @@
       </MenuBar>
    </top>
    <bottom>
-      <TableView fx:id="tbvVaraus" prefHeight="253.0" prefWidth="1076.0" style="-fx-border-color: CORNFLOWERBLUE;" BorderPane.alignment="CENTER">
+      <TableView fx:id="tbvVaraus" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="253.0" prefWidth="1076.0" style="-fx-border-color: CORNFLOWERBLUE;" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colVarausID" prefWidth="186.0" text="Varaus ID" />
           <TableColumn fx:id="colAloitusPaiva" minWidth="0.0" prefWidth="224.0" text="Aloitus Päivä" />
@@ -40,7 +40,7 @@
       </TableView>
    </bottom>
    <center>
-      <VBox prefHeight="391.0" prefWidth="840.0" spacing="15.0" BorderPane.alignment="CENTER">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="840.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Label prefHeight="21.0" prefWidth="436.0" text="Toimistotilavarausten Hallinta">
                <font>
@@ -87,7 +87,7 @@
       </VBox>
    </center>
    <right>
-      <VBox prefHeight="203.0" prefWidth="123.0" spacing="15.0" BorderPane.alignment="CENTER">
+      <VBox maxWidth="-Infinity" prefHeight="203.0" prefWidth="123.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btLisaa" mnemonicParsing="false" onAction="#btLisaaClicked" prefHeight="31.0" prefWidth="118.0" text="Lisää">
                <VBox.margin>
