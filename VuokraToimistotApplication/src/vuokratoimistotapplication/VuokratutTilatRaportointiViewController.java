@@ -38,6 +38,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
@@ -71,8 +73,6 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
 
     
     @FXML
-    private MenuItem menuItemSave;
-    @FXML
     private VBox txfHakuTulos;
     @FXML
     private TextField txfHakuID;
@@ -99,6 +99,12 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     PreparedStatement pst;
     ResultSet rs;
     Statement st;
+    @FXML
+    private WebView webView;
+    @FXML
+    private MenuItem menuItemTemplete;
+    @FXML
+    private MenuItem menuItemReport;
     
    //Avata tietokanta 
     public void Connect() throws ClassNotFoundException, SQLException{
@@ -177,40 +183,23 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
         vuokratoimistoDatabase.closeConnection(conn);
     }
     
-    // Save tableview
-    @FXML
-    private void menuItemSaveClicked(ActionEvent event) throws IOException {
-        Stage secondaryStage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Tallentaa varaus lista");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        File file = fileChooser.showSaveDialog(secondaryStage);
-        if (file != null) {
-        saveFile(tbvVuokratutTaulut.getItems(),file);
-        }
-     }
     
-    // Save to file
-    public void saveFile (ObservableList<VuokrattutTilatTaulu>observableVuokrattutList, File file) throws IOException{
-     try {
-         
-         BufferedWriter outWriter = new BufferedWriter(new FileWriter(file));
-             for (VuokrattutTilatTaulu vuokrattut: observableVuokrattutList ){
-                 outWriter.write(vuokrattut.toString());
-                 outWriter.newLine();
-             }
-             System.out.println(observableVuokrattutList.toString());
-         
-            
-        }catch(IOException ex){
-            Alert ioAlert = new Alert(AlertType.ERROR, "OOPS", ButtonType.OK);
-            ioAlert.setContentText("Jotain virhe");
-            ioAlert.showAndWait();
-            if (ioAlert.getResult() == ButtonType.OK){
-                ioAlert.close();
-            }
-        }
+     @FXML
+    private void menuItemTempleteClicked(ActionEvent event) {
+        loadWebPage("./Report/vuokratuttilat.html");
     }
+
+    @FXML
+    private void menuItemReportClicked(ActionEvent event) {
+    }
+    
+    
+     private void loadWebPage(String path){
+        WebEngine engine = webView.getEngine();
+        File f = new File(path);
+        engine.load(f.toURI().toString());
+    }
+
     
     // Haku ID:lla
     @FXML
@@ -228,7 +217,7 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                         + "  FROM varaus, toimipiste, asiakas,lasku "
                         + " WHERE varaus.toimipisteID = toimipiste.toimipisteID "
                         + "AND varaus.asiakasID = asiakas.asiakasID "
-                        + "AND lasku.asiakasID = varaus.asiakasID AND varaus.toimipisteID LIKE '%" 
+                        + "AND lasku.asiakasID = varaus.asiakasID AND varaus.varausID LIKE '%" 
                         + txfHakuID.getText()+ "%'"   
             );
             rs = pst.executeQuery();
@@ -244,9 +233,9 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                 
                 // Add vuokratut tilat lista
                 HakuList.add(vuokrattut);
-                tbvVuokratutTaulut.setItems(HakuList);
-                vuokratoimistoDatabase.closeConnection(conn);   
-            }  
+                tbvVuokratutTaulut.setItems(HakuList);  
+            } 
+           vuokratoimistoDatabase.closeConnection(conn);          
          }                  
     }
 
@@ -275,11 +264,9 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                     pst.setDate(2,java.sql.Date.valueOf(datePickerAloitusPaiva.getValue()));
                     pst.setDate(3,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));
                     pst.setDate(4,java.sql.Date.valueOf(datePickerAloitusPaiva.getValue()));
-                    pst.setDate(5,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));
-                    
+                    pst.setDate(5,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));   
 
-            rs = pst.executeQuery();
-            
+                    rs = pst.executeQuery();            
             while(rs.next()){
                VuokrattutTilatTaulu vuokrattut = new VuokrattutTilatTaulu();
                vuokrattut.setToimipisteNimi(rs.getString("toimipisteNimi"));
@@ -291,11 +278,18 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                vuokrattut.setSumma(rs.getInt("summa"));
            
                 //add varaus to List
-               HakuList.add(vuokrattut);
-                tbvVuokratutTaulut.setItems(HakuList);  
+                HakuList.add(vuokrattut);
+                tbvVuokratutTaulut.setItems(HakuList); 
+                
+               }if (HakuList.isEmpty()) {
+                   Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                   alert.setTitle("Haun tulokset:");
+                   alert.setHeaderText("Ei tietoja");
+                   alert.setContentText("Ei ole varauksia valitulla aikavälillä.");
+                   alert.showAndWait();
             }  
             vuokratoimistoDatabase.closeConnection(conn);
-    }
+        }
     }
     
     /**
@@ -314,9 +308,7 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
         try {
             Connect();
             showVarattu();
-            fillComboBoxToimipiste();
-            
-            
+            fillComboBoxToimipiste();          
                 
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(VuokratutTilatRaportointiViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -324,6 +316,8 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
        
         
     }
+
+   
 
    
 

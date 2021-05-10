@@ -10,7 +10,7 @@ package vuokratoimistotapplication.Luokat;
  * @author hoang & janne
  */
 public class Toimipiste {
- 
+
     private int toimipisteID;
     private String toimipisteNimi;
     private int vuorokausiHinta;
@@ -23,6 +23,10 @@ public class Toimipiste {
 
     public Toimipiste(){
         
+    }
+    
+     public Toimipiste(int toimipisteID) {
+        this.toimipisteID = toimipisteID;
     }
    
     public Toimipiste(int toimipisteID, String toimipisteNimi, int vuorokausiHinta, int toimipisteKoko) {
