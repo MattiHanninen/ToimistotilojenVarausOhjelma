@@ -483,5 +483,37 @@ public class vuokratoimistoDatabase {
         System.out.println("\t>> poistettu palvelu, jonka ID on " + palvelunID);
    
     }
+//    public static ResultSet varattuList(Connection c) throws SQLException {
+//        
+//        Statement stmt = c.createStatement();
+//        ResultSet rs = stmt.executeQuery(
+//               "SELECT toimipiste.toimipisteNimi, asiakas.etunimi, asiakas.sukunimi, asiakas.yritys, varaus.aloitusPaiva, varaus.lopetusPaiva"
+//                        + "FROM toimipiste, asiakas, varaus "
+//                        + "WHERE toimipiste.toimipisteID = varaus.toimipisteID AND asiakas.asiakasID = varaus.asiakasID"
+//        );
+//        return rs;
+//
+//            }
     
+     public static ResultSet varattuList(Connection c)throws SQLException{
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT toimipiste.toimipisteNimi,varaus.toimipisteID,asiakas.etunimi, varaus.asiakasID, varaus.aloitusPaiva, varaus.lopetusPaiva, lasku.summa"
+                        + "  FROM varaus, toimipiste, asiakas,lasku WHERE varaus.toimipisteID = toimipiste.toimipisteID AND varaus.asiakasID = asiakas.asiakasID AND lasku.asiakasID = asiakas.asiakasID"
+        );
+        System.out.println("\nVaraus lista: \n ==================");
+        while (rs.next()) {
+            System.out.println (
+            "[" + rs.getString("toimipisteNimi") + "]"
+                + rs.getInt("toimipisteID") + " "
+                + rs.getString("etunimi") + " "      
+                + rs.getInt("asiakasID") + " "        
+              + rs.getDate("aloitusPaiva") + " "
+              + rs.getDate("lopetusPaiva") + " "
+              + rs.getInt("summa")
+            );
+        } 
+        return rs;
+        }
+
 }

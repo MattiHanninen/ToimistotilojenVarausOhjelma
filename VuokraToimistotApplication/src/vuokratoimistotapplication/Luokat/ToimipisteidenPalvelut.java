@@ -15,6 +15,7 @@ public class ToimipisteidenPalvelut {
     private int palvelunID;
     private int varausID;
     private int asiakasID;
+    
    
     
     public ToimipisteidenPalvelut(){
@@ -44,7 +45,7 @@ public class ToimipisteidenPalvelut {
     public void setAsiakasID(int asiakasID) {
         this.asiakasID = asiakasID;
     }
-
+    
 
     public int getToimipisteID() {
         return toimipisteID;
@@ -61,6 +62,7 @@ public class ToimipisteidenPalvelut {
      public int getAsiakasID() {
         return asiakasID;
     }
+ 
 
     
 

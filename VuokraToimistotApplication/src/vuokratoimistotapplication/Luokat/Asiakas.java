@@ -62,6 +62,15 @@ public class Asiakas {
     public String getYritys() {
         return yritys;
     }
+
+    public void setAsiakas(String etunimi, String sukunimi, String yritys){
+        this.etunimi = etunimi;
+        this.sukunimi = sukunimi;
+        this.yritys = yritys;
+    }
+     public String getAsiakas() {
+        return (etunimi+" "+sukunimi+" "+yritys);
+    }
     
     @Override
     public String toString() {

@@ -26,6 +26,7 @@ import static vuokratoimistotDatabase.vuokratoimistoDatabase.addlaskunMaksaja;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.createDatabase;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.createTable;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
+import static vuokratoimistotDatabase.vuokratoimistoDatabase.varattuList;
 
 /**
  *
@@ -168,6 +169,7 @@ public class VuokraToimistotApplication extends Application {
 
         addVaraus(conn, 3000, "10.3.2021", "12.3.2021", 1100, 60160);
         addVaraus(conn, 3001, "12.4.2021", "15.4.2021", 1101, 60100);
+
         
         
         
@@ -233,6 +235,8 @@ public class VuokraToimistotApplication extends Application {
                 );
         addVarauksenKasittelija(conn, 2200, 3000);
         addVarauksenKasittelija(conn, 2201, 3001);
+        
+       vuokratoimistoDatabase.varattuList(conn);
         
         vuokratoimistoDatabase.closeConnection(conn);
         
