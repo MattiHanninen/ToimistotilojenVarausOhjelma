@@ -328,7 +328,7 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         Scene scene = new Scene(root);
 
         Stage stage = new Stage();
-        stage.setTitle("Toimipisteiden hallinta");
+        stage.setTitle("Laskujen hallinta");
         stage.setScene(scene);
         stage.show();
     }
