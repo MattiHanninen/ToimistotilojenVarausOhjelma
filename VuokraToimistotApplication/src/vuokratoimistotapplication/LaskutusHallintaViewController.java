@@ -113,6 +113,8 @@ public class LaskutusHallintaViewController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -130,6 +132,10 @@ public class LaskutusHallintaViewController implements Initializable {
     }    
     
      //tableview syöttää tauluun tiedot
+
+    /**
+     *
+     */
     public void updateTableviewLasku(){
         
         colLaskuID.setCellValueFactory(new PropertyValueFactory<>("laskuID"));
@@ -173,6 +179,12 @@ public class LaskutusHallintaViewController implements Initializable {
         }
     }
     
+    /**
+     *
+     * @param c
+     * @param laskuID
+     * @throws SQLException
+     */
     public static void deleteLasku(Connection c, int laskuID) throws SQLException {
         PreparedStatement ps = c.prepareStatement( 
         ("DELETE FROM lasku WHERE laskuID=?")
@@ -190,6 +202,19 @@ public class LaskutusHallintaViewController implements Initializable {
     }
     
     //muokataan opiskelijaa
+
+    /**
+     *
+     * @param c
+     * @param laskuID
+     * @param asiakasID
+     * @param erapaiva
+     * @param maksupaiva
+     * @param summa
+     * @param maksettu
+     * @param laskutusTyyppi
+     * @throws SQLException
+     */
     public static void editLasku(Connection c, int laskuID, int asiakasID, String erapaiva, String maksupaiva,
             int summa, int maksettu, String laskutusTyyppi) throws SQLException {
         
@@ -229,6 +254,13 @@ public class LaskutusHallintaViewController implements Initializable {
     }
     
     //valitsee asiakkaiden tiedot tableview:n täyttämistä varten
+
+    /**
+     *
+     * @param c
+     * @return
+     * @throws SQLException
+     */
      public static ResultSet selectLasku(Connection c) throws SQLException {
         Statement stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery(

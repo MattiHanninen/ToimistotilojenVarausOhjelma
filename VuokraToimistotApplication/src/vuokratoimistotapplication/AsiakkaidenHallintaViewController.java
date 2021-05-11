@@ -83,6 +83,8 @@ public class AsiakkaidenHallintaViewController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,6 +98,10 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         // TODO
     }   
     //tableview syöttää tauluun tiedot
+
+    /**
+     *
+     */
     public void updateTableviewAsiakas(){
         //Opiskelijat
         colId.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
@@ -135,6 +141,12 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         }
     }
     
+    /**
+     *
+     * @param c
+     * @param asiakasID
+     * @throws SQLException
+     */
     public static void deleteAsiakas(Connection c, int asiakasID) throws SQLException {
         PreparedStatement ps = c.prepareStatement( 
         ("DELETE FROM asiakas WHERE asiakasID=?")
@@ -151,6 +163,16 @@ public class AsiakkaidenHallintaViewController implements Initializable {
     }
     
     //muokataan opiskelijaa
+
+    /**
+     *
+     * @param c
+     * @param asiakasID
+     * @param etunimi
+     * @param sukunimi
+     * @param yritys
+     * @throws SQLException
+     */
     public static void editAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, String yritys) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
         ("UPDATE asiakas SET etunimi=?, sukunimi=?, yritys=? WHERE asiakasID=?")
