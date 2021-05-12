@@ -18,18 +18,18 @@
    <top>
       <MenuBar prefWidth="729.0" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#menuCloseClicked" text="Close" />
+              <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#menuCloseClicked" text="Sulje" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="471.0" prefWidth="364.0" spacing="15.0" style="-fx-border-color: GREEN;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="471.0" prefWidth="364.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-alignment: GREEN;" text="Työntekijoiden Hallinta">
+            <Label text="Työntekijoiden Hallinta">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
@@ -51,11 +51,11 @@
       </VBox>
    </left>
    <center>
-      <TableView fx:id="tbvTyontekijat" prefHeight="472.0" prefWidth="299.0" style="-fx-border-color: GREEN;" BorderPane.alignment="CENTER">
+      <TableView fx:id="tbvTyontekijat" prefHeight="472.0" prefWidth="299.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colID" prefWidth="126.0" text="ID" />
-          <TableColumn fx:id="colEtunimi" prefWidth="165.0" text="Etunimi" />
-            <TableColumn fx:id="colSukunimi" prefWidth="145.0" text="Sukunimi" />
+          <TableColumn fx:id="colEtunimi" prefWidth="227.0" text="Etunimi" />
+            <TableColumn fx:id="colSukunimi" prefWidth="242.0" text="Sukunimi" />
         </columns>
       </TableView>
    </center>

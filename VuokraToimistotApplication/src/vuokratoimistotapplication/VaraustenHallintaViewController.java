@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vuokratoimistotapplication;
 
 import java.net.URL;
@@ -15,7 +10,6 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,8 +31,11 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 
 /**
  * FXML Controller class
- *
- * @author matty & Hoang
+ * Varausten hallinta
+ * @see vuokratoimistoTDatabase,vuokratoimistotapplication.Luokat
+ * @author Matti Hänninen
+ * @author Hoang Tran
+ * @since JDK1.3
  */
 public class VaraustenHallintaViewController implements Initializable {
 
@@ -80,7 +77,11 @@ public class VaraustenHallintaViewController implements Initializable {
     ResultSet rs;
     Statement st;
      
-   
+   /**
+     * Avataan tietokantayhteys
+     * @throws ClassNotFoundException Jos ei löyty vuokratoimistoDatabase luokka
+     * @throws SQLException Tietokantavirhe
+     */
     public void Connect() throws ClassNotFoundException, SQLException{
         try {
         conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
@@ -92,49 +93,17 @@ public class VaraustenHallintaViewController implements Initializable {
          }
     }
     
-    public ObservableList<Varaus> getVarausList() throws ClassNotFoundException, SQLException{
-        ObservableList<Varaus> varausList = FXCollections.observableArrayList();
-        Connect();
-        String sql = "SELECT varausID, aloitusPaiva, lopetusPaiva, asiakasID, toimipisteID FROM varaus"; 
-        
-        try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
-            while (rs.next()){
-               Varaus varaukset = new Varaus();
-               varaukset.setVarausID(rs.getInt("varausID"));
-               varaukset.setAloitusPaiva(rs.getDate("aloitusPaiva"));
-               varaukset.setLopetusPaiva(rs.getDate("lopetusPaiva"));
-               varaukset.setAsiakasID(rs.getInt("asiakasID"));
-               varaukset.setToimipisteID(rs.getInt("toimipisteID"));
-           
-               varausList.add(varaukset);
-               vuokratoimistoDatabase.closeConnection(conn);
-            }
-        } catch (SQLException e){
-        }
-        return varausList;
-    }
-  
-    
-    
-    public void showVaraus() throws ClassNotFoundException, SQLException{
-        ObservableList<Varaus> list = getVarausList();
-            colVarausID.setCellValueFactory(new PropertyValueFactory<>("varausID"));
-            colAloitusPaiva.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
-            colLopetusPaiva.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
-            colAsiakasID.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
-            colToimipisteID.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
-            
-            tbvVaraus.setItems(list);
-            vuokratoimistoDatabase.closeConnection(conn);
-    }
-
-
+    /**
+     * Sulje varausten hallinta
+     * @param event Sulje varausten hallinta 
+     * @throws ClassNotFoundException Jos ei löyty vuokratoimistoDatabase luokka
+     */
     @FXML
     private void menuClosedClicked(ActionEvent event) throws ClassNotFoundException {
         try {
+            //Avataan tietokantayhteys
             Connect();
+            //Suljetaan tietokantayhteys
             closeConnection(conn);
         }
         catch (SQLException ex) {
@@ -144,182 +113,243 @@ public class VaraustenHallintaViewController implements Initializable {
         Stage stage = (Stage) tbvVaraus.getScene().getWindow();
         stage.close();
     }
-
+    
+    /**
+     * Luodaan varausten tietokannasta observable lista
+     * @return varausList
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
+    public ObservableList<Varaus> getVarausList() throws ClassNotFoundException, SQLException{
+        ObservableList<Varaus> varausList = FXCollections.observableArrayList();
+        //Avataan tietokantayhteys
+        Connect();
+        //Näytetaan kaikki varausten tiedot sql kysely
+        String sql = "SELECT varausID, aloitusPaiva, lopetusPaiva, asiakasID, toimipisteID FROM varaus"; 
+        try {
+            st = conn.createStatement();
+            //Suoritetaan sql kysely
+            rs = st.executeQuery(sql);
+            while (rs.next()){
+               Varaus varaukset = new Varaus();
+               varaukset.setVarausID(rs.getInt("varausID"));
+               varaukset.setAloitusPaiva(rs.getDate("aloitusPaiva"));
+               varaukset.setLopetusPaiva(rs.getDate("lopetusPaiva"));
+               varaukset.setAsiakasID(rs.getInt("asiakasID"));
+               varaukset.setToimipisteID(rs.getInt("toimipisteID"));
+               //Lisätään varausten tulosjoukosta ArrayListille
+               varausList.add(varaukset);
+               closeConnection(conn);
+            }
+        } catch (SQLException e){
+        }
+        return varausList;
+    }
+    
+    /**
+     * Näytetään varaus tiedot taululle
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
+    public void showVaraus() throws ClassNotFoundException, SQLException{
+        ObservableList<Varaus> list = getVarausList();
+            //Täytetään varausten taulun saraket
+            colVarausID.setCellValueFactory(new PropertyValueFactory<>("varausID"));
+            colAloitusPaiva.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
+            colLopetusPaiva.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
+            colAsiakasID.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
+            colToimipisteID.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
+            //Lisätään varausten ArrayLista taululle
+            tbvVaraus.setItems(list);
+            closeConnection(conn);
+    }
+    
+    /**
+     * Lisätään tietokantaan varausta
+     * @param event lisaa button action even
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
     @FXML
     private void btLisaaClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
+        //Avataan tietokantayhteys
         Connect();
-        
         int varausID = Integer.parseInt(txfVarausID.getText());
         String aloitusPaiva = DatePickerAloitusPaiva.getEditor().getText();
         String lopetusPaiva = DatePickerLopetusPaiva.getEditor().getText();
         int asiakasID = Integer.parseInt(txfAsiakasID.getText());
         int toimipisteID = Integer.parseInt(txfToimipisteID.getText());
-        
          try {
+            //Lisätään varausta sql kysely
             pst = conn.prepareStatement(
                     "INSERT INTO varaus (varausID, aloitusPaiva, lopetusPaiva, asiakasID, toimipisteID) "
                     + "VALUES (?, STR_TO_DATE(?, '%d.%m.%Y'), STR_TO_DATE(?, '%d.%m.%Y'), ?, ?)"
-            );
-            
+                    );
             pst.setInt(1, varausID);
             pst.setString(2, aloitusPaiva);
             pst.setString(3, lopetusPaiva);
             pst.setInt(4, asiakasID);
             pst.setInt(5, toimipisteID);
-            
-             
+            //Suoritetaan sql kysely
             int status = pst.executeUpdate();
-            
+            //Lisää onnistu hälytys
             if (status == 1) {
                 Alert alert = new Alert (Alert.AlertType.INFORMATION);
                 alert.setTitle ("Onnistu");
                 alert.setHeaderText("Varaus");
                 alert.setContentText("Varaus lisääminen onnistui");
                 alert.showAndWait();
-                
+                //Päivitetään ja näytetään työntekija taulu
                 tbvVaraus.refresh();
                 showVaraus();
-                
+                //Tyhjenetaan textfield
                 txfVarausID.setText("");     
                 txfAsiakasID.setText("");
                 txfToimipisteID.setText("");
                 DatePickerAloitusPaiva.setValue(null);
                 DatePickerLopetusPaiva.setValue(null);
-                
+                //Näytetaan lisätty varaus konsolille
                 System.out.println("\t>> Lisätty varaus " + varausID);
-                vuokratoimistoDatabase.closeConnection(conn);
-            
+                //Suljetaan tietokantayhteys
+                closeConnection(conn);
             } else {             
                 Alert alert = new Alert (Alert.AlertType.ERROR);
                 alert.setTitle ("Ei onnistu");
                 alert.setHeaderText("Varaus");
                 alert.setContentText("Varaus lisääminen ei onnistu");
-                alert.showAndWait();
-             
+                alert.showAndWait();             
             }           
-        }catch(SQLException e) {
-                
+        }catch(SQLException e) {       
         }
     }
-
+    
+   /**
+     * Muutetaan varausten tiedot tietokantaan
+     * @param event muokka button klikkaus
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
     @FXML
     private void btMuokkaClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
+        //Avataan tietokantayhteys
         Connect();
         int varausID = Integer.parseInt(txfVarausID.getText());
         String aloitusPaiva = DatePickerAloitusPaiva.getEditor().getText();
         String lopetusPaiva = DatePickerLopetusPaiva.getEditor().getText();
         int asiakasID = Integer.parseInt(txfAsiakasID.getText());
-        int toimipisteID = Integer.parseInt(txfToimipisteID.getText());
-        
+        int toimipisteID = Integer.parseInt(txfToimipisteID.getText());        
         try {
-            
+            //Muutetaan varausten sql kysely
             pst = conn.prepareStatement("UPDATE varaus SET aloitusPaiva = STR_TO_DATE(?, '%d.%m.%Y'), "
                     + "lopetusPaiva = STR_TO_DATE(?, '%d.%m.%Y'), asiakasID = ?, toimipisteID = ? WHERE varausID = ?");
-
             pst.setString(1, aloitusPaiva);
             pst.setString(2, lopetusPaiva);
             pst.setInt(3, asiakasID);
             pst.setInt(4, toimipisteID);
             pst.setInt(5, varausID);
-             
-           int status =  pst.executeUpdate(); 
-           if (status == 1) {
-           Alert alert = new Alert (Alert.AlertType.INFORMATION);
+            //Suoritetaan sql kysely
+            int status =  pst.executeUpdate(); 
+            if (status == 1) {
+            //Näytetään onnistu hälytys
+            Alert alert = new Alert (Alert.AlertType.INFORMATION);
                 alert.setTitle ("Onnistu");
                 alert.setHeaderText("Varaus");
                 alert.setContentText("Varaus muokaaminen onnistu");
                 alert.showAndWait();  
-            
+                //Päivitetään ja näytetään työntekija taulu
                 tbvVaraus.refresh();
                 showVaraus();
-                
+                //Tyhjenetaan textfield
                 txfVarausID.setText("");
                 DatePickerAloitusPaiva.setValue(null);
                 DatePickerLopetusPaiva.setValue(null);
                 txfAsiakasID.setText("");
                 txfToimipisteID.setText("");
-                
+                //Näytetaan muokattu varaus konsolille
                 System.out.println("\t>> Muokattu varaus " + varausID);
-                
-                vuokratoimistoDatabase.closeConnection(conn);
-                
+                //Suljetaan tietokantayhteys
+                closeConnection(conn);     
            } else {             
                 Alert alert = new Alert (Alert.AlertType.ERROR);
                 alert.setTitle ("Ei onnistu");
                 alert.setHeaderText("Varaus");
                 alert.setContentText("Varaus muokaaminen ei onnistu");
-                alert.showAndWait();
-             
-            }
-                     
+                alert.showAndWait();      
+            }            
         }catch(SQLException e) {   
             throw e;
         }
     }
-
+    
+    /**
+     * Poistetaan varausten tietokannasta
+     * @param event poista button klikkaus
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     * @throws Exception Muut virheet
+     */
     @FXML
     private void btPoistaClicked(ActionEvent event) throws ClassNotFoundException, Exception {
+        //Avataan tietokantayhteys
         Connect();
-        int  varausID = Integer.parseInt(txfVarausID.getText());
-         
+        int  varausID = Integer.parseInt(txfVarausID.getText());        
         try {
+            //Poistetaan varausta sql kysely
             pst = conn.prepareStatement("DELETE FROM varaus WHERE varausID=?");           
             pst.setInt(1, varausID);   
-            
+            //Suoritetaan sql kysely
             rs = pst.executeQuery();
-            
-                tbvVaraus.refresh();
-                showVaraus();
-                
-                txfVarausID.setText("");
-                DatePickerAloitusPaiva.setValue(null);
-                DatePickerLopetusPaiva.setValue(null);
-                txfAsiakasID.setText("");
-                txfToimipisteID.setText("");
-                
-                System.out.println("\t>> Poista varaus " + varausID);
-                vuokratoimistoDatabase.closeConnection(conn);
-            
-             Alert alert = new Alert (Alert.AlertType.INFORMATION);
-                   alert.setTitle ("Onnistu");
-                   alert.setHeaderText("Varaus");
-                   alert.setContentText("Varaus poistaminen onnistu");
-                   alert.showAndWait();  
-            
-            System.out.println("\t>> Poistu varaus " + varausID);    
-            vuokratoimistoDatabase.closeConnection(conn);  
+            //Päivitetään ja näytetään 
+            tbvVaraus.refresh();
+            showVaraus();
+            //Tyhjennetaan textfield    
+            txfVarausID.setText("");
+            DatePickerAloitusPaiva.setValue(null);
+            DatePickerLopetusPaiva.setValue(null);
+            txfAsiakasID.setText("");
+            txfToimipisteID.setText("");
+            //Poistetaan onnistu hälytys
+            Alert alert = new Alert (Alert.AlertType.INFORMATION);
+                 alert.setTitle("Onnistu");
+                alert.setHeaderText("Varaus");
+                alert.setContentText("Varaus poistaminen onnistu");
+                alert.showAndWait(); 
+            //Näytetaan muokattu varaus konsolille
+            System.out.println("\t>> Poistu varaus " + varausID); 
+            //Suljetaan tietokantayhteys
+            closeConnection(conn);  
  
             if (rs == null) { 
                 throw new Exception ("Varaus poistaminen ei onnistu");
             }
-         } catch (SQLException e) {throw e;}
-       
+        } catch (SQLException e) {
+                throw e;
+            }      
     }
-  
-    
-    
+
     /** Haku varausID:lla, asiakasID:lla, toimipisteID:lla
-     * @param event
-     * @throws ClassNotFoundException
-     * @throws SQLException 
+     * @param event poista button klikkaus
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
      */ 
     @FXML
     private void hakuVarausLista(KeyEvent event) throws ClassNotFoundException, SQLException{
-        
-         Connect();
-         
-         //Luoda varaus lista
+        //Avataan tietokantayhteys
+        Connect();         
+        //Luoda varaus lista
          ObservableList<Varaus> List = FXCollections.observableArrayList();
          if(txfHakuVarausID.getText().equals("")){
-                showVaraus();
-                
+                showVaraus();       
          } else {
+            //Luodaan haku sql kysely
             pst = conn.prepareStatement(
                     " SELECT * FROM varaus WHERE varausID LIKE '%" + txfHakuVarausID.getText()+ "%'"    
                     + "UNION SELECT * FROM varaus WHERE asiakasID LIKE '%" + txfHakuVarausID.getText()+ "%' "
                     + "UNION SELECT * FROM varaus WHERE toimipisteID LIKE '%" + txfHakuVarausID.getText()+ "%' "
             );
+            //Suoritetaan sql kysely
             rs = pst.executeQuery();
+            //Halu tulos joukko
             while(rs.next()){
                 Varaus varaukset = new Varaus();
                 varaukset.setVarausID(rs.getInt("varausID"));
@@ -327,29 +357,32 @@ public class VaraustenHallintaViewController implements Initializable {
                 varaukset.setLopetusPaiva(rs.getDate("lopetusPaiva"));
                 varaukset.setAsiakasID(rs.getInt("asiakasID"));
                 varaukset.setToimipisteID(rs.getInt("toimipisteID"));
-           
-                //add varaus to List
+                //Lisätään varausta ArrayListalle
                 List.add(varaukset);
-              
+                //Päivitetaan taulun saraket
                 colVarausID.setCellValueFactory(new PropertyValueFactory<>("varausID"));
                 colAloitusPaiva.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
                 colLopetusPaiva.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
                 colAsiakasID.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
                 colToimipisteID.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
-            
+                //Päivitetaan taulun
                 tbvVaraus.setItems(List);
-                vuokratoimistoDatabase.closeConnection(conn);   
-
+                //Suljetaan tietokantayhteys
+                closeConnection(conn);   
             }  
-         }           
+        }           
     }
     /**
      * Initializes the controller class.
+     * @param url URL
+     * @param rb RB
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            //Avataan tietokantayhteys
             Connect();
+            //Näytetään varaus talu
             showVaraus();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(VaraustenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vuokratoimistotapplication;
 
 import java.io.File;
@@ -49,11 +44,13 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 
 /**
  * FXML Controller class
- *
- * @author matty & Hoang
+ * Vuokratut Tilat Raportointi hallinta
+ * @see vuokratoimistoTDatabase,vuokratoimistotapplication.Luokat
+ * @author Matti Hänninen
+ * @author Hoang Tran
+ * @since JDK1.3
  */
 public class VuokratutTilatRaportointiViewController implements Initializable {
-
     @FXML
     private ComboBox<Integer> comboBoxToimipiste;
     @FXML
@@ -64,18 +61,23 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     private DatePicker datePickerLopetusPaiva;
     @FXML
     private Button btEtsi;
-    private TableView<Varaus> tbvVaraus;    
+    @FXML
+    private TableView<Varaus> tbvVaraus;
+    @FXML    
     private TableColumn<Varaus, Integer> colVarausID;
+    @FXML
     private TableColumn<Varaus, Date> colAloitusPaiva;
+    @FXML
     private TableColumn<Varaus, Date> colLopetusPaiva;
+    @FXML
     private TableColumn<Varaus, Integer> colAsiakasID;
+    @FXML
     private TableColumn<Varaus, Integer> colToimipisteID;
-
-    
     @FXML
     private VBox txfHakuTulos;
     @FXML
     private TextField txfHakuID;
+    @FXML
     private TextArea txtAreaHakuTulos;
     @FXML
     private TableView<VuokrattutTilatTaulu> tbvVuokratutTaulut;
@@ -93,57 +95,47 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     private TableColumn<VuokrattutTilatTaulu, String> colSukunimi;
     @FXML
     private TableColumn<VuokrattutTilatTaulu, Integer> colSumma;
-  
-   
     @FXML
     private WebView webView;
     @FXML
     private MenuItem menuItemTemplete;
     @FXML
     private MenuItem menuItemReport;
-    
-     
+  
     Connection conn;
     PreparedStatement pst;
     ResultSet rs;
     Statement st;
     
+    //HTML otsiikon tiedot
     private static final String TOIMIPISTE = "__TOIMIPISTE__";
     private static final String PVM = "__DATE__";
     private static final String TABLE_CONTENT = "__TABLE__";
-
-    
-   //Avata tietokanta 
+  
+    /**
+     * Avataan tietokantayhteys
+     * @throws ClassNotFoundException Jos ei löyty vuokratoimistoDatabase luokka
+     * @throws SQLException Tietokantavirhe
+     */ 
     public void Connect() throws ClassNotFoundException, SQLException{
         try {
         conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
         vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
-        //System.out.println("\t>> Yhteys ok");
         } catch (SQLException e) {
             System.out.println("\t>> Yhteys epäonistu");
          }
     }
     
-     // Fill contends to the comboBox
-     private void fillComboBoxToimipiste() throws ClassNotFoundException, SQLException {
-        try{    
-            Connect();
-            // Toimipsite tiedot tietokannasta
-            rs = vuokratoimistoDatabase.selectToimipiste(conn);
-            while (rs.next()) {            
-                comboBoxToimipiste.getItems().addAll(rs.getInt(1));
-            } 
-            vuokratoimistoDatabase.closeConnection(conn);
-           }catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(LisapalvelutLaitteetRaportointiViewController.class.getName()).log(Level.SEVERE, null, ex);
-           }
-    }
-     
-     // Close VuokratutTilatRaportointi scene
+     /**
+     * Sulje vuokratut tilat raportointi hallinta
+     * @param event Sulje varausten hallinta 
+     * @throws ClassNotFoundException Jos ei löyty vuokratoimistoDatabase luokka
+     */
     @FXML
     private void menuItemCloseClicked(ActionEvent event) throws ClassNotFoundException {       
         try {
+            //Avataan tietokantayhteys
             Connect();
             closeConnection(conn);
         }
@@ -155,19 +147,47 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
         stage.close();
     }
     
- 
-    //Luoda Vuokrattu Tilat ObservableList
+    /**
+     * Täytetään toimipiste comboBox:ille
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
+     private void fillComboBoxToimipiste() throws ClassNotFoundException, SQLException {
+        try{ 
+            //Avataan tietokantayhteys
+            Connect();
+            // Toimipsite tiedot tietokannasta
+            rs = vuokratoimistoDatabase.selectToimipiste(conn);
+            while (rs.next()) {            
+                comboBoxToimipiste.getItems().addAll(rs.getInt(1));
+            } 
+            closeConnection(conn);
+           }catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(LisapalvelutLaitteetRaportointiViewController.class.getName()).log(Level.SEVERE, null, ex);
+           }
+    }
+
+     /**
+     * Luodaan VuokrattutTilat tietokannasta observable lista
+     * @return vuokrattutTilatList ArrayLista
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
     public ObservableList<VuokrattutTilatTaulu> getVuokrattutTilatList() throws ClassNotFoundException, SQLException {
         ObservableList<VuokrattutTilatTaulu> vuokrattutTilatList = FXCollections.observableArrayList();
+        //Avataan tietokantayhteys
         Connect();
+        //Näytetään VuokrattutTilatTaulu sql kysely
         String sql = "SELECT toimipiste.toimipisteNimi, asiakas.yritys, asiakas.etunimi,asiakas.sukunimi, varaus.asiakasID, varaus.aloitusPaiva, varaus.lopetusPaiva, lasku.summa"
                         + " FROM varaus, toimipiste, asiakas,lasku"
                         + " WHERE varaus.toimipisteID = toimipiste.toimipisteID AND varaus.asiakasID = asiakas.asiakasID AND lasku.asiakasID = asiakas.asiakasID"
                 ; 
         try {
             st = conn.createStatement();
+            //Suoritetaan sql kysely
             rs = st.executeQuery(sql);
             while (rs.next()){
+                //Näytetään vuokrattut tilat tulosjouko
                 VuokrattutTilatTaulu vuokrattut = new VuokrattutTilatTaulu();
                 vuokrattut.setToimipisteNimi(rs.getString("toimipisteNimi"));
                 vuokrattut.setYritys(rs.getString("yritys"));
@@ -176,26 +196,100 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                 vuokrattut.setAloitusPaiva(rs.getDate("aloitusPaiva"));
                 vuokrattut.setLopetusPaiva(rs.getDate("lopetusPaiva"));
                 vuokrattut.setSumma(rs.getInt("summa"));
+                //lisätään vuokrattut tilat tulosjoukosta ArrayListille
                 vuokrattutTilatList.add(vuokrattut);
-                vuokratoimistoDatabase.closeConnection(conn);
+                closeConnection(conn);
             }
         } catch (SQLException e){
             }
              return vuokrattutTilatList;
     }
-
+    
+     /**
+     * Näytetään vuokrattutTilat tiedot taululle
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */
     public void showVarattu() throws ClassNotFoundException, SQLException{
-        ObservableList<VuokrattutTilatTaulu> Tilattulist =  getVuokrattutTilatList() ;
+        ObservableList<VuokrattutTilatTaulu> Tilattulist =  getVuokrattutTilatList();
+        //Asennaan VuokrattutTilatTaulu ArrayListasta
         tbvVuokratutTaulut.setItems(Tilattulist);
-        vuokratoimistoDatabase.closeConnection(conn);
+        closeConnection(conn);
     }
     
-    
-     @FXML
+    /** Etsi ostettujen lisäpalvelujen ja vuokrattujen
+     * aikajaksolla valituissa toimipisteissä
+     * @param event poista button klikkaus
+     * @throws ClassNotFoundException Luokka ei löyty
+     * @throws SQLException Tietokantavirhe
+     */ 
+    @FXML        
+    private void btEtsiClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
+        //Avataan tietokantayhteys
+        Connect();
+        //Luoda vuokrattutTilat lista
+        ObservableList<VuokrattutTilatTaulu> HakuList = FXCollections.observableArrayList();
+        //Jos kenttä on tyhjä
+        if(comboBoxToimipiste.getValue().equals("") && datePickerAloitusPaiva.getValue().equals("") && datePickerLopetusPaiva.getValue().equals("")){
+                showVarattu();   
+        } 
+        else {
+            //Etsi sql kysely
+            pst = conn.prepareStatement(
+                    "SELECT toimipiste.toimipisteNimi, asiakas.yritys, asiakas.etunimi, asiakas.sukunimi, varaus.asiakasID, varaus.aloitusPaiva, varaus.lopetusPaiva, lasku.summa "
+                        + " FROM varaus, toimipiste, asiakas, lasku "
+                        + " WHERE varaus.toimipisteID = toimipiste.toimipisteID AND varaus.asiakasID = asiakas.asiakasID AND lasku.asiakasID = asiakas.asiakasID "
+                        + " AND toimipiste.toimipisteID = ?"
+                        + " AND ((aloitusPaiva BETWEEN ? AND ?)" 
+                        + " OR (lopetusPaiva BETWEEN ? AND ?))"
+                         );
+                    pst.setInt(1, comboBoxToimipiste.getValue());
+                    pst.setDate(2,java.sql.Date.valueOf(datePickerAloitusPaiva.getValue()));
+                    pst.setDate(3,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));
+                    pst.setDate(4,java.sql.Date.valueOf(datePickerAloitusPaiva.getValue()));
+                    pst.setDate(5,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));   
+                    //Suoritetaan sql kysely
+                    rs = pst.executeQuery(); 
+            //Näytetaan tulosjouko
+            while(rs.next()){
+               VuokrattutTilatTaulu vuokrattut = new VuokrattutTilatTaulu();
+               vuokrattut.setToimipisteNimi(rs.getString("toimipisteNimi"));
+               vuokrattut.setYritys(rs.getString("yritys"));
+               vuokrattut.setEtunimi(rs.getString("etunimi"));
+               vuokrattut.setSukunimi(rs.getString("sukunimi"));               
+               vuokrattut.setAloitusPaiva(rs.getDate("aloitusPaiva"));
+               vuokrattut.setLopetusPaiva(rs.getDate("lopetusPaiva"));
+               vuokrattut.setSumma(rs.getInt("summa"));
+               //lisätään vuokrattut tilat tulosjoukosta ArrayListille
+               HakuList.add(vuokrattut);
+               //Asennaan VuokrattutTilatTaulu ArrayListasta
+               tbvVuokratutTaulut.setItems(HakuList); 
+               //Näytetään hälytys jos lista on tyhjä
+               }if (HakuList.isEmpty()) {
+                   Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                   alert.setTitle("Haun tulokset:");
+                   alert.setHeaderText("Ei tietoja");
+                   alert.setContentText("Ei ole varauksia valitulla aikavälillä.");
+                   alert.showAndWait();
+            }  
+            closeConnection(conn);
+        }
+    }
+
+    /**
+     * Raporttin template valikkokohtassa 
+     * @param event raportti template 
+     */
+    @FXML
     private void menuItemTempleteClicked(ActionEvent event) {
         loadWebPage("./Report/vuokratuttilat.html");
     }
-
+    
+    /**
+     * Raporttin template valikkokohtassa  valikkokohtassa 
+     * @param event varaus report
+     * @throws IOException tiedosto virhe
+     */
     @FXML
     private void menuItemReportClicked(ActionEvent event) throws IOException {
         // 1. kopioi pohja
@@ -212,18 +306,27 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
    
         content = content.replaceAll(TOIMIPISTE,colToimipste.getCellData(0) );
         content = content.replaceAll(PVM, LocalDateTime.now().toString());
-        //content = content.replaceAll(TABLE_CONTENT, createRow();
-         content = content.replaceAll(TABLE_CONTENT, createRow(colToimipste.getCellData(0), colYritys.getCellData(0),colAloitusPvm.getCellData(0), colLopetusPvm.getCellData(0), colSumma.getCellData(0)));
         
+        //Täytetään talut saraket
+        content = content.replaceAll(TABLE_CONTENT, createRow(colToimipste.getCellData(0), colYritys.getCellData(0),colAloitusPvm.getCellData(0), colLopetusPvm.getCellData(0), colSumma.getCellData(0)));
+
         // 3. Lataa muodostettu lasku
         Files.write(dest.toPath(), content.getBytes(UTF_8));
         
         // 4. Näytä muodostettu lasku
         loadWebPage(dest.toPath().toString());
     }
-     // Muodostetaan laskun yksi rivi html muodossa
-     private String createRow(String service, String desc, Date aloitusPvm, Date lopetusPvm, int summa) {
-         return "<tr>" +
+    /**
+     * Muodostetaan laskun yksi rivi html muodossa
+     * @param service Toimipiste
+     * @param desc Yritys nimi
+     * @param aloitusPvm Aloitus päivämäärä
+     * @param lopetusPvm Lopetus päivämäärä
+     * @param summa Varaus summa
+     * @return toimipiste,Yritys nimi, aloitus päivämäärä, lopetus päivämäräsumma
+     */
+    private String createRow(String service, String desc, Date aloitusPvm, Date lopetusPvm, int summa) {
+        return "<tr>" +
                 "<td class=\"service\">" +  service + "</td>" + 
                 "<td class=\"desc\">" +  desc + "</td>" +
                 "<td class=\"desc\">" + aloitusPvm+ "</td>" +
@@ -231,7 +334,10 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                 "<td class=\"total\">" + summa + "€</td>"
                 ;
     }
-
+    /**
+     * Ladataam html path
+     * @param path raportti html
+     */
      private void loadWebPage(String path){
         WebEngine engine = webView.getEngine();
         File f = new File(path);
@@ -239,103 +345,15 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     }
 
     
-    // Haku ID:lla
-    @FXML
-    private void hakuIDInput(KeyEvent event) throws ClassNotFoundException, SQLException {
-         Connect();
-         
-         //Luoda varaus lista
-         ObservableList<VuokrattutTilatTaulu> HakuList = FXCollections.observableArrayList();
-         if(txfHakuID.getText().equals("")){
-                showVarattu();
-                
-         } else {
-            pst = conn.prepareStatement(
-                    "SELECT toimipiste.toimipisteNimi, asiakas.yritys,asiakas.etunimi,asiakas.sukunimi,  varaus.asiakasID, varaus.aloitusPaiva, varaus.lopetusPaiva, lasku.summa"
-                        + "  FROM varaus, toimipiste, asiakas,lasku "
-                        + " WHERE varaus.toimipisteID = toimipiste.toimipisteID "
-                        + "AND varaus.asiakasID = asiakas.asiakasID "
-                        + "AND lasku.asiakasID = varaus.asiakasID AND varaus.varausID LIKE '%" 
-                        + txfHakuID.getText()+ "%'"   
-            );
-            rs = pst.executeQuery();
-            while(rs.next()){
-                VuokrattutTilatTaulu vuokrattut = new VuokrattutTilatTaulu();
-                vuokrattut.setToimipisteNimi(rs.getString("toimipisteNimi"));
-                vuokrattut.setYritys(rs.getString("yritys"));
-                vuokrattut.setEtunimi(rs.getString("etunimi"));
-                vuokrattut.setSukunimi(rs.getString("sukunimi"));
-                vuokrattut.setAloitusPaiva(rs.getDate("aloitusPaiva"));
-                vuokrattut.setLopetusPaiva(rs.getDate("lopetusPaiva"));
-                vuokrattut.setSumma(rs.getInt("summa"));
-                
-                // Add vuokratut tilat lista
-                HakuList.add(vuokrattut);
-                tbvVuokratutTaulut.setItems(HakuList);  
-            } 
-           vuokratoimistoDatabase.closeConnection(conn);          
-         }                  
-    }
-
-    //Etsi tietokannasta
-    @FXML        
-    private void btEtsiClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
-       Connect();
-        //Luoda vuokrattutTilat lista
-        ObservableList<VuokrattutTilatTaulu> HakuList = FXCollections.observableArrayList();
-            
-        if(comboBoxToimipiste.getValue().equals("") && datePickerAloitusPaiva.getValue().equals("") && datePickerLopetusPaiva.getValue().equals("")){
-                showVarattu();   
-            } 
-            else {
-            
-            pst = conn.prepareStatement(
-                    
-                    "SELECT toimipiste.toimipisteNimi, asiakas.yritys, asiakas.etunimi, asiakas.sukunimi, varaus.asiakasID, varaus.aloitusPaiva, varaus.lopetusPaiva, lasku.summa "
-                        + " FROM varaus, toimipiste, asiakas, lasku "
-                        + " WHERE varaus.toimipisteID = toimipiste.toimipisteID AND varaus.asiakasID = asiakas.asiakasID AND lasku.asiakasID = asiakas.asiakasID "
-                        + " AND toimipiste.toimipisteID = ?"
-                        + " AND ((aloitusPaiva BETWEEN ? AND ?)" 
-                        + " OR (lopetusPaiva BETWEEN ? AND ?))"
-            );
-                    pst.setInt(1, comboBoxToimipiste.getValue());
-                    pst.setDate(2,java.sql.Date.valueOf(datePickerAloitusPaiva.getValue()));
-                    pst.setDate(3,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));
-                    pst.setDate(4,java.sql.Date.valueOf(datePickerAloitusPaiva.getValue()));
-                    pst.setDate(5,java.sql.Date.valueOf(datePickerLopetusPaiva.getValue()));   
-
-                    rs = pst.executeQuery();            
-            while(rs.next()){
-               VuokrattutTilatTaulu vuokrattut = new VuokrattutTilatTaulu();
-               vuokrattut.setToimipisteNimi(rs.getString("toimipisteNimi"));
-               vuokrattut.setYritys(rs.getString("yritys"));
-               vuokrattut.setEtunimi(rs.getString("etunimi"));
-               vuokrattut.setSukunimi(rs.getString("sukunimi"));               
-               vuokrattut.setAloitusPaiva(rs.getDate("aloitusPaiva"));
-               vuokrattut.setLopetusPaiva(rs.getDate("lopetusPaiva"));
-               vuokrattut.setSumma(rs.getInt("summa"));
-           
-                //add varaus to List
-                HakuList.add(vuokrattut);
-                tbvVuokratutTaulut.setItems(HakuList); 
-                
-               }if (HakuList.isEmpty()) {
-                   Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                   alert.setTitle("Haun tulokset:");
-                   alert.setHeaderText("Ei tietoja");
-                   alert.setContentText("Ei ole varauksia valitulla aikavälillä.");
-                   alert.showAndWait();
-            }  
-            vuokratoimistoDatabase.closeConnection(conn);
-        }
-    }
-    
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+                //Päivitetaan VuokrattutTilatTaulun sarake
                 colToimipste.setCellValueFactory(new PropertyValueFactory<>("toimipisteNimi"));
                 colYritys.setCellValueFactory(new PropertyValueFactory<>("yritys"));
                 colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
@@ -344,18 +362,16 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
                 colLopetusPvm.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
                 colSumma.setCellValueFactory(new PropertyValueFactory<>("summa"));
         try {
+            //Avataan tietokantayhteys
             Connect();
+            //Näytetään varaus talu
             showVarattu();
-            fillComboBoxToimipiste();          
-                
+            //Tätetään comboBox
+            fillComboBoxToimipiste();                   
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(VuokratutTilatRaportointiViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        
+        }       
     }
-
-
 }
 
        

@@ -10,15 +10,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="896.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.VuokratutTilatRaportointiViewController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1077.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vuokratoimistotapplication.VuokratutTilatRaportointiViewController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar prefHeight="0.0" prefWidth="1077.0" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -31,33 +30,26 @@
       </MenuBar>
    </top>
    <center>
-      <VBox fx:id="txfHakuTulos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="999.0" spacing="15.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="txfHakuTulos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="965.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="67.0" prefWidth="774.0" style="-fx-font-size: 28; -fx-font-weight: bold;" text="Vuokrattu Tilat Raportointi">
                <padding>
                   <Insets top="20.0" />
                </padding></Label>
-            <HBox prefHeight="41.0" prefWidth="815.0">
+            <HBox prefHeight="41.0" prefWidth="815.0" spacing="15.0">
                <children>
                   <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="144.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Toimipiste" />
-                  <ComboBox fx:id="comboBoxToimipiste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28.0" prefWidth="839.0" />
+                  <ComboBox fx:id="comboBoxToimipiste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28.0" prefWidth="795.0" />
                </children>
             </HBox>
-            <HBox prefHeight="42.0" prefWidth="815.0" spacing="20.0">
+            <HBox prefHeight="38.0" prefWidth="893.0" spacing="15.0">
                <children>
-                  <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="144.0" style="-fx-font-size: 18; -fx-font-weight: Bold;" text="Aikaväli" />
-                  <DatePicker fx:id="datePickerAloitusPaiva" prefHeight="26.0" prefWidth="479.0" />
-                  <DatePicker fx:id="datePickerLopetusPaiva" prefHeight="26.0" prefWidth="409.0" />
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="161.0" style="-fx-font-size: 18; -fx-font-weight: Bold;" text="Aikaväli" />
+                  <DatePicker fx:id="datePickerAloitusPaiva" prefHeight="26.0" prefWidth="356.0" />
+                  <DatePicker fx:id="datePickerLopetusPaiva" prefHeight="26.0" prefWidth="323.0" />
+                  <Button fx:id="btEtsi" mnemonicParsing="false" onAction="#btEtsiClicked" prefHeight="32.0" prefWidth="195.0" style="-fx-font-weight: BOLD; -fx-font-size: 14; -fx-background-color: LIGHTBLUE; -fx-text-fill: BLACK;" text="Etsi " />
                </children>
             </HBox>
-            <HBox prefHeight="27.0" prefWidth="888.0">
-               <children>
-                  <Label prefHeight="23.0" prefWidth="144.0" style="-fx-font-size: 18; -fx-font-weight: Bold;" text="Haku ID" />
-                  <Label prefHeight="18.0" prefWidth="116.0" />
-                  <TextField fx:id="txfHakuID" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#hakuIDInput" prefHeight="26.0" prefWidth="865.0" promptText="Syöte varausID" />
-               </children>
-            </HBox>
-            <Button fx:id="btEtsi" mnemonicParsing="false" onAction="#btEtsiClicked" prefHeight="34.0" prefWidth="71.0" style="-fx-font-weight: BOLD; -fx-font-size: 18; -fx-background-color: LIGHTBLUE; -fx-text-fill: BLACK;" text="Etsi " />
             <HBox prefHeight="180.0" prefWidth="888.0">
                <children>
                   <TableView fx:id="tbvVuokratutTaulut" prefHeight="150.0" prefWidth="888.0">
@@ -83,6 +75,6 @@
       </VBox>
    </center>
    <bottom>
-      <WebView fx:id="webView" prefHeight="405.0" prefWidth="1008.0" BorderPane.alignment="CENTER" />
+      <WebView fx:id="webView" prefHeight="401.0" prefWidth="1077.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
