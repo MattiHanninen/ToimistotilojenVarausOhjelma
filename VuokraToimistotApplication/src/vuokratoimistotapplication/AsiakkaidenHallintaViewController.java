@@ -46,43 +46,44 @@ import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
 public class AsiakkaidenHallintaViewController implements Initializable {
 
     @FXML
-    private Label lblAsiakkaat;
+    private Label lblAsiakkaat; /**Label lblAsiakkaat*/
     @FXML
-    private TextField txtId;
+    private TextField txtId; /**TextField txtId*/
     @FXML
-    private TextField txtEtunimi;
+    private TextField txtEtunimi; /**TextField txtEtunimi*/
     @FXML
-    private TextField txtSukunimi;
+    private TextField txtSukunimi; /**TextField txtSukunimi*/
     @FXML
-    private TextField txtYritys;
+    private TextField txtYritys; /**TextField txtYritys*/
     @FXML
-    private HBox btnMuokkaa;
+    private HBox btnMuokkaa; /**HBox btnMuokkaa*/
     @FXML
-    private Button btnLisaa;
+    private Button btnLisaa; /**Button btnLisaa*/
     @FXML
-    private Button btnPoista;
+    private Button btnPoista; /**Button btnPoista*/
     @FXML
-    private TableView<Asiakas> tableAsiakas;
+    private TableView<Asiakas> tableAsiakas; /**TableView tableAsiakas*/
     
     @FXML
-    private TableColumn<Asiakas, String> colEtunimi;
+    private TableColumn<Asiakas, String> colEtunimi; /**TableColumn colEtunimi*/
     @FXML
-    private TableColumn<Asiakas, String> colSukunimi;
+    private TableColumn<Asiakas, String> colSukunimi; /**TableColumn colSukunimi*/
     @FXML
-    private TableColumn<Asiakas, String> colYritys;
+    private TableColumn<Asiakas, String> colYritys; /**TableColumn colYritys*/
     @FXML
-    private TableColumn<Asiakas, Integer> colId;
+    private TableColumn<Asiakas, Integer> colId; /**TableColumn colId*/
     
-    //vuokratoimistoDatabase olio
+  
     vuokratoimistoDatabase dataOlio = new vuokratoimistoDatabase();
-    //resultset
-    //private ResultSet rs = null;
+    
     @FXML
-    private TextField txfEtsiAsikasID;
+    private TextField txfEtsiAsikasID; /**TextField txfEtsiAsikasID*/
     
 
     /**
      * Initializes the controller class.
+     * @param url url
+     * @param rb resourcebundle
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,35 +94,34 @@ public class AsiakkaidenHallintaViewController implements Initializable {
      txtEtunimi.setFocusTraversable(false);
      txtSukunimi.setFocusTraversable(false);
      txtYritys.setFocusTraversable(false);
-        // TODO
+     
     }   
-    //tableview syöttää tauluun tiedot
+
+
+    /**
+     *tableview syöttää tauluun tiedot
+     */
     public void updateTableviewAsiakas(){
-        //Opiskelijat
+        
         colId.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
         colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
         colSukunimi.setCellValueFactory(new PropertyValueFactory<>("sukunimi"));
         colYritys.setCellValueFactory(new PropertyValueFactory<>("yritys"));
         
         try {
-            // Luodaan Connection String olemassa olevaan tietokantaan
             Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
             
-            // Otetaan tietokanta kayttoon
             vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
             
-            // Haetaan tiedot tietokannasta
             ResultSet namesResult = vuokratoimistoDatabase.selectAsiakas(conn);
             
-            // Lisätään uudet person luokan ilmentymät TableView komponenttiin
             while (namesResult.next()) {
                 Asiakas person = new Asiakas(namesResult.getInt("asiakasID"), namesResult.getString("etunimi"), namesResult.getString("sukunimi"), namesResult.getString("yritys"));
                 tableAsiakas.getItems().add(person);
 
             }
             
-            //Suljetaan yhteys
             vuokratoimistoDatabase.closeConnection(conn);
         } catch (SQLException ex) {
             Logger.getLogger(AsiakkaidenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,35 +135,45 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         }
     }
     
+    /**
+     *Poistaa aiakkaan tiedot tietokannasta
+     * @param c mariaDB etäyhteys
+     * @param asiakasID asettaa asiakkaan yksilöivän ID:n
+     * @throws SQLException SQL virheet kerää
+     */
     public static void deleteAsiakas(Connection c, int asiakasID) throws SQLException {
         PreparedStatement ps = c.prepareStatement( 
         ("DELETE FROM asiakas WHERE asiakasID=?")
                 
     );
     
-        //parametri jonka mukaan poistetaan
         ps.setInt(1, asiakasID);
     
-        //toteutetaan delete toiminto
         ps.execute();
         System.out.println("\t>> poistettu opiskelija_id " + asiakasID);
    
     }
     
-    //muokataan opiskelijaa
+
+    /**
+     *muokataan opiskelijaa
+     * @param c yhteys tietokantaan
+     * @param asiakasID asikaan id
+     * @param etunimi asiakkaan etunimi
+     * @param sukunimi asiakkaan sukunimi
+     * @param yritys asikaan yrityksen nimi
+     * @throws SQLException SQL virheet 
+     */
     public static void editAsiakas(Connection c, int asiakasID, String etunimi, String sukunimi, String yritys) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
         ("UPDATE asiakas SET etunimi=?, sukunimi=?, yritys=? WHERE asiakasID=?")
         );
 
-        //Laitetaan oikeat parametrit
         ps.setString(1,etunimi);
         ps.setString(2,sukunimi);
         ps.setString(3,yritys);
         ps.setInt(4,asiakasID); 
    
-   
-        //Toteutetaan muutokset
         try {
         ps.execute();
         } catch (SQLException e){
@@ -177,82 +187,82 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         System.out.println("\t>> Päivitetty asiakasID tiedot: " + asiakasID);
         
     }
-
+    /**
+    * Lisää asiakkaan tietokantaan
+    * @param event klikataan lisää buttonia
+    * @throws SQLException  SQL virhe
+    */
     @FXML
     private void LisaaAsiakas(ActionEvent event) throws SQLException {
-        // Luodaan Connection String olemassa olevaan tietokantaan
+        
         Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
              
-        // Otetaan tietokanta kayttoon
         vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
         
-        //Syötetään tiedot ruudulta 
         vuokratoimistoDatabase.addAsiakas(conn, Integer.parseInt(txtId.getText()), txtEtunimi.getText(), txtSukunimi.getText(), txtYritys.getText());
      
-        //Tyhjennetään aiempi Asiakas tableview
         clearTableviewAsiakas();
         
-        //Paivitetaan Asiakas tableview taulu
         updateTableviewAsiakas();
         
-        //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
     }
-
+    /**
+     * Muokkaa asiakkaan tietoja tietokannasta
+     * @param event klikataan muokkaa buttonia
+     * @throws SQLException  SQL virhe
+     */
     @FXML
     private void MuokkaaAsiakas(ActionEvent event) throws SQLException {
-        // Luodaan Connection String olemassa olevaan tietokantaan
+       
         Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
                
-        // Otetaan tietokanta kayttoon
         vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
-        
-        //muokkaa asiakkaan tiedot
         
         editAsiakas(conn, Integer.parseInt(txtId.getText()), txtEtunimi.getText(),
                 txtSukunimi.getText(), txtYritys.getText());
         
-        //Tyhjennetään aiempi Asiakas tableview
         clearTableviewAsiakas();
         
-        //Paivitetaan Asiakas tableview taulu
         updateTableviewAsiakas();
         
-        //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
     }
-
+    /**
+     * Poistaa asikkaan tiedot tietokannasta 
+     * @param event klikataan poista buttonia
+     * @throws SQLException SQL virheet
+     */
     @FXML
     private void PoistaAsiakas(ActionEvent event) throws SQLException {
-        // Luodaan Connection String olemassa olevaan tietokantaan
+      
         Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
                
-        // Otetaan tietokanta kayttoon
         vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
         
-        //Poistetaan asiakkaan tiedot
         deleteAsiakas(conn, Integer.parseInt(txtId.getText()));
         
-        //Tyhjennetään aiempi Asiakas tableview
         clearTableviewAsiakas();
         
-        //Paivitetaan Asiakas tableview taulu
         updateTableviewAsiakas();
         
-        //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
     }
-
+    
+    /**
+     * Textfieldit täyttyvät, kun klikataan tableviewta
+     * @param event klikataan tablevieta
+     * @throws SQLException SQL virheet
+     */
     @FXML
     private void tblViewAsiakasClickedFilllTextfield(MouseEvent event) throws SQLException {
-        // Luodaan Connection String olemassa olevaan tietokantaan
+  
         Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
              
-        // Otetaan tietokanta kayttoon
         vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
    
         Asiakas user = tableAsiakas.getSelectionModel().getSelectedItem();
@@ -271,16 +281,24 @@ public class AsiakkaidenHallintaViewController implements Initializable {
                txtYritys.setText(rs.getString("yritys"));
            }
     
-        //Suljetaan yhteys
         vuokratoimistoDatabase.closeConnection(conn);
     }
 
+    /**
+     * Sulkee asiakas ikkunan
+     * @param event klikataan hiirellä
+     */
     @FXML
     private void closeWindow(ActionEvent event) {    
         Stage stage = (Stage) tableAsiakas.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * aukaisee palveluiden ikkunan
+     * @param event hiirellä klikataan
+     * @throws IOException virhe
+     */
     @FXML
     private void openPalvelutWindow(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("PalveluidenHallintaView.fxml"));
@@ -293,10 +311,14 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.show();
         
     }
-
+    /**
+     * asukaisee toimipisteet ikkunan
+     * @param event hiirellä klikataan
+     * @throws IOException virhe
+     */
     @FXML
     private void openToimipisteWindow(ActionEvent event) throws IOException {
-       // Aukaistaan Toimipisteiden hallinta ikkuna
+       
         Parent root = FXMLLoader.load(getClass().getResource("ToimipisteidenHallintaView.fxml"));
 
         Scene scene = new Scene(root);
@@ -306,10 +328,14 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+    /**
+     * aukaisee varaukset ikkunan
+     * @param event hiirellä
+     * @throws IOException 
+     */
     @FXML
     private void openVarausWindow(ActionEvent event) throws IOException {
-        // Aukaistaan Varausten hallinta ikkuna
+       
         Parent root = FXMLLoader.load(getClass().getResource("VaraustenHallintaView.fxml"));
 
         Scene scene = new Scene(root);
@@ -319,23 +345,31 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+    /**
+     * Aukaistaan Laskutus hallinta ikkuna
+     * @param event hiirellä
+     * @throws IOException 
+     */
     @FXML
     private void openLaskuWindow(ActionEvent event) throws IOException {
-        // Aukaistaan Laskutus hallinta ikkuna
+        
         Parent root = FXMLLoader.load(getClass().getResource("LaskutusHallintaView.fxml"));
 
         Scene scene = new Scene(root);
 
         Stage stage = new Stage();
-        stage.setTitle("Toimipisteiden hallinta");
+        stage.setTitle("Laskujen hallinta");
         stage.setScene(scene);
         stage.show();
     }
-
+    /**
+     * Aukaistaan Työntekijöiden hallinta ikkuna
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void openTyontekijatWindow(ActionEvent event) throws IOException {
-        // Aukaistaan Työntekijöiden hallinta ikkuna
+        
         Parent root = FXMLLoader.load(getClass().getResource("TyontekijoidenHallintaView.fxml"));
 
         Scene scene = new Scene(root);
@@ -345,10 +379,14 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+    /**
+     * Aukaistaan Vuokrattujen tilojen raportointi ikkuna
+     * @param event hiirellä
+     * @throws IOException virhe
+     */
     @FXML
     private void openVuokratutWindow(ActionEvent event) throws IOException {
-         // Aukaistaan Vuokrattujen tilojen raportointi ikkuna
+       
         Parent root = FXMLLoader.load(getClass().getResource("VuokratutTilatRaportointiView.fxml"));
 
         Scene scene = new Scene(root);
@@ -358,10 +396,14 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+    /**
+     * Aukaistaan Lisäpalveluiden ja laitteiden raportointi ikkuna
+     * @param event hiirellä
+     * @throws IOException virhe
+     */
     @FXML
     private void openLisapalvelutWindow(ActionEvent event) throws IOException {
-         // Aukaistaan Lisäpalveluiden ja laitteiden raportointi ikkuna
+         
         Parent root = FXMLLoader.load(getClass().getResource("LisapalvelutLaitteetRaportointiView.fxml"));
 
         Scene scene = new Scene(root);
@@ -372,6 +414,10 @@ public class AsiakkaidenHallintaViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * tyhjentää laskusta tulevan tableviewn tiedot textfieldistä
+     * @param event hiirellä
+     */
     @FXML
     private void editClearTextfield(ActionEvent event) {
      txtId.setText("");
@@ -380,14 +426,17 @@ public class AsiakkaidenHallintaViewController implements Initializable {
      txtYritys.setText("");
         
     }
-
+    /**
+     * etsii asikkaan asiakasID tiedot tableviewstä
+     * @param event näppäimistön painalluksella
+     * @throws SQLException SQL virhe
+     */
     @FXML
     private void etsiAsiakasIDKeyReleased(KeyEvent event) throws SQLException {
-        // Luodaan Connection String olemassa olevaan tietokantaan
+       
         Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
              
-        // Otetaan tietokanta kayttoon
         vuokratoimistoDatabase.useDatabase(conn, "karelia_vuokratoimistot_R01");
         
             if(txfEtsiAsikasID.getText().equals("")){
@@ -405,7 +454,6 @@ public class AsiakkaidenHallintaViewController implements Initializable {
                              
                         tableAsiakas.getItems().add(person);
                         
-                        //Laskujen tableview täyttö
                         colId.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
                         colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
                         colSukunimi.setCellValueFactory(new PropertyValueFactory<>("sukunimi"));

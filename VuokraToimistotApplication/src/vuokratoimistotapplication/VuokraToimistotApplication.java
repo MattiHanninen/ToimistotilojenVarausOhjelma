@@ -190,6 +190,7 @@ public class VuokraToimistotApplication extends Application {
                 );
         addToimipisteidenPalvelut(conn, 60160, 1, 3000, 1100);
         addToimipisteidenPalvelut(conn, 60100, 2, 3001, 1101);
+        addToimipisteidenPalvelut(conn, 60100, 4, 3001, 1101);
 
       
         
