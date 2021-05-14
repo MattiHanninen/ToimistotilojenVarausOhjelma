@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Varaus;
 import static vuokratoimistotapplication.PaavalikkoViewController.closeConnection;
@@ -174,20 +177,21 @@ public class VaraustenHallintaViewController implements Initializable {
     private void btLisaaClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
         //Avataan tietokantayhteys
         Connect();
-        int varausID = Integer.parseInt(txfVarausID.getText());
-        String aloitusPaiva = DatePickerAloitusPaiva.getEditor().getText();
-        String lopetusPaiva = DatePickerLopetusPaiva.getEditor().getText();
-        int asiakasID = Integer.parseInt(txfAsiakasID.getText());
-        int toimipisteID = Integer.parseInt(txfToimipisteID.getText());
+        
          try {
+             int varausID = Integer.parseInt(txfVarausID.getText());
+            Date aloitusPaiva = java.sql.Date.valueOf(DatePickerAloitusPaiva.getValue());
+            Date lopetusPaiva = java.sql.Date.valueOf(DatePickerLopetusPaiva.getValue());
+            int asiakasID = Integer.parseInt(txfAsiakasID.getText());
+            int toimipisteID = Integer.parseInt(txfToimipisteID.getText());
             //Lisätään varausta sql kysely
             pst = conn.prepareStatement(
                     "INSERT INTO varaus (varausID, aloitusPaiva, lopetusPaiva, asiakasID, toimipisteID) "
-                    + "VALUES (?, STR_TO_DATE(?, '%d.%m.%Y'), STR_TO_DATE(?, '%d.%m.%Y'), ?, ?)"
+                    + "VALUES (?, ?, ?, ?, ?)"
                     );
             pst.setInt(1, varausID);
-            pst.setString(2, aloitusPaiva);
-            pst.setString(3, lopetusPaiva);
+            pst.setDate(2, aloitusPaiva);
+            pst.setDate(3, lopetusPaiva);
             pst.setInt(4, asiakasID);
             pst.setInt(5, toimipisteID);
             //Suoritetaan sql kysely
@@ -199,15 +203,18 @@ public class VaraustenHallintaViewController implements Initializable {
                 alert.setHeaderText("Varaus");
                 alert.setContentText("Varaus lisääminen onnistui");
                 alert.showAndWait();
+                
                 //Päivitetään ja näytetään työntekija taulu
                 tbvVaraus.refresh();
                 showVaraus();
+                
                 //Tyhjenetaan textfield
                 txfVarausID.setText("");     
                 txfAsiakasID.setText("");
                 txfToimipisteID.setText("");
                 DatePickerAloitusPaiva.setValue(null);
                 DatePickerLopetusPaiva.setValue(null);
+                
                 //Näytetaan lisätty varaus konsolille
                 System.out.println("\t>> Lisätty varaus " + varausID);
                 //Suljetaan tietokantayhteys
@@ -234,16 +241,16 @@ public class VaraustenHallintaViewController implements Initializable {
         //Avataan tietokantayhteys
         Connect();
         int varausID = Integer.parseInt(txfVarausID.getText());
-        String aloitusPaiva = DatePickerAloitusPaiva.getEditor().getText();
-        String lopetusPaiva = DatePickerLopetusPaiva.getEditor().getText();
+        Date aloitusPaiva = java.sql.Date.valueOf(DatePickerAloitusPaiva.getValue());
+        Date lopetusPaiva = java.sql.Date.valueOf(DatePickerLopetusPaiva.getValue());
         int asiakasID = Integer.parseInt(txfAsiakasID.getText());
         int toimipisteID = Integer.parseInt(txfToimipisteID.getText());        
         try {
             //Muutetaan varausten sql kysely
-            pst = conn.prepareStatement("UPDATE varaus SET aloitusPaiva = STR_TO_DATE(?, '%d.%m.%Y'), "
-                    + "lopetusPaiva = STR_TO_DATE(?, '%d.%m.%Y'), asiakasID = ?, toimipisteID = ? WHERE varausID = ?");
-            pst.setString(1, aloitusPaiva);
-            pst.setString(2, lopetusPaiva);
+            pst = conn.prepareStatement("UPDATE varaus SET aloitusPaiva = ?, "
+                    + "lopetusPaiva = ?, asiakasID = ?, toimipisteID = ? WHERE varausID = ?");
+            pst.setDate(1, aloitusPaiva);
+            pst.setDate(2, lopetusPaiva);
             pst.setInt(3, asiakasID);
             pst.setInt(4, toimipisteID);
             pst.setInt(5, varausID);
@@ -379,6 +386,7 @@ public class VaraustenHallintaViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         try {
             //Avataan tietokantayhteys
             Connect();
@@ -387,5 +395,6 @@ public class VaraustenHallintaViewController implements Initializable {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(VaraustenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
+    }
+    
 }

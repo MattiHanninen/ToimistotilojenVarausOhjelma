@@ -26,7 +26,6 @@ import static vuokratoimistotDatabase.vuokratoimistoDatabase.addlaskunMaksaja;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.createDatabase;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.createTable;
 import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
-import static vuokratoimistotDatabase.vuokratoimistoDatabase.varattuList;
 
 /**
  *
@@ -237,7 +236,7 @@ public class VuokraToimistotApplication extends Application {
         addVarauksenKasittelija(conn, 2200, 3000);
         addVarauksenKasittelija(conn, 2201, 3001);
         
-       vuokratoimistoDatabase.varattuList(conn);
+       //vuokratoimistoDatabase.varattuList(conn);
         
         vuokratoimistoDatabase.closeConnection(conn);
         

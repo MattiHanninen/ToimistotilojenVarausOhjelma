@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -37,6 +38,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Varaus;
 import vuokratoimistotapplication.Luokat.VuokrattutTilatTaulu;
@@ -347,20 +349,48 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
+     * @param url URL
+     * @param rb RB
      */
  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-                //Päivitetaan VuokrattutTilatTaulun sarake
-                colToimipste.setCellValueFactory(new PropertyValueFactory<>("toimipisteNimi"));
-                colYritys.setCellValueFactory(new PropertyValueFactory<>("yritys"));
-                colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
-                colSukunimi.setCellValueFactory(new PropertyValueFactory<>("sukunimi"));
-                colAloitusPvm.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
-                colLopetusPvm.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
-                colSumma.setCellValueFactory(new PropertyValueFactory<>("summa"));
+        //Vaihta datepicker muoto YYYY-MM-dd
+        String pattern = "YYYY-MM-dd";
+        StringConverter converter = new StringConverter<LocalDate>() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+        
+        @Override
+        public String toString(LocalDate date) {
+            if (date != null) {
+                return dateFormatter.format(date);
+            } else {
+                return "";
+            }
+        }
+
+        @Override
+        public LocalDate fromString(String string) {
+            if (string != null && !string.isEmpty()) {
+                return LocalDate.parse(string, dateFormatter);
+            } else {
+                return null;
+            }
+        }
+    };
+
+        datePickerAloitusPaiva.setConverter(converter);
+        datePickerLopetusPaiva.setConverter(converter);
+        
+        //Päivitetaan VuokrattutTilatTaulun sarake
+        colToimipste.setCellValueFactory(new PropertyValueFactory<>("toimipisteNimi"));
+        colYritys.setCellValueFactory(new PropertyValueFactory<>("yritys"));
+        colEtunimi.setCellValueFactory(new PropertyValueFactory<>("etunimi"));
+        colSukunimi.setCellValueFactory(new PropertyValueFactory<>("sukunimi"));
+        colAloitusPvm.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
+        colLopetusPvm.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
+        colSumma.setCellValueFactory(new PropertyValueFactory<>("summa"));
+        
         try {
             //Avataan tietokantayhteys
             Connect();

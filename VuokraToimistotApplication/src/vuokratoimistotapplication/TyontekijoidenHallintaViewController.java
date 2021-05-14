@@ -166,9 +166,11 @@ public class TyontekijoidenHallintaViewController implements Initializable {
                 alert.setHeaderText("Työntekija");
                 alert.setContentText("Työntekija lisääminen onnistui");
                 alert.showAndWait();
+                
                 //Päivitetään ja näytetään työntekija taulu
                 tbvTyontekijat.refresh();
                 showTyontekijat();
+                
                 //Tyhjenetaan textfield
                 txfID.setText("");
                 txfEtunimi.setText("");
