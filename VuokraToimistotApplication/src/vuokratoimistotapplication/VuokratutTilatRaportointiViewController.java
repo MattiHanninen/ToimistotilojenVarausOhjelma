@@ -30,17 +30,13 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
-import vuokratoimistotapplication.Luokat.Varaus;
 import vuokratoimistotapplication.Luokat.VuokrattutTilatTaulu;
 import static vuokratoimistotapplication.PaavalikkoViewController.closeConnection;
 
