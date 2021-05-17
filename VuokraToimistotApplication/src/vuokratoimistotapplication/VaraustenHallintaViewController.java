@@ -226,7 +226,12 @@ public class VaraustenHallintaViewController implements Initializable {
                 alert.setContentText("Varaus lisääminen ei onnistu");
                 alert.showAndWait();             
             }           
-        }catch(SQLException e) {       
+        }catch(SQLException e) {    
+             Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle ("Ei onnistu");
+                alert.setHeaderText("Varaus");
+                alert.setContentText("Varaus lisääminen ei onnistu");
+                alert.showAndWait();  
         }
     }
     
