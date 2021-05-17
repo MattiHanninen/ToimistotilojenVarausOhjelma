@@ -58,7 +58,7 @@
                         <TableColumn fx:id="colYritys" prefWidth="130.0" text="Asiakas" />
                         <TableColumn fx:id="colEtunimi" prefWidth="121.0" text="Etunimi" />
                         <TableColumn fx:id="colSukunimi" minWidth="0.0" prefWidth="115.0" text="Sukunimi" />
-                        <TableColumn fx:id="colAloitusPvm" minWidth="0.0" prefWidth="122.0" text="Alloitus Pvm" />
+                        <TableColumn fx:id="colAloitusPvm" minWidth="0.0" prefWidth="122.0" text="Aloitus Pvm" />
                         <TableColumn fx:id="colLopetusPvm" prefWidth="118.0" text="Lopetus Pvm" />
                         <TableColumn fx:id="colSumma" prefWidth="126.0" style="text-align: center;" text="Summa" />
                     </columns>

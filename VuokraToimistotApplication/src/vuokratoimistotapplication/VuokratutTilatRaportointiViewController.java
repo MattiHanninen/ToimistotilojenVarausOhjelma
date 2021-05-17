@@ -64,23 +64,7 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     @FXML
     private Button btEtsi;
     @FXML
-    private TableView<Varaus> tbvVaraus;
-    @FXML    
-    private TableColumn<Varaus, Integer> colVarausID;
-    @FXML
-    private TableColumn<Varaus, Date> colAloitusPaiva;
-    @FXML
-    private TableColumn<Varaus, Date> colLopetusPaiva;
-    @FXML
-    private TableColumn<Varaus, Integer> colAsiakasID;
-    @FXML
-    private TableColumn<Varaus, Integer> colToimipisteID;
-    @FXML
     private VBox txfHakuTulos;
-    @FXML
-    private TextField txfHakuID;
-    @FXML
-    private TextArea txtAreaHakuTulos;
     @FXML
     private TableView<VuokrattutTilatTaulu> tbvVuokratutTaulut;
     @FXML
