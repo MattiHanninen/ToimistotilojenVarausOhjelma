@@ -40,7 +40,7 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 /**
  * FXML Controller class
  *
- * @author matty
+ * @author matti
  */
 public class LisapalvelutLaitteetRaportointiViewController implements Initializable {
 
@@ -72,10 +72,10 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
     private TableColumn<Varaus, Integer> VaratutToimipisteetAsiakasIDColumn;
     @FXML
     private TableColumn<Varaus, Integer> VaratutToimipisteetToimipisteIDColumn;
-    
+
     java.sql.Date sqlAloitusPaiva;
     java.sql.Date sqlLopetusPaiva;
-    
+
     private static final String TOIMIPISTEID = "__TOIMIPISTEID__";
     private static final String TOIMIPISTENIMI = "__TOIMIPISTENIMI__";
     private static final String ALOITUSPAIVA = "__ALOITUSPAIVA__";
@@ -83,58 +83,62 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
     private static final String TABLE_CONTENT = "__TABLE__";
     @FXML
     private WebView webView;
-    
 
     /**
      * Initializes the controller class.
+     *
+     * @param url url
+     * @param rb rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
+
         // Alustetaan columnit
         palvelunIDColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunID"));
         palvelunNimiColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunNimi"));
         palvelunHintaColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunHinta"));
         palvelunKuvausColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunKuvaus"));
-        
+
         VaratutToimipisteetVarausIDColumn.setCellValueFactory(new PropertyValueFactory<>("varausID"));
         VaratutToimipisteetAloitusPaivaColumn.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
         VaratutToimipisteetLopetusPaivaColumn.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
         VaratutToimipisteetAsiakasIDColumn.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
         VaratutToimipisteetToimipisteIDColumn.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
-        
+
         // Alustetaan ComboBox Toimipisteiden tiedoilla
         updateComboBoxToimipiste();
-    }    
+    }
 
     @FXML
     private void btnEtsiButtonPressed(ActionEvent event) {
-        
+
         fillTableViews();
     }
 
     @FXML
     private void menuCloseClicked(ActionEvent event) {
-        
+
         // Yritetaan sulkea tietokantayhteys
         try {
             Connection conn = DriverManager.getConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
             closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
             java.util.logging.Logger.getLogger(PaavalikkoViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Suljetaan ikkkuna    
         Stage stage = (Stage) tblViewPalvelu.getScene().getWindow();
         stage.close();
     }
-    
+
+    /*
+    * Metodi joka täyttää combobox komponentin toimipisteiden ID:llä
+     */
     private void updateComboBoxToimipiste() {
 
         try {
@@ -150,9 +154,8 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
 
             // Haetaan tiedot tietokannasta
             ResultSet toimipisteInfoResult = vuokratoimistoDatabase.selectToimipiste(conn);
-            
 
-            while (toimipisteInfoResult.next()) {            
+            while (toimipisteInfoResult.next()) {
                 cboValitseToimipiste.getItems().addAll(toimipisteInfoResult.getInt(1));
                 //cboValitseToimipiste.setValue(toimipisteInfoResult.getString(2));
             }
@@ -168,32 +171,36 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
         }
 
     }
-    
-    
-    
+
+    /**
+     * Metodi joka tyhjentää tableView komponentin varauksista
+     */
     public void clearTableviewVaraus() {
         for (int i = 0; i < tblViewVaraus.getItems().size(); i++) {
             tblViewVaraus.getItems().clear();
         }
     }
-    
+
+    /**
+     * Metodi joka tyhjentää tableView komponentin palveluista
+     */
     public void clearTableviewPalvelu() {
         for (int i = 0; i < tblViewPalvelu.getItems().size(); i++) {
             tblViewPalvelu.getItems().clear();
         }
     }
-    
-    
-    
+
+    /**
+     * Metodi joka täyttää tableView komponentit
+     */
     public void fillTableViews() {
-    
+
         try {
 
             // Tyhjennetään taulut
             clearTableviewPalvelu();
             clearTableviewVaraus();
-            
-            
+
             // Aukaistaan tietokantayhteys
             Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
@@ -204,80 +211,82 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
             // Haetaan tiedot tekstikentista               
             sqlAloitusPaiva = java.sql.Date.valueOf(txtAloitusPaivaDate.getValue());
             sqlLopetusPaiva = java.sql.Date.valueOf(txtLopetusPaivaDate.getValue());
-                    
+
             // Haetaan tiedot kolmesta eri taulusta
             ResultSet allInfoFromThreeTables = selectAllInfoFromThreeTables(conn, cboValitseToimipiste.getValue(), sqlAloitusPaiva, sqlLopetusPaiva);
-            
 
-               while (allInfoFromThreeTables.next()) {
-                   
-                        Varaus varaus = new Varaus(allInfoFromThreeTables.getInt("varausID"), allInfoFromThreeTables.getDate("aloitusPaiva"),
+            while (allInfoFromThreeTables.next()) {
+
+                Varaus varaus = new Varaus(allInfoFromThreeTables.getInt("varausID"), allInfoFromThreeTables.getDate("aloitusPaiva"),
                         allInfoFromThreeTables.getDate("lopetusPaiva"), allInfoFromThreeTables.getInt("asiakasID"), allInfoFromThreeTables.getInt("toimipisteID"));
-                        tblViewVaraus.getItems().add(varaus);
-  
-                        Palvelu palvelu = new Palvelu(allInfoFromThreeTables.getInt("palvelunID"), allInfoFromThreeTables.getString("palvelunNimi"),
+                tblViewVaraus.getItems().add(varaus);
+
+                Palvelu palvelu = new Palvelu(allInfoFromThreeTables.getInt("palvelunID"), allInfoFromThreeTables.getString("palvelunNimi"),
                         allInfoFromThreeTables.getInt("palvelunHinta"), allInfoFromThreeTables.getString("palvelunKuvaus"));
-                        tblViewPalvelu.getItems().add(palvelu);
-                }
-               
-               // Jos tietoja ei löydy, ilmoitetaan siitä käyttäjälle
-               if (tblViewVaraus.getItems().isEmpty()) {
-                   Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                   alert.setTitle("Haun tulokset:");
-                   alert.setHeaderText("Ei tietoja");
-                   alert.setContentText("Valitulle toimipisteelle ei ole palveluvarauksia valitulla aikavälillä.");
-                   alert.showAndWait();
-               }
-                   
+                tblViewPalvelu.getItems().add(palvelu);
+            }
+
+            // Jos tietoja ei löydy, ilmoitetaan siitä käyttäjälle
+            if (tblViewVaraus.getItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Haun tulokset:");
+                alert.setHeaderText("Ei tietoja");
+                alert.setContentText("Valitulle toimipisteelle ei ole palveluvarauksia valitulla aikavälillä.");
+                alert.showAndWait();
+            }
+
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-        
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
-            System.out.println("Catchiin meni");       
+            System.out.println("Catchiin meni");
             java.util.logging.Logger.getLogger(ToimipisteidenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-     
-     
+
+    /**
+     * Metodi joka hakee tietoa tietokannasta kolmesta eri taulusta
+     *
+     * @param c connection
+     * @param toimipisteID toimipisteen ID
+     * @param aloitusPaiva aloituspäivä
+     * @param lopetusPaiva lopetuspäivä
+     * @return resultset
+     * @throws SQLException
+     */
     public static ResultSet selectAllInfoFromThreeTables(Connection c, int toimipisteID, Date aloitusPaiva, Date lopetusPaiva) throws SQLException {
-        
-        PreparedStatement ps = c.prepareStatement
-        (
-        "SELECT varaus.varausID, varaus.aloitusPaiva, varaus.lopetusPaiva, varaus.asiakasID, varaus.toimipisteID,"
-                        + " toimipisteidenPalvelut.toimipisteID, toimipisteidenPalvelut.palvelunID, toimipisteidenPalvelut.varausID, toimipisteidenPalvelut.asiakasID,"
-                        + " palvelu.palvelunID, palvelu.palvelunNimi, palvelu.palvelunHinta, palvelu.palvelunKuvaus"
-                        + " FROM varaus, toimipisteidenPalvelut, palvelu"
-                        + " WHERE toimipisteidenPalvelut.toimipisteID = ?"
-                        + " AND toimipisteidenPalvelut.varausID = varaus.varausID"
-                        + " AND toimipisteidenPalvelut.palvelunID = palvelu.palvelunID"
-                        + " AND ((aloitusPaiva BETWEEN ?"
-                        + " AND ?)"
-                        + " OR (lopetusPaiva BETWEEN ? AND ?))"
+
+        PreparedStatement ps = c.prepareStatement(
+                "SELECT varaus.varausID, varaus.aloitusPaiva, varaus.lopetusPaiva, varaus.asiakasID, varaus.toimipisteID,"
+                + " toimipisteidenPalvelut.toimipisteID, toimipisteidenPalvelut.palvelunID, toimipisteidenPalvelut.varausID, toimipisteidenPalvelut.asiakasID,"
+                + " palvelu.palvelunID, palvelu.palvelunNimi, palvelu.palvelunHinta, palvelu.palvelunKuvaus"
+                + " FROM varaus, toimipisteidenPalvelut, palvelu"
+                + " WHERE toimipisteidenPalvelut.toimipisteID = ?"
+                + " AND toimipisteidenPalvelut.varausID = varaus.varausID"
+                + " AND toimipisteidenPalvelut.palvelunID = palvelu.palvelunID"
+                + " AND ((aloitusPaiva BETWEEN ?"
+                + " AND ?)"
+                + " OR (lopetusPaiva BETWEEN ? AND ?))"
         );
-        
+
         // Syötetään tiedot parametreilla
         ps.setInt(1, toimipisteID);
         ps.setDate(2, aloitusPaiva);
         ps.setDate(3, lopetusPaiva);
         ps.setDate(4, aloitusPaiva);
         ps.setDate(5, lopetusPaiva);
-        
+
         ResultSet rs = ps.executeQuery();
-        
-        return rs;  
+
+        return rs;
     }
 
     @FXML
     private void menuItemSaveClicked(ActionEvent event) throws IOException {
-        
-        
-        try {
-            
 
-            
+        try {
+
             // Aukaistaan tietokantayhteys
             Connection conn = vuokratoimistoDatabase.openConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
@@ -288,98 +297,90 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
             // Haetaan tiedot tekstikentista               
             sqlAloitusPaiva = java.sql.Date.valueOf(txtAloitusPaivaDate.getValue());
             sqlLopetusPaiva = java.sql.Date.valueOf(txtLopetusPaivaDate.getValue());
-                    
+
             // Haetaan tiedot kolmesta eri taulusta
             ResultSet allInfoFromThreeTables = selectAllInfoFromThreeTables(conn, cboValitseToimipiste.getValue(), sqlAloitusPaiva, sqlLopetusPaiva);
-            
-            
 
-               while (allInfoFromThreeTables.next()) {
-                   
-                    // 1. kopioi pohja
-                    File source = new File("./Report/VuokratutPalvelutRaporttiTemplate.html");
-                    File dest = new File("./Report/VuokratutPalvelutTallennaRaportti.html");
+            while (allInfoFromThreeTables.next()) {
 
-                    Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
+                // 1. kopioi pohja
+                File source = new File("./Report/VuokratutPalvelutRaporttiTemplate.html");
+                File dest = new File("./Report/VuokratutPalvelutTallennaRaportti.html");
 
-                   
-                   
-                    // 2. Korvaa pohjassa olevat paikat tiedoilla
-                    String content = new String(Files.readAllBytes(dest.toPath()), UTF_8);
-                    //content = content.replaceAll(TOIMIPISTEID, Integer.toString(allInfoFromThreeTables.getInt("toimipisteID")));
-                    content = content.replaceAll(TOIMIPISTEID, cboValitseToimipiste.getValue().toString());
-                  
-                    Statement stmt = conn.createStatement();
-                    ResultSet toimipisteJaIDInfoResult = stmt.executeQuery(
-                    "SELECT toimipisteNimi FROM toimipiste WHERE toimipisteID LIKE '%" + cboValitseToimipiste.getValue()+"%'");
-                    
-                    while (toimipisteJaIDInfoResult.next()) {
-                        content = content.replaceAll(TOIMIPISTENIMI, toimipisteJaIDInfoResult.getString("toimipisteNimi"));
-                    }
-                    
-                    
-                    //content = content.replaceAll(ALOITUSPAIVA, allInfoFromThreeTables.getDate("aloitusPaiva").toString());
-                    content = content.replaceAll(ALOITUSPAIVA, txtAloitusPaivaDate.getValue().toString());
-                    content = content.replaceAll(LOPETUSPAIVA, txtLopetusPaivaDate.getValue().toString());
-                    
-                    
-                    content = content.replaceAll(TABLE_CONTENT, createRow(allInfoFromThreeTables.getInt("palvelunID"),
-                            allInfoFromThreeTables.getString("palvelunNimi"), allInfoFromThreeTables.getInt("palvelunHinta"), allInfoFromThreeTables.getString("palvelunKuvaus"),
-                            allInfoFromThreeTables.getInt("varausID"), allInfoFromThreeTables.getDate("aloitusPaiva"), allInfoFromThreeTables.getDate("lopetusPaiva"),
-                            allInfoFromThreeTables.getInt("asiakasID"), allInfoFromThreeTables.getInt("toimipisteID")));
-                
-                 
-                    // 3. Lataa muodostettu lasku
-                    Files.write(dest.toPath(), content.getBytes(UTF_8));
-        
-                    // 4. Näytä muodostettu lasku
-                    loadWebPage(dest.toPath().toString());
-                    
+                Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
+
+                // 2. Korvaa pohjassa olevat paikat tiedoilla
+                String content = new String(Files.readAllBytes(dest.toPath()), UTF_8);
+                //content = content.replaceAll(TOIMIPISTEID, Integer.toString(allInfoFromThreeTables.getInt("toimipisteID")));
+                content = content.replaceAll(TOIMIPISTEID, cboValitseToimipiste.getValue().toString());
+
+                Statement stmt = conn.createStatement();
+                ResultSet toimipisteJaIDInfoResult = stmt.executeQuery(
+                        "SELECT toimipisteNimi FROM toimipiste WHERE toimipisteID LIKE '%" + cboValitseToimipiste.getValue() + "%'");
+
+                while (toimipisteJaIDInfoResult.next()) {
+                    content = content.replaceAll(TOIMIPISTENIMI, toimipisteJaIDInfoResult.getString("toimipisteNimi"));
                 }
-               
 
-                   
+                //content = content.replaceAll(ALOITUSPAIVA, allInfoFromThreeTables.getDate("aloitusPaiva").toString());
+                content = content.replaceAll(ALOITUSPAIVA, txtAloitusPaivaDate.getValue().toString());
+                content = content.replaceAll(LOPETUSPAIVA, txtLopetusPaivaDate.getValue().toString());
+
+                content = content.replaceAll(TABLE_CONTENT, createRow(allInfoFromThreeTables.getInt("palvelunID"),
+                        allInfoFromThreeTables.getString("palvelunNimi"), allInfoFromThreeTables.getInt("palvelunHinta"), allInfoFromThreeTables.getString("palvelunKuvaus"),
+                        allInfoFromThreeTables.getInt("varausID"), allInfoFromThreeTables.getDate("aloitusPaiva"), allInfoFromThreeTables.getDate("lopetusPaiva"),
+                        allInfoFromThreeTables.getInt("asiakasID"), allInfoFromThreeTables.getInt("toimipisteID")));
+
+                // 3. Lataa muodostettu lasku
+                Files.write(dest.toPath(), content.getBytes(UTF_8));
+
+                // 4. Näytä muodostettu lasku
+                loadWebPage(dest.toPath().toString());
+
+            }
+
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-        
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
-            System.out.println("Catchiin meni");       
+            System.out.println("Catchiin meni");
             java.util.logging.Logger.getLogger(ToimipisteidenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     @FXML
     private void menuItemPreviewClicked(ActionEvent event) {
-        
+
         loadWebPage("./Report/VuokratutPalvelutRaporttiTemplate.html");
     }
-    
-    private void loadWebPage(String path){
+
+    /*
+    * Metodi joka lataa websivun
+     */
+    private void loadWebPage(String path) {
         WebEngine engine = webView.getEngine();
         File f = new File(path);
         engine.load(f.toURI().toString());
     }
-    
-    // Muodostetaan laskun yksi rivi html muodossa
-    private String createRow(int palvelunID, String palvelunNimi, int palvelunHinta, String palvelunKuvaus, int varausID, Date aloitusPaiva, Date lopetusPaiva, int asiakasID, int toimipisteID){
-        
-        return "<tr>" +
-                "<td class=\"palvelunID\">" + palvelunID + "</td>" + 
-                "<td class=\"palvelunNimi\">" + palvelunNimi + "</td>" +
-                "<td class=\"palvelunHinta\">" + palvelunHinta + "€</td>" +
-                "<td class=\"palvelunKuvaus\">" + palvelunKuvaus + "</td>" + 
-                "<td class=\"varausID\">" + varausID + "</td>" +
-                "<td class=\"aloitusPaiva\">" + aloitusPaiva + "</td>" +
-                "<td class=\"lopetusPaiva\">" + lopetusPaiva + "</td>" +
-                "<td class=\"asiakasID\">" + asiakasID + "</td>" +
-                "<td class=\"toimipisteID\">" + toimipisteID + "</td>"
-                ;
-        
+
+    /*
+    * Metodi joka muodostaan yhden rivin html muodossa
+     */
+    private String createRow(int palvelunID, String palvelunNimi, int palvelunHinta, String palvelunKuvaus, int varausID, Date aloitusPaiva, Date lopetusPaiva, int asiakasID, int toimipisteID) {
+
+        return "<tr>"
+                + "<td class=\"palvelunID\">" + palvelunID + "</td>"
+                + "<td class=\"palvelunNimi\">" + palvelunNimi + "</td>"
+                + "<td class=\"palvelunHinta\">" + palvelunHinta + "€</td>"
+                + "<td class=\"palvelunKuvaus\">" + palvelunKuvaus + "</td>"
+                + "<td class=\"varausID\">" + varausID + "</td>"
+                + "<td class=\"aloitusPaiva\">" + aloitusPaiva + "</td>"
+                + "<td class=\"lopetusPaiva\">" + lopetusPaiva + "</td>"
+                + "<td class=\"asiakasID\">" + asiakasID + "</td>"
+                + "<td class=\"toimipisteID\">" + toimipisteID + "</td>";
+
     }
-    
-    
-    
+
 }

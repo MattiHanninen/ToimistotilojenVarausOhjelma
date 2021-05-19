@@ -30,7 +30,7 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 /**
  * FXML Controller class
  *
- * @author matty
+ * @author Matti
  */
 public class PalveluidenHallintaViewController implements Initializable {
 
@@ -85,6 +85,9 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
+     * @param url url
+     * @param rb rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,53 +98,46 @@ public class PalveluidenHallintaViewController implements Initializable {
         palvelunHintaColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunHinta"));
         palvelunKuvausColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunKuvaus"));
         fillTableViewPalvelu();
-        
+
         VaratutToimipisteetVarausIDColumn.setCellValueFactory(new PropertyValueFactory<>("varausID"));
         VaratutToimipisteetAloitusPaivaColumn.setCellValueFactory(new PropertyValueFactory<>("aloitusPaiva"));
         VaratutToimipisteetLopetusPaivaColumn.setCellValueFactory(new PropertyValueFactory<>("lopetusPaiva"));
         VaratutToimipisteetAsiakasIDColumn.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
         VaratutToimipisteetToimipisteIDColumn.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
-        
+
         fillTableViewVaratutToimipisteet();
-        
+
         VaratutPalvelutToimipisteIDColumn.setCellValueFactory(new PropertyValueFactory<>("toimipisteID"));
         VaratutPalvelutPalveluIDColumn.setCellValueFactory(new PropertyValueFactory<>("palvelunID"));
         VaratutPalvelutVarausIDColumn.setCellValueFactory(new PropertyValueFactory<>("varausID"));
         VaratutPalvelutAsiakasIDColumn.setCellValueFactory(new PropertyValueFactory<>("asiakasID"));
-        
-        fillTableViewVaratutPalvelut();
-    }    
 
-    
+        fillTableViewVaratutPalvelut();
+    }
 
     @FXML
     private void menuCloseClicked(ActionEvent event) {
-        
+
         // Yritetaan sulkea tietokantayhteys
         try {
             Connection conn = DriverManager.getConnection("jdbc:mariadb://maria.westeurope.cloudapp.azure.com:"
                     + "3306?user=opiskelija&password=opiskelija1");
             closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
             java.util.logging.Logger.getLogger(PaavalikkoViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Suljetaan ikkkuna    
         Stage stage = (Stage) tblViewPalvelu.getScene().getWindow();
         stage.close();
     }
-    
 
-    
-
-    
-    
-    
-    // Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+    /**
+     * Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+     */
     public void fillTableViewPalvelu() {
 
         try {
@@ -165,7 +161,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -173,9 +168,10 @@ public class PalveluidenHallintaViewController implements Initializable {
         }
 
     }
-    
-    
-    // Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+
+    /**
+     * Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+     */
     public void fillTableViewVaratutToimipisteet() {
 
         try {
@@ -199,7 +195,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -207,8 +202,10 @@ public class PalveluidenHallintaViewController implements Initializable {
         }
 
     }
-    
-    // Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+
+    /**
+     * Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+     */
     public void fillTableViewVaratutPalvelut() {
 
         try {
@@ -232,7 +229,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -240,10 +236,7 @@ public class PalveluidenHallintaViewController implements Initializable {
         }
 
     }
-    
-    
-    
-    
+
     /**
      * Metodi joka tyhjentaa TableView komponentin
      */
@@ -252,8 +245,8 @@ public class PalveluidenHallintaViewController implements Initializable {
             tblViewPalvelu.getItems().clear();
         }
     }
-    
-        /**
+
+    /**
      * Metodi joka tyhjentaa TableView komponentin
      */
     public void clearTableviewVaratutPalvelut() {
@@ -264,7 +257,7 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     @FXML
     private void menuAddNewServiceClicked(ActionEvent event) {
-        
+
         try {
 
             // Aukaistaan tietokantayhteys
@@ -287,7 +280,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-        
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -297,7 +289,7 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     @FXML
     private void menuAddNewReservationClicked(ActionEvent event) {
-        
+
         try {
 
             // Aukaistaan tietokantayhteys
@@ -320,7 +312,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-        
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -330,7 +321,7 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     @FXML
     private void menuEditServiceClicked(ActionEvent event) {
-        
+
         try {
 
             // Aukaistaan tietokantayhteys
@@ -353,7 +344,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -363,7 +353,7 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     @FXML
     private void menuDeleteServiceClicked(ActionEvent event) {
-        
+
         try {
 
             // Aukaistaan tietokantayhteys
@@ -385,7 +375,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -395,7 +384,7 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     @FXML
     private void menuEditReservationClicked(ActionEvent event) {
-        
+
         try {
 
             // Aukaistaan tietokantayhteys
@@ -418,7 +407,6 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
@@ -428,7 +416,7 @@ public class PalveluidenHallintaViewController implements Initializable {
 
     @FXML
     private void menuDeleteReservationClicked(ActionEvent event) {
-        
+
         try {
 
             // Aukaistaan tietokantayhteys
@@ -450,12 +438,11 @@ public class PalveluidenHallintaViewController implements Initializable {
             // Suljetaan tietokantayhteys
             vuokratoimistoDatabase.closeConnection(conn);
         }
-
         // Napataan kiinni mahdolliset SQL poikkeukset
         catch (SQLException ex) {
             System.out.println("Catchiin meni");
             java.util.logging.Logger.getLogger(ToimipisteidenHallintaViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }
