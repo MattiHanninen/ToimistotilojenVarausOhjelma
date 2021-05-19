@@ -92,6 +92,9 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
     //HTML otsiikon tiedot
     private static final String TOIMIPISTE = "__TOIMIPISTE__";
     private static final String PVM = "__DATE__";
+    private static final String ALOITUSPVM = "__ALOITUSPVM__";
+    private static final String LOPETUSPVM = "__LOPETUSPVM__";
+    
     private static final String TABLE_CONTENT = "__TABLE__";
   
     /**
@@ -288,6 +291,8 @@ public class VuokratutTilatRaportointiViewController implements Initializable {
    
         content = content.replaceAll(TOIMIPISTE,colToimipste.getCellData(0) );
         content = content.replaceAll(PVM, LocalDateTime.now().toString());
+        content = content.replaceAll(ALOITUSPVM, datePickerAloitusPaiva.getValue().toString());
+        content = content.replaceAll(LOPETUSPVM, datePickerLopetusPaiva.getValue().toString());
         
         //Täytetään talut saraket
         content = content.replaceAll(TABLE_CONTENT, createRow(colToimipste.getCellData(0), colYritys.getCellData(0),colAloitusPvm.getCellData(0), colLopetusPvm.getCellData(0), colSumma.getCellData(0)));

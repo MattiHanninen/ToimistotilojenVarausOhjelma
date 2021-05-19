@@ -151,6 +151,13 @@ public class TyontekijoidenHallintaViewController implements Initializable {
         int tyontekijaID = Integer.parseInt(txfID.getText());
         String etunimi = txfEtunimi.getText();
         String sukunimi = txfSukunimi.getText();
+        if (tyontekijaID < 0 ){
+            Alert alert = new Alert (Alert.AlertType.INFORMATION);
+                alert.setTitle ("Ei Onnistu");
+                alert.setHeaderText("Työntekija");
+                alert.setContentText("Työntekija lisääminen ei onnistui, tarkistaa työntekija numero");
+                alert.showAndWait(); 
+        } else {
          try {
             //Lisätään työntekijoita sql kysely
             pst = conn.prepareStatement("INSERT INTO tyontekija (tyontekijaID, etunimi, sukunimi) VALUES (?, ?, ?)");
@@ -187,6 +194,7 @@ public class TyontekijoidenHallintaViewController implements Initializable {
                 alert.showAndWait();    
             }           
         }catch(SQLException e) {       
+        }
         }
     }
     /**
