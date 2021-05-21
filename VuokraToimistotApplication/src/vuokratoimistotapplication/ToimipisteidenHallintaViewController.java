@@ -27,7 +27,7 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 /**
  * FXML Controller class
  *
- * @author matty
+ * @author Matti
  */
 public class ToimipisteidenHallintaViewController implements Initializable {
 
@@ -52,6 +52,8 @@ public class ToimipisteidenHallintaViewController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url url
+     * @param rb rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -119,7 +121,10 @@ public class ToimipisteidenHallintaViewController implements Initializable {
         stage.close();
     }
 
-    // Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+
+    /**
+     * Metodi joka tayttaa TableView komponentin tietokannan tiedoilla
+     */
     public void fillTableView() {
 
         try {
