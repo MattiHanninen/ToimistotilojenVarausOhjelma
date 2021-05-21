@@ -28,7 +28,6 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 /**
  * Työntekija hallinta
  * FXML Controller class
- * @see vuokratoimistoTDatabase,vuokratoimistotapplication.Luokat
  * @author Matti Hänninen
  * @author Hoang Tran
  * @since JDK1.3

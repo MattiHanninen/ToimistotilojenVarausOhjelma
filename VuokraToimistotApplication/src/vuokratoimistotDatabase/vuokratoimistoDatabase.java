@@ -24,7 +24,7 @@ public class vuokratoimistoDatabase {
      * Avataan tietokanta yhteys
      * @param connString jdbc:mariadb URL
      * @return con tietokanta yhteys 
-     * @throws SQLException 
+     * @throws SQLException Tietokantavirhe
      */
     public static Connection openConnection(String connString) throws SQLException {
         Connection con = DriverManager.getConnection(connString);
@@ -34,7 +34,7 @@ public class vuokratoimistoDatabase {
     
     /**
      * Suljetaan tietokantayhteys
-     * @param c
+     * @param c Connection
      * @throws SQLException Tietokantavirhe
      */
     public static void closeConnection(Connection c) throws SQLException {
@@ -439,12 +439,12 @@ public class vuokratoimistoDatabase {
     
     /**
      * Metodi joka muokkaa toimipisteen tietoja
-     * @param c
-     * @param toimipisteID
-     * @param toimipisteNimi
-     * @param vuorokausiHinta
-     * @param toimipisteKoko
-     * @throws SQLException 
+     * @param c Connection
+     * @param toimipisteID toimipiste numero 
+     * @param toimipisteNimi toimipiste nimi
+     * @param vuorokausiHinta hinta
+     * @param toimipisteKoko toimipiste koko 
+     * @throws SQLException Tietokantavirhe
      */
     public static void updateToimipiste(Connection c, int toimipisteID, String toimipisteNimi, int vuorokausiHinta, int toimipisteKoko) throws SQLException {
     

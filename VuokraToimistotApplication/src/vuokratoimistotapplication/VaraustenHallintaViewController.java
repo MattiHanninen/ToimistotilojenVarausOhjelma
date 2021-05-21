@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import vuokratoimistotDatabase.vuokratoimistoDatabase;
 import vuokratoimistotapplication.Luokat.Varaus;
 import static vuokratoimistotapplication.PaavalikkoViewController.closeConnection;
@@ -35,7 +32,6 @@ import static vuokratoimistotapplication.PaavalikkoViewController.closeConnectio
 /**
  * FXML Controller class
  * Varausten hallinta
- * @see vuokratoimistoTDatabase,vuokratoimistotapplication.Luokat
  * @author Matti Hänninen
  * @author Hoang Tran
  * @since JDK1.3

@@ -43,7 +43,8 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Janne & matty
+ * @author Janne
+ * @author Matty
  */
 public class LaskutusHallintaViewController implements Initializable {
 

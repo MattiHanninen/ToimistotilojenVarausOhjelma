@@ -7,7 +7,9 @@ package vuokratoimistotapplication.Luokat;
 
 /**
  *
- * @author hoang & janne & matti
+ * @author hoang
+ * @author janne
+ * @author matti
  */
 /*
 * Toimipisteiden attribuutit

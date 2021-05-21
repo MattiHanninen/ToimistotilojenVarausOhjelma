@@ -46,6 +46,7 @@ public class VuokraToimistotApplication extends Application {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException Tietokanta virhe
      */
     public static void main(String[] args) throws SQLException {
         

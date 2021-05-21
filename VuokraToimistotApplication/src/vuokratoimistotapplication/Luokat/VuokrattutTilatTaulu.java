@@ -124,7 +124,7 @@ public class VuokrattutTilatTaulu {
     
     /**
      * Asettaa asiakkaan etunimi
-     * @param etunimi 
+     * @param etunimi Etunimi
      */
     public void setEtunimi(String etunimi) {
         this.etunimi = etunimi;
@@ -140,7 +140,7 @@ public class VuokrattutTilatTaulu {
     
     /**
      * Asettaa asiakkaan sukunimi
-     * @param sukunimi 
+     * @param sukunimi Sukunimi
      */
     public void setSukunimi(String sukunimi) {
         this.sukunimi = sukunimi;

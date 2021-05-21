@@ -41,7 +41,8 @@ import static vuokratoimistotDatabase.vuokratoimistoDatabase.openConnection;
 /**
  * FXML Controller class
  *
- * @author matty & janne
+ * @author matty
+ * @author janne
  */
 public class AsiakkaidenHallintaViewController implements Initializable {
 

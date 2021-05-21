@@ -253,7 +253,7 @@ public class LisapalvelutLaitteetRaportointiViewController implements Initializa
      * @param aloitusPaiva aloituspäivä
      * @param lopetusPaiva lopetuspäivä
      * @return resultset
-     * @throws SQLException
+     * @throws SQLException Tietokantavirhe
      */
     public static ResultSet selectAllInfoFromThreeTables(Connection c, int toimipisteID, Date aloitusPaiva, Date lopetusPaiva) throws SQLException {
 
